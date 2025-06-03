@@ -2,6 +2,7 @@
 import { Button, Card } from 'primevue'
 import AjoutEquipe from '@/components/modals/AjoutEquipe.vue'
 import AjoutProjet from '@/components/modals/AjoutProjet.vue'
+import DoughnutChart from '@/components/charts/DoughnutChart.vue'
 import { ref } from 'vue'
 
 const visibleAjoutEquipe = ref(false)
@@ -200,7 +201,20 @@ function compterTaches(id, type){
 
         <div class="flex justify-center">
             <Card class="w-full overflow-x-auto">
-                <template #title>Carte 3</template>
+                <template #content>
+                    <div class="flex space-x-2">
+                        <Card v-for="projet in projets">
+                            <template #content>
+                                <DoughnutChart 
+                                    :nom-graphe="projet.nom" 
+                                    :backlogs="compterTaches(projet.id, 'backlogs')"
+                                    :todo="compterTaches(projet.id, 'todo')"
+                                    :done="compterTaches(projet.id, 'done')"
+                                />
+                            </template>
+                        </Card>
+                    </div>
+                </template>
             </Card>
         </div>
     </div>
