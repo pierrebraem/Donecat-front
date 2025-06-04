@@ -2,19 +2,33 @@
 import { Card, Button } from 'primevue'
 import ModifierProfil from '@/components/modals/ModifierProfil.vue'
 import ModifierMotdepasse from '@/components/modals/ModifierMotdepasse.vue'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import Cookies from 'js-cookie'
+
+const router = useRouter()
 
 const visibleModifierProfil = ref(false)
 const visibleModifierMotdepasse = ref(false)
 
-const utilisateur = ref({
-    id: 1,
-    nom: "Braem",
-    prenom: "Pierre",
-    email: "pierre.braem@test.com",
-    pseudo: "MonsieurBraem",
-    status: "administrateur",
-    equipe_id: 1
+const cookie = ref({})
+
+const utilisateur = ref({})
+
+async function getUtilisateur(){
+    const response = await fetch('http://localhost:3000/utilisateurs/' + cookie.value.id)
+    const data = await response.json()
+    utilisateur.value = data
+}
+
+onMounted(async () => {
+    if(Cookies.get('utilisateur') == undefined){
+        router.push('/connexion')
+        return
+    }
+
+    cookie.value = JSON.parse(Cookies.get('utilisateur'))
+    await getUtilisateur()
 })
 </script>
 

@@ -3,12 +3,18 @@ import { Button, Card, ConfirmDialog } from 'primevue'
 import { useConfirm } from 'primevue/useconfirm'
 import AjoutUtilisateur from '@/components/modals/AjoutUtilisateur.vue'
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import Cookies from 'js-cookie'
+
+const router = useRouter()
 
 const confirm = useConfirm()
 
 const visibleAjoutUtilisateur = ref(false)
 const chargement = ref(true)
 const utilisateurs = ref([])
+
+const cookie = ref({})
 
 async function getUtilisateurs(){
     const response = await fetch("http://localhost:3000/utilisateurs")
@@ -37,6 +43,17 @@ function supprimerUtilisateur(id, nom, prenom){
 }
 
 onMounted(async () => {
+    if(Cookies.get('utilisateur') == undefined){
+        router.push('/connexion')
+        return
+    }
+
+    cookie.value = JSON.parse(Cookies.get('utilisateur'))
+    if(cookie.value.status != "Administrateur") {
+        router.push('/gestion')
+        return
+    }
+
     await getUtilisateurs()
     chargement.value = false
 })

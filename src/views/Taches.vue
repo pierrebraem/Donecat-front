@@ -2,12 +2,34 @@
 import { Button, Card, Tabs, TabList, Tab, TabPanels, Divider, TabPanel } from 'primevue'
 import AjoutTache from '@/components/modals/AjoutTache.vue'
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import Cookies from 'js-cookie'
+
+const router = useRouter()
 
 const visibleAjoutTache = ref(false)
+
 const chargement = ref(true)
+
+const equipes = ref([])
+const utilisateurs = ref([])
 const projets = ref([])
 const taches = ref([])
-const utilisateurs = ref([])
+const equipesProjets = ref([])
+
+const cookie = ref({})
+
+async function getEquipes(){
+    const response = await fetch("http://localhost:3000/equipes")
+    const data = await response.json()
+    equipes.value = data
+}
+
+async function getUtilisateurs(){
+    const response = await fetch("http://localhost:3000/utilisateurs")
+    const data = await response.json()
+    utilisateurs.value = data
+}
 
 async function getProjets(){
     const response = await fetch("http://localhost:3000/projets")
@@ -21,15 +43,29 @@ async function getTaches(){
     taches.value = data
 }
 
-async function getUtilisateurs(){
-    const response = await fetch("http://localhost:3000/utilisateurs")
+async function getEuipesProjets(){
+    const response = await fetch("http://localhost:3000/equipes-projets")
     const data = await response.json()
-    utilisateurs.value = data
+    equipesProjets.value = data
 }
 
 function formatageUtilisateur(developpeur_id){
     const utilisateur = utilisateurs.value.find((item) => item.id == developpeur_id)
     return utilisateur.nom + ' ' + utilisateur.prenom
+}
+
+function montrerProjetsEtTachesEnFonctionDeLutilisateur(){
+    if(cookie.value.status != "Administrateur"){
+        const equipeId = utilisateurs.value.find((item) => item.id == cookie.value.id).equipe_id
+        const projetsId = equipesProjets.value.filter((item) => item.equipe_id == equipeId)
+        const newProjets = []
+        equipes.value = equipes.value.filter((item) => item.id == equipeId)
+
+        for(const item of projetsId){
+            newProjets.push(projets.value.find((projet) => projet.id == item.projet_id))
+        }
+        projets.value = newProjets
+    }
 }
 
 const status = ref([
@@ -41,9 +77,19 @@ const status = ref([
 ])
 
 onMounted(async () => {
+    if(Cookies.get('utilisateur') == undefined){
+        router.push('/connexion')
+        return
+    }
+
+    cookie.value = JSON.parse(Cookies.get('utilisateur'))
+    await getEquipes()
+    await getUtilisateurs()
     await getProjets()
     await getTaches()
-    await getUtilisateurs()
+    await getEuipesProjets()
+    montrerProjetsEtTachesEnFonctionDeLutilisateur()
+
     chargement.value = false
 })
 </script>

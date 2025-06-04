@@ -4,14 +4,23 @@ import AjoutEquipe from '@/components/modals/AjoutEquipe.vue'
 import AjoutProjet from '@/components/modals/AjoutProjet.vue'
 import DoughnutChart from '@/components/charts/DoughnutChart.vue'
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import Cookies from 'js-cookie'
+
+const router = useRouter()
+
+const cookie = ref({})
 
 const visibleAjoutEquipe = ref(false)
 const visibleAjoutProjet = ref(false)
+
 const chargement = ref(true)
+
 const equipes = ref([])
 const utilisateurs = ref([])
 const projets = ref([])
 const taches = ref([])
+const equipesProjets = ref([])
 
 async function getEquipes(){
     const response = await fetch("http://localhost:3000/equipes")
@@ -37,6 +46,12 @@ async function getTaches(){
     taches.value = data
 }
 
+async function getEquipesProjets(){
+    const response = await fetch("http://localhost:3000/equipes-projets")
+    const data = await response.json()
+    equipesProjets.value = data
+}
+
 function compterTaches(id, type){
     if(type != "backlogs" && type != "todo" && type != "done"){
         return "N/A";
@@ -45,11 +60,34 @@ function compterTaches(id, type){
     return taches.value.filter((item) => item.categorie == type && item.projet_id == id).length;
 }
 
+function montrerEquipesEtProjetsEnFonctionDeLutilisateur(){
+    if(cookie.value.status != "Administrateur"){
+        const equipeId = utilisateurs.value.find((item) => item.id == cookie.value.id).equipe_id
+        const projetsId = equipesProjets.value.filter((item) => item.equipe_id == equipeId)
+        const newProjets = []
+        equipes.value = equipes.value.filter((item) => item.id == equipeId)
+
+        for(const item of projetsId){
+            newProjets.push(projets.value.find((projet) => projet.id == item.projet_id))
+        }
+        projets.value = newProjets
+    }
+}
+
 onMounted(async () => {
+    if(Cookies.get('utilisateur') == undefined){
+        router.push('/connexion')
+        return
+    }
+
+    cookie.value = JSON.parse(Cookies.get('utilisateur'))
     await getEquipes()
     await getUtilisateurs()
     await getProjets()
     await getTaches()
+    await getEquipesProjets()
+    montrerEquipesEtProjetsEnFonctionDeLutilisateur()
+
     chargement.value = false
 })
 </script>
@@ -65,9 +103,12 @@ onMounted(async () => {
                     <p>Bienvenue Dev1</p>
                 </div>
                 <div class="flex space-x-2">
-                    <Button label="Créer un projet" @click="visibleAjoutProjet = true" />
-                    <Button label="Créer une équipe" severity="info" @click="visibleAjoutEquipe = true"/>
-                    <Button label="Gestion des utilisateurs" severity="info" />
+                    <template v-if="cookie.status == 'Administrateur' || cookie.status == 'Manager'">
+                        <Button label="Créer un projet" @click="visibleAjoutProjet = true" />
+                    </template>
+                    <template v-if="cookie.status == 'Administrateur'">
+                        <Button label="Créer une équipe" severity="info" @click="visibleAjoutEquipe = true"/>
+                    </template>
                 </div>
             </div>
 
