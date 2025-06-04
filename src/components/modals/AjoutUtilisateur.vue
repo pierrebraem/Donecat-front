@@ -12,8 +12,8 @@ defineProps({
 defineEmits(['update:visible'])
 
 const status = ref([
-    { label: "Manager", value: "manager" },
-    { label: "Developpeur", value: "dev" }
+    { label: "Manager", value: "Manager" },
+    { label: "Developpeur", value: "Dev" }
 ]);
 
 const nom = ref("")
@@ -22,6 +22,24 @@ const email = ref("")
 const pseudo = ref("")
 const motdepasse = ref("")
 const selectedStatus = ref({})
+
+async function ajouterUtilisateur(){
+    const body = {
+        nom: nom.value,
+        prenom: prenom.value,
+        email: email.value,
+        pseudo: pseudo.value,
+        motdepasse: motdepasse.value,
+        status: selectedStatus.value,
+        equipe_id: "None"
+    }
+
+    await fetch("http://localhost:3000/utilisateurs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+    })
+}
 
 function resetInputs() {
     nom.value = ""
@@ -62,7 +80,7 @@ function resetInputs() {
             </div>
             <div class="flex justify-end gap-2">
                 <Button label="Annuler" severity="secondary" @click="resetInputs(); $emit('update:visible', false)" />
-                <Button label="Ajouter" @click="resetInputs(); $emit('update:visible', false)" />
+                <Button label="Ajouter" @click="ajouterUtilisateur(); resetInputs(); $emit('update:visible', false)" />
             </div>
         </div>
     </Dialog>
