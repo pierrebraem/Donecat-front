@@ -16,7 +16,7 @@ async function getUtilisateurs(){
     utilisateurs.value = data
 }
 
-function supprimerUtilisateur(nom, prenom){
+function supprimerUtilisateur(id, nom, prenom){
     confirm.require({
         message: 'Vous êtes sur le point de supprimer l\'utilisateur ' + nom + ' ' + prenom + '. Etes-vous sur de vouloir le supprimer définitivement?',
         header: 'Suppression de l\'utilisateur ' + nom + ' ' + prenom,
@@ -27,6 +27,11 @@ function supprimerUtilisateur(nom, prenom){
         acceptProps: {
             label: 'Supprimer',
             severity: 'danger'
+        },
+        accept: async () => {
+            await fetch("http://localhost:3000/utilisateurs/" + id, {
+                method: "DELETE"
+            })
         }
     })
 }
@@ -64,7 +69,7 @@ onMounted(async () => {
                                             </div>
                                             <div class="flex justify-end gap-2">
                                                 <Button label="Modifier" severity="warn" />
-                                                <Button label="Supprimer" severity="danger" @click="supprimerUtilisateur(utilisateur.nom.toUpperCase(), utilisateur.prenom)" />
+                                                <Button label="Supprimer" severity="danger" @click="supprimerUtilisateur(utilisateur.id, utilisateur.nom.toUpperCase(), utilisateur.prenom)" />
                                             </div>
                                         </template>
                                     </Card>
