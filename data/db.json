@@ -24,7 +24,8 @@
             "id": 3,
             "nom": "Rain",
             "prenom": "Jean",
-            "pseudo": "jean.rain@test.com",
+            "email": "jean.rain@test.com",
+            "pseudo": "MonsieurJean",
             "motdepasse": "motdepasse",
             "status": "Dev",
             "equipe_id": 1
