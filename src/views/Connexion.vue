@@ -1,8 +1,5 @@
 <script setup>
-import Card from 'primevue/card'
-import InputText from 'primevue/inputtext'
-import Password from 'primevue/password'
-import Button from 'primevue/button'
+import { Card, InputText, Password, Button } from 'primevue'
 import { ref } from 'vue'
 
 const email = ref("")
@@ -19,15 +16,15 @@ function login(){
         <Card class="w-11/12">
             <template #title><h1 class="text-3xl font-bold text-center">Connexion</h1></template>
             <template #content>
-                <div class="flex flex-col justify-center items-center pt-12">
-                    <div class="flex flex-col">
-                        <label for="email">Adresse mail :</label>
-                        <InputText id="email" v-model="email" />
+                <div class="flex flex-col justify-center items-center pt-12 space-y-6">
+                    <div class="flex flex-col w-60">
+                        <label>Adresse mail :</label>
+                        <InputText v-model="email" />
                     </div>
 
-                    <div class="flex flex-col pt-6">
-                        <label for="password">Mot de passe :</label>
-                        <Password id="password" v-model="password" :feedback="false" />
+                    <div class="flex flex-col">
+                        <label>Mot de passe :</label>
+                        <Password v-model="password" :feedback="false" toggle-mask :style="{ width: '100%' }" :input-style="{ width: '100%'}" />
                     </div>
 
                     <div class="pt-8">

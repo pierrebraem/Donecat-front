@@ -28,7 +28,7 @@ function resetInputs() {
 </script>
 
 <template>
-    <Dialog :visible="visible" @update:visible="$emit('update:visible', false)" modal header="Création d'un projet" class="w-1/2">
+    <Dialog :visible="visible" @update:visible="$emit('update:visible', false)" @after-hide="resetInputs" modal header="Création d'un projet" class="w-1/2">
         <div class="flex flex-col space-y-6">
             <div class="flex flex-col">
                 <label>Nom du projet :</label>
