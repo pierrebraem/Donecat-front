@@ -3,12 +3,27 @@ import { Dialog, Button, InputText} from 'primevue'
 import { ref } from 'vue'
 
 defineProps({
-    visible: Boolean
+    visible: {
+        type: Boolean,
+        required: true
+    }
 })
 
 defineEmits(['update:visible'])
 
 const nom = ref("")
+
+async function ajouterEquipe(){
+    const body = {
+        nom: nom.value
+    }
+
+    await fetch("http://localhost:3000/equipes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+    })
+}
 
 function resetInputs() {
     nom.value = ""
@@ -24,7 +39,7 @@ function resetInputs() {
             </div>
             <div class="flex justify-end gap-2">
                 <Button label="Annuler" severity="secondary" @click="resetInputs(); $emit('update:visible', false)" />
-                <Button label="Ajouter" @click="resetInputs(); $emit('update:visible', false)" />
+                <Button label="Ajouter" @click="ajouterEquipe(); resetInputs(); $emit('update:visible', false)" />
             </div>
         </div>
     </Dialog>
