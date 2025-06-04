@@ -1,0 +1,145 @@
+{
+    "utilisateurs": [
+        {
+            "id": 1,
+            "nom": "Braem",
+            "prenom": "Pierre",
+            "email": "pierre.braem@test.com",
+            "pseudo": "MonsieurBraem",
+            "motdepasse": "motdepasse",
+            "status": "Administrateur",
+            "equipe_id": 1
+        },
+        {
+            "id": 2,
+            "nom": "Dupont",
+            "prenom": "Martin",
+            "email": "martin.dupont@test.com",
+            "pseudo": "xXDarkDu59Xx",
+            "motdepasse": "motdepasse",
+            "status": "Manager",
+            "equipe_id": 2
+        },
+        {
+            "id": 3,
+            "nom": "Rain",
+            "prenom": "Jean",
+            "pseudo": "jean.rain@test.com",
+            "motdepasse": "motdepasse",
+            "status": "Dev",
+            "equipe_id": 1
+        }
+    ],
+    "equipes": [
+        {
+            "id": 1,
+            "nom": "Equipe 1"
+        },
+        {
+            "id": 2,
+            "nom": "Equipe 2"
+        }
+    ],
+    "projets": [
+        {
+            "id": 1,
+            "nom": "Projet 1"
+        },
+        {
+            "id": 2,
+            "nom": "Projet 2"
+        },
+        {
+            "id": 3,
+            "nom": "Projet 3"
+        } 
+    ],
+    "equipes-projets": [
+        {
+            "equipe_id": 1,
+            "projet_id": 1
+        },
+        {
+            "equipe_id": 1,
+            "projet_id": 2
+        },
+        {
+            "equipe_id": 2,
+            "projet_id": 1
+        }
+    ],
+    "taches": [
+        {
+            "id": 1,
+            "nom": "Tâche 1",
+            "description": "Tâche 1",
+            "projet_id": 1,
+            "categorie": "backlogs",
+            "developpeur_id": 1,
+            "datefin": "2025-06-07"
+        },
+        {
+            "id": 2,
+            "nom": "Tâche 2",
+            "description": "Tâche 2",
+            "projet_id": 1,
+            "categorie": "backlogs",
+            "developpeur_id": 1,
+            "datefin": "2025-06-07"
+        },
+        {
+            "id": 3,
+            "nom": "Tâche 3",
+            "description": "Tâche 3",
+            "projet_id": 1,
+            "categorie": "todo",
+            "developpeur_id": 1,
+            "datefin": "2025-06-07"
+        },
+        {
+            "id": 4,
+            "nom": "Tâche 4",
+            "description": "Tâche 4",
+            "projet_id": 1,
+            "categorie": "done",
+            "developpeur_id": 1,
+            "datefin": "2025-06-07"
+        },
+        {
+            "id": 5,
+            "nom": "Tâche 5",
+            "description": "Tâche 5",
+            "projet_id": 2,
+            "categorie": "backlogs",
+            "developpeur_id": 1,
+            "datefin": "2025-06-07"
+        },
+        {
+            "id": 6,
+            "nom": "Tâche 6",
+            "description": "Tâche 6",
+            "projet_id": 3,
+            "categorie": "todo",
+            "developpeur_id": 1,
+            "datefin": "2025-06-07"
+        },
+        {
+            "id": 7,
+            "nom": "Tâche 7",
+            "description": "Tâche 7",
+            "projet_id": 3,
+            "categorie": "todo",
+            "developpeur_id": 1,
+            "datefin": "2025-06-07"
+        },
+        {
+            "id": 8,
+            "nom": "Tâche 8",
+            "description": "Tâche 8",
+            "projet_id": 2,
+            "categorie": "inreview",
+            "developpeur_id": 1,
+            "datefin": "2025-06-07"
+        }
+    ]
+}

@@ -6,12 +6,14 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "launchapi": "json-server data/db.json",
     "preview": "vite preview"
   },
   "dependencies": {
     "@primeuix/themes": "1.1.1",
     "@tailwindcss/vite": "4.1.8",
     "chart.js": "4.4.9",
+    "json-server": "1.0.0-beta.3",
     "primevue": "4.3.4",
     "tailwindcss": "4.1.8",
     "vue": "3.5.13",
