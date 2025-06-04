@@ -2,9 +2,17 @@
 import { Dialog, Button, InputText, Select, DatePicker } from 'primevue'
 import { ref } from 'vue'
 
-defineProps({
+const props = defineProps({
     visible: {
         type: Boolean,
+        required: true
+    },
+    utilisateurs: {
+        type: Array,
+        required: true
+    },
+    projets: {
+        type: Array,
         required: true
     }
 })
@@ -19,40 +27,31 @@ const status = ref([
     { label: "Done", value: "done" }
 ])
 
-const utilisateurs = ref([
-    {
-        id: 1,
-        label: "Braem Pierre",
-        equipe_id: 1
-    },
-    {
-        id: 2,
-        label: "Dupont Martin",
-        equipe_id: 2
-    },
-    {
-        id: 3,
-        label: "Rain Jean",
-        equipe_id: 1
-    }
-])
-
-const projets = ref([
-    {
-        id: 1,
-        nom: "Projet 1"
-    },
-    {
-        id: 2,
-        nom: "Projet 2"
-    }
-])
+const utilisateurs = ref([])
+const projets = ref([])
 
 const nomTache = ref("")
-const selectedDev = ({})
-const selectedStatus = ({})
-const selectedProjet = ({})
-const dateFin = ({})
+const selectedDev = ref({})
+const selectedStatus = ref({})
+const selectedProjet = ref({})
+const dateFin = ref({})
+
+async function ajouterTache(){
+    const body = {
+        nom: nomTache.value,
+        description: nomTache.value,
+        projet_id: selectedProjet.value,
+        categorie: selectedStatus.value,
+        developpeur_id: selectedDev.value,
+        datefin: dateFin.value.getDate() + "/" + (dateFin.value.getMonth() + 1) + "/" + dateFin.value.getFullYear()
+    }
+
+    await fetch("http://localhost:3000/taches", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+    })
+}
 
 function resetInputs() {
     nomTache.value = ""
@@ -61,10 +60,19 @@ function resetInputs() {
     selectedProjet.value = {}
     dateFin.value = {}
 }
+
+function affecterValeurs(){
+    utilisateurs.value = props.utilisateurs
+    projets.value = props.projets
+
+    for(const utilisateur of utilisateurs.value){
+        utilisateur.label = utilisateur.nom + " " + utilisateur.prenom
+    }
+}
 </script>
 
 <template>
-    <Dialog :visible="visible" @update:visible="$emit('update:visible', false)" @after-hide="resetInputs" modal header="Création d'une tâche" class="w-1/2">
+    <Dialog :visible="visible" @show="affecterValeurs" @update:visible="$emit('update:visible', false)" @after-hide="resetInputs" modal header="Création d'une tâche" class="w-1/2">
         <div class="flex flex-col space-y-6">
             <div class="flex flex-col">
                 <label>Nom de la tâche :</label>
@@ -84,11 +92,11 @@ function resetInputs() {
             </div>
             <div class="flex flex-col">
                 <label>Date de fin :</label>
-                <DatePicker v-model="dateFin" />
+                <DatePicker v-model="dateFin" date-format="dd/mm/yy" />
             </div>
             <div class="flex justify-end gap-2">
                 <Button label="Annuler" severity="secondary" @click="resetInputs(); $emit('update:visible', false)" />
-                <Button label="Ajouter" @click="resetInputs(); $emit('update:visible', false)" />
+                <Button label="Ajouter" @click="ajouterTache(); resetInputs(); $emit('update:visible', false)" />
             </div>
         </div>
     </Dialog>
