@@ -8,30 +8,42 @@ const props = defineProps({
         required: true
     },
     utilisateurs: {
-        type: Array,
+        type: Object,
+        required: true
+    },
+    equipe: {
+        type: Object,
         required: true
     }
 })
 
-defineEmits(['update:visible'])
+const emit = defineEmits(['update:visible'])
 
 const utilisateurs = ref([])
 
 const nom = ref("")
 const selectedManager = ref({})
 
-async function ajouterEquipe(){
+function chargerDonnees(){
+    nom.value = props.equipe.nom,
+    selectedManager.value = props.equipe.manager
+}
+
+async function modifierEquipe() {
     const body = {
+        id: props.equipe.id,
         nom: nom.value,
-        membres: [],
+        membres: props.equipe.membres,
         manager: selectedManager.value
     }
 
-    await fetch("http://localhost:3000/equipes", {
-        method: "POST",
+    await fetch("http://localhost:3000/equipes/" + props.equipe.id, {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)
     })
+
+    emit('update:visible', false)
 }
 
 function resetInputs() {
@@ -40,13 +52,13 @@ function resetInputs() {
 }
 
 function affecterValeurs(){
-    utilisateurs.value = [];
+    utilisateurs.value = []
     for(const utilisateur of props.utilisateurs){
         if(utilisateur.status != 'Manager'){
             continue;
         }
-        
-        utilisateurs.value.push (
+
+        utilisateurs.value.push(
             {
                 id: utilisateur.id,
                 label: utilisateur.nom + " " + utilisateur.prenom
@@ -57,8 +69,8 @@ function affecterValeurs(){
 </script>
 
 <template>
-    <Dialog :visible="visible" @show="affecterValeurs" @update:visible="$emit('update:visible', false)" @after-hide="resetInputs" modal header="Création d'une équipe" class="w-1/2">
-        <div class="flex flex-col space-y-6">
+    <Dialog :visible="visible" @show="chargerDonnees(); affecterValeurs()" @update:visible="$emit('update:visible', false)" @after-hide="resetInputs" modal header="Modification d'une équipe" class="w-1/2">
+         <div class="flex flex-col space-y-6">
             <div class="flex flex-col">
                 <label>Nom de l'équipe :</label>
                 <InputText v-model="nom" />
@@ -69,7 +81,7 @@ function affecterValeurs(){
             </div>
             <div class="flex justify-end gap-2">
                 <Button label="Annuler" severity="secondary" @click="resetInputs(); $emit('update:visible', false)" />
-                <Button label="Ajouter" @click="ajouterEquipe(); resetInputs(); $emit('update:visible', false)" />
+                <Button label="Modifier" @click="modifierEquipe(); resetInputs(); $emit('update:visible', false)" />
             </div>
         </div>
     </Dialog>

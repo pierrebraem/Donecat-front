@@ -1,7 +1,9 @@
 <script setup>
-import { Button, Card } from 'primevue'
+import { Button, Card, ConfirmDialog } from 'primevue'
+import { useConfirm } from 'primevue/useconfirm'
 import AjoutEquipe from '@/components/modals/AjoutEquipe.vue'
 import AjoutProjet from '@/components/modals/AjoutProjet.vue'
+import modifierEquipe from '@/components/modals/modifierEquipe.vue'
 import DoughnutChart from '@/components/charts/DoughnutChart.vue'
 import { getEquipes, getUtilisateurs, getProjets, getTaches } from '@/utils/fonctionsRequete'
 import { ref, onMounted } from 'vue'
@@ -10,10 +12,13 @@ import Cookies from 'js-cookie'
 
 const router = useRouter()
 
+const confirm = useConfirm()
+
 const cookie = ref({})
 
 const visibleAjoutEquipe = ref(false)
 const visibleAjoutProjet = ref(false)
+const visibleModifierEquipe = ref(false)
 
 const chargement = ref(true)
 
@@ -21,6 +26,8 @@ const equipes = ref([])
 const utilisateurs = ref([])
 const projets = ref([])
 const taches = ref([])
+
+const equipeActuelPourModification = ref({})
 
 function compterTaches(id, type){
     if(type != "backlogs" && type != "todo" && type != "done"){
@@ -52,6 +59,26 @@ function montrerEquipesEtProjetsEnFonctionDeLutilisateur(){
     }
 }
 
+function supprimerEquipe(id, nom){
+    confirm.require({
+        message: 'Vous êtes sur le point de supprimer l\'équipe' + nom + '. Etes-vous sur de vouloir le supprimer définitivement?',
+        header: 'Suppression de l\'équipe ' + nom,
+        rejectProps: {
+            label: 'Annuler',
+            severity: 'secondary'
+        },
+        acceptProps: {
+            label: 'Supprimer',
+            severity: 'danger'
+        },
+        accept: async () => {
+            await fetch("http://localhost:3000/equipes/" + id, {
+                method: "DELETE"
+            })
+        }
+    })
+}
+
 onMounted(async () => {
     if(Cookies.get('utilisateur') == undefined){
         router.push('/connexion')
@@ -79,8 +106,8 @@ onMounted(async () => {
                 <div>
                     <p>Bienvenue Dev1</p>
                 </div>
-                <div class="flex space-x-2">
-                    <template v-if="cookie.status == 'Administrateur' || cookie.status == 'Manager'">
+                <div class="flex pr-4">
+                    <template v-if="cookie.status == 'Manager'">
                         <Button label="Créer un projet" @click="visibleAjoutProjet = true" />
                     </template>
                     <template v-if="cookie.status == 'Administrateur'">
@@ -106,6 +133,15 @@ onMounted(async () => {
                                                 <li>{{ trouverUtilisateur(membre, false)}}</li>
                                             </template>
                                         </ul>
+                                    </template>
+                                    <template #footer>
+                                        <div class="flex justify-center gap-3">
+                                            <template v-if="cookie.status == 'Administrateur'">
+                                                <Button label="Ajouter" />
+                                                <Button label="Modifier" severity="warn" @click="equipeActuelPourModification = equipe; visibleModifierEquipe = true"/>
+                                                <Button label="Supprimer" severity="danger" @click="supprimerEquipe(equipe.id, equipe.nom)"/>
+                                            </template>
+                                        </div>
                                     </template>
                                 </Card>
                             </template>
@@ -155,7 +191,9 @@ onMounted(async () => {
             </div>
         </div>
 
-        <AjoutEquipe v-model:visible="visibleAjoutEquipe"/>
-        <AjoutProjet v-model:visible="visibleAjoutProjet"/>
+        <AjoutEquipe v-model:visible="visibleAjoutEquipe" :utilisateurs="utilisateurs" />
+        <AjoutProjet v-model:visible="visibleAjoutProjet" />
+        <modifierEquipe v-model:visible="visibleModifierEquipe" :utilisateurs="utilisateurs" :equipe="equipeActuelPourModification" />
+        <ConfirmDialog />
     </template>
 </template>
