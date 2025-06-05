@@ -22,8 +22,20 @@ export async function getProjets(){
     return data
 }
 
+export async function getProjet(id){
+    const response = await fetch("http://localhost:3000/projets/" + id)
+    const data = await response.json()
+    return data
+}
+
 export async function getTaches(){
     const response = await fetch("http://localhost:3000/taches")
+    const data = await response.json()
+    return data
+}
+
+export async function getTache(id){
+    const response = await fetch("http://localhost:3000/taches/" + id)
     const data = await response.json()
     return data
 }
