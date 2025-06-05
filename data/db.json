@@ -34,9 +34,9 @@
       "nom": "Equipe 1",
       "membres": [
         "1",
-        "2"
+        "3"
       ],
-      "manager": "3"
+      "manager": "2"
     },
     {
       "id": "2",
