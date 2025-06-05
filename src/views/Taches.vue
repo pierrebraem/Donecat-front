@@ -19,7 +19,7 @@ const utilisateurs = ref([])
 const projets = ref([])
 const taches = ref([])
 
-const tacheIdActuelPourVisionnage = ref({})
+const tacheActuelPourVisionnage = ref({})
 
 const cookie = ref({})
 
@@ -89,7 +89,7 @@ onMounted(async () => {
                                                 <h1 class="3xl font-bold">{{ item.label }}</h1>
                                                 <template v-for="tache in taches">
                                                     <template v-if="tache.projet_id == projet.id && tache.categorie == item.value">
-                                                        <div class="flex flex-col space-y-2 pt-4" @click="tacheIdActuelPourVisionnage = tache.id; visibleVisualisationTache = true">
+                                                        <div class="flex flex-col space-y-2 pt-4" @click="tacheActuelPourVisionnage = tache; visibleVisualisationTache = true">
                                                             <Card style="background-color: aqua;" class="w-80">
                                                                 <template #content>
                                                                     <div class="flex flex-col space-y-2">
@@ -115,6 +115,6 @@ onMounted(async () => {
         </div>
 
         <AjoutTache v-model:visible="visibleAjoutTache" :utilisateurs="utilisateurs" :projets="projets" />
-        <VisualisationTache v-model:visible="visibleVisualisationTache" :tacheId="tacheIdActuelPourVisionnage" :role="cookie.status" />
+        <VisualisationTache v-model:visible="visibleVisualisationTache" :tache="tacheActuelPourVisionnage" :role="cookie.status" />
     </template>
 </template>
