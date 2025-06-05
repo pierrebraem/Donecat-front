@@ -37,6 +37,7 @@ async function changerMotdepasse(){
     }
 
     const body = {
+        id: props.utilisateur.id,
         nom: props.utilisateur.nom,
         prenom: props.utilisateur.prenom,
         email: props.utilisateur.email,
@@ -45,7 +46,7 @@ async function changerMotdepasse(){
         status: props.utilisateur.status
     }
 
-    await fetch("http://localhost:3000/utilisateurs/1", {
+    await fetch("http://localhost:3000/utilisateurs/" + props.utilisateur.id, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)
