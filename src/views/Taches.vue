@@ -115,6 +115,6 @@ onMounted(async () => {
         </div>
 
         <AjoutTache v-model:visible="visibleAjoutTache" :utilisateurs="utilisateurs" :projets="projets" />
-        <VisualisationTache v-model:visible="visibleVisualisationTache" :tache="tacheActuelPourVisionnage" :role="cookie.status" />
+        <VisualisationTache v-model:visible="visibleVisualisationTache" :tache="tacheActuelPourVisionnage" :projets="projets" :utilisateurs="utilisateurs" :role="cookie.status" />
     </template>
 </template>
