@@ -71,7 +71,7 @@ onMounted(async () => {
     </template>
     <template v-else>
         <div class="pt-4 flex flex-col space-y-6">
-            <div class="flex justify-end pr-4">
+            <div class="flex justify-end pr-4" v-if="cookie.status == 'Manager'">
                 <Button label="Créer une tâche" @click="visibleAjoutTache = true" />
             </div>
             <div class="flex justify-center">
