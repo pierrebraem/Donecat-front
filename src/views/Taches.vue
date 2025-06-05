@@ -1,6 +1,7 @@
 <script setup>
 import { Button, Card, Tabs, TabList, Tab, TabPanels, Divider, TabPanel } from 'primevue'
 import AjoutTache from '@/components/modals/AjoutTache.vue'
+import { getEquipes, getUtilisateurs, getProjets, getTaches } from '@/utils/fonctionsRequete'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import Cookies from 'js-cookie'
@@ -17,30 +18,6 @@ const projets = ref([])
 const taches = ref([])
 
 const cookie = ref({})
-
-async function getEquipes(){
-    const response = await fetch("http://localhost:3000/equipes")
-    const data = await response.json()
-    equipes.value = data
-}
-
-async function getUtilisateurs(){
-    const response = await fetch("http://localhost:3000/utilisateurs")
-    const data = await response.json()
-    utilisateurs.value = data
-}
-
-async function getProjets(){
-    const response = await fetch("http://localhost:3000/projets")
-    const data = await response.json()
-    projets.value = data
-}
-
-async function getTaches(){
-    const response = await fetch("http://localhost:3000/taches")
-    const data = await response.json()
-    taches.value = data
-}
 
 function formatageUtilisateur(developpeur_id){
     const utilisateur = utilisateurs.value.find((item) => item.id == developpeur_id)
@@ -74,10 +51,10 @@ onMounted(async () => {
     }
 
     cookie.value = JSON.parse(Cookies.get('utilisateur'))
-    await getEquipes()
-    await getUtilisateurs()
-    await getProjets()
-    await getTaches()
+    equipes.value = await getEquipes()
+    utilisateurs.value = await getUtilisateurs()
+    projets.value = await getProjets()
+    taches.value = await getTaches()
     montrerProjetsEtTachesEnFonctionDeLutilisateur()
 
     chargement.value = false

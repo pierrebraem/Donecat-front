@@ -3,6 +3,7 @@ import { Button, Card, ConfirmDialog } from 'primevue'
 import { useConfirm } from 'primevue/useconfirm'
 import AjoutUtilisateur from '@/components/modals/AjoutUtilisateur.vue'
 import modifierUtilisateur from '@/components/modals/ModifierUtilisateur.vue'
+import { getUtilisateurs } from '@/utils/fonctionsRequete'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import Cookies from 'js-cookie'
@@ -20,12 +21,6 @@ const utilisateurs = ref([])
 const utilisateurActuelPourModification = ref({})
 
 const cookie = ref({})
-
-async function getUtilisateurs(){
-    const response = await fetch("http://localhost:3000/utilisateurs")
-    const data = await response.json();
-    utilisateurs.value = data
-}
 
 function supprimerUtilisateur(id, nom, prenom){
     confirm.require({
@@ -59,7 +54,7 @@ onMounted(async () => {
         return
     }
 
-    await getUtilisateurs()
+    utilisateurs.value = await getUtilisateurs()
     chargement.value = false
 })
 </script>

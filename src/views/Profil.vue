@@ -2,6 +2,7 @@
 import { Card, Button } from 'primevue'
 import ModifierProfil from '@/components/modals/ModifierProfil.vue'
 import ModifierMotdepasse from '@/components/modals/ModifierMotdepasse.vue'
+import { getUtilisateur } from '@/utils/fonctionsRequete'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import Cookies from 'js-cookie'
@@ -15,12 +16,6 @@ const cookie = ref({})
 
 const utilisateur = ref({})
 
-async function getUtilisateur(){
-    const response = await fetch('http://localhost:3000/utilisateurs/' + cookie.value.id)
-    const data = await response.json()
-    utilisateur.value = data
-}
-
 onMounted(async () => {
     if(Cookies.get('utilisateur') == undefined){
         router.push('/connexion')
@@ -28,7 +23,7 @@ onMounted(async () => {
     }
 
     cookie.value = JSON.parse(Cookies.get('utilisateur'))
-    await getUtilisateur()
+    utilisateur.value =  await getUtilisateur(cookie.value.id)
 })
 </script>
 

@@ -3,6 +3,7 @@ import { Button, Card } from 'primevue'
 import AjoutEquipe from '@/components/modals/AjoutEquipe.vue'
 import AjoutProjet from '@/components/modals/AjoutProjet.vue'
 import DoughnutChart from '@/components/charts/DoughnutChart.vue'
+import { getEquipes, getUtilisateurs, getProjets, getTaches } from '@/utils/fonctionsRequete'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import Cookies from 'js-cookie'
@@ -20,30 +21,6 @@ const equipes = ref([])
 const utilisateurs = ref([])
 const projets = ref([])
 const taches = ref([])
-
-async function getEquipes(){
-    const response = await fetch("http://localhost:3000/equipes")
-    const data = await response.json()
-    equipes.value = data
-}
-
-async function getUtilisateurs(){
-    const response = await fetch("http://localhost:3000/utilisateurs")
-    const data = await response.json()
-    utilisateurs.value = data
-}
-
-async function getProjets(){
-    const response = await fetch("http://localhost:3000/projets")
-    const data = await response.json()
-    projets.value = data
-}
-
-async function getTaches(){
-    const response = await fetch("http://localhost:3000/taches")
-    const data = await response.json()
-    taches.value = data
-}
 
 function compterTaches(id, type){
     if(type != "backlogs" && type != "todo" && type != "done"){
@@ -82,10 +59,10 @@ onMounted(async () => {
     }
 
     cookie.value = JSON.parse(Cookies.get('utilisateur'))
-    await getEquipes()
-    await getUtilisateurs()
-    await getProjets()
-    await getTaches()
+    equipes.value = await getEquipes()
+    utilisateurs.value = await getUtilisateurs()
+    projets.value = await getProjets()
+    taches.value = await getTaches()
     montrerEquipesEtProjetsEnFonctionDeLutilisateur()
 
     chargement.value = false
