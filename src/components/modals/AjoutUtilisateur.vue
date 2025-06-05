@@ -30,8 +30,7 @@ async function ajouterUtilisateur(){
         email: email.value,
         pseudo: pseudo.value,
         motdepasse: motdepasse.value,
-        status: selectedStatus.value,
-        equipe_id: "None"
+        status: selectedStatus.value
     }
 
     await fetch("http://localhost:3000/utilisateurs", {

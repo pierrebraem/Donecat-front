@@ -7,8 +7,7 @@
       "email": "pierre.braem@test.com",
       "pseudo": "MonsieurBraem",
       "motdepasse": "motdepasse",
-      "status": "Administrateur",
-      "equipe_id": "1"
+      "status": "Administrateur"
     },
     {
       "id": "2",
@@ -17,8 +16,7 @@
       "email": "martin.dupont@test.com",
       "pseudo": "xXDarkDu59Xx",
       "motdepasse": "motdepasse",
-      "status": "Manager",
-      "equipe_id": "2"
+      "status": "Manager"
     },
     {
       "id": "3",
@@ -27,46 +25,43 @@
       "email": "jean.rain@test.com",
       "pseudo": "MonsieurJean",
       "motdepasse": "motdepasse",
-      "status": "Dev",
-      "equipe_id": "1"
+      "status": "Dev"
     }
   ],
   "equipes": [
     {
       "id": "1",
-      "nom": "Equipe 1"
+      "nom": "Equipe 1",
+      "membres": [
+        "1",
+        "2"
+      ],
+      "manager": "3"
     },
     {
       "id": "2",
-      "nom": "Equipe 2"
+      "nom": "Equipe 2",
+      "membres": [
+        "1"
+      ],
+      "manager": "2"
     }
   ],
   "projets": [
     {
       "id": "1",
-      "nom": "Projet 1"
+      "nom": "Projet 1",
+      "equipe_id": "1"
     },
     {
       "id": "2",
-      "nom": "Projet 2"
+      "nom": "Projet 2",
+      "equipe_id": "2"
     },
     {
       "id": "3",
-      "nom": "Projet 3"
-    }
-  ],
-  "equipes-projets": [
-    {
-      "equipe_id": "1",
-      "projet_id": "1"
-    },
-    {
-      "equipe_id": "1",
-      "projet_id": "2"
-    },
-    {
-      "equipe_id": "2",
-      "projet_id": "1"
+      "nom": "Projet 3",
+      "equipe_id": "1"
     }
   ],
   "taches": [

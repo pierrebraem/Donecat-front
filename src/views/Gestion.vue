@@ -20,7 +20,6 @@ const equipes = ref([])
 const utilisateurs = ref([])
 const projets = ref([])
 const taches = ref([])
-const equipesProjets = ref([])
 
 async function getEquipes(){
     const response = await fetch("http://localhost:3000/equipes")
@@ -46,12 +45,6 @@ async function getTaches(){
     taches.value = data
 }
 
-async function getEquipesProjets(){
-    const response = await fetch("http://localhost:3000/equipes-projets")
-    const data = await response.json()
-    equipesProjets.value = data
-}
-
 function compterTaches(id, type){
     if(type != "backlogs" && type != "todo" && type != "done"){
         return "N/A";
@@ -60,17 +53,25 @@ function compterTaches(id, type){
     return taches.value.filter((item) => item.categorie == type && item.projet_id == id).length;
 }
 
+function trouverUtilisateur(id, manager){
+    if(id == "None"){
+        return
+    }
+    
+    const resultat = utilisateurs.value.find((item) => item.id == id)
+    
+    return resultat.nom + ' ' + resultat.prenom + (manager ? ' (Manager)' : '')
+}
+
 function montrerEquipesEtProjetsEnFonctionDeLutilisateur(){
     if(cookie.value.status != "Administrateur"){
-        const equipeId = utilisateurs.value.find((item) => item.id == cookie.value.id).equipe_id
-        const projetsId = equipesProjets.value.filter((item) => item.equipe_id == equipeId)
+        equipes.value = equipes.value.filter((item) => item.membres.find((item2) => item2 == cookie.value.id) || item.manager == cookie.value.id)
         const newProjets = []
-        equipes.value = equipes.value.filter((item) => item.id == equipeId)
 
-        for(const item of projetsId){
-            newProjets.push(projets.value.find((projet) => projet.id == item.projet_id))
+        for (const item of equipes.value){
+            newProjets.push(projets.value.filter((projet) => projet.equipe_id == item.id))
         }
-        projets.value = newProjets
+        projets.value = newProjets.flat();
     }
 }
 
@@ -85,7 +86,6 @@ onMounted(async () => {
     await getUtilisateurs()
     await getProjets()
     await getTaches()
-    await getEquipesProjets()
     montrerEquipesEtProjetsEnFonctionDeLutilisateur()
 
     chargement.value = false
@@ -124,8 +124,9 @@ onMounted(async () => {
                                     <template #title>{{ equipe.nom }}</template>
                                     <template #content>
                                         <ul>
-                                            <template v-for="utilisateur in utilisateurs">
-                                                <li v-if="utilisateur.equipe_id == equipe.id">{{ utilisateur.nom }} {{ utilisateur.prenom }} {{ utilisateur.status == "manager" ? "(Manager)" : "" }}</li>
+                                            <li>{{ trouverUtilisateur(equipe.manager, true) }}</li>
+                                            <template v-for="membre in equipe.membres">
+                                                <li>{{ trouverUtilisateur(membre, false)}}</li>
                                             </template>
                                         </ul>
                                     </template>

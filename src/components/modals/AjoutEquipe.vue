@@ -15,7 +15,9 @@ const nom = ref("")
 
 async function ajouterEquipe(){
     const body = {
-        nom: nom.value
+        nom: nom.value,
+        membres: [],
+        manager: "None"
     }
 
     await fetch("http://localhost:3000/equipes", {

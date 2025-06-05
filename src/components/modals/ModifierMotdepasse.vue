@@ -42,8 +42,7 @@ async function changerMotdepasse(){
         email: props.utilisateur.email,
         pseudo: props.utilisateur.pseudo,
         motdepasse: nouveauMotdepasse.value,
-        status: props.utilisateur.status,
-        equipe_id: props.utilisateur.equipe_id
+        status: props.utilisateur.status
     }
 
     await fetch("http://localhost:3000/utilisateurs/1", {

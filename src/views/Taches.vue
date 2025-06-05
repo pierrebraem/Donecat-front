@@ -15,7 +15,6 @@ const equipes = ref([])
 const utilisateurs = ref([])
 const projets = ref([])
 const taches = ref([])
-const equipesProjets = ref([])
 
 const cookie = ref({})
 
@@ -43,12 +42,6 @@ async function getTaches(){
     taches.value = data
 }
 
-async function getEuipesProjets(){
-    const response = await fetch("http://localhost:3000/equipes-projets")
-    const data = await response.json()
-    equipesProjets.value = data
-}
-
 function formatageUtilisateur(developpeur_id){
     const utilisateur = utilisateurs.value.find((item) => item.id == developpeur_id)
     return utilisateur.nom + ' ' + utilisateur.prenom
@@ -56,15 +49,13 @@ function formatageUtilisateur(developpeur_id){
 
 function montrerProjetsEtTachesEnFonctionDeLutilisateur(){
     if(cookie.value.status != "Administrateur"){
-        const equipeId = utilisateurs.value.find((item) => item.id == cookie.value.id).equipe_id
-        const projetsId = equipesProjets.value.filter((item) => item.equipe_id == equipeId)
+        equipes.value = equipes.value.filter((item) => item.membres.find((item2) => item2 == cookie.value.id) || item.manager == cookie.value.id)
         const newProjets = []
-        equipes.value = equipes.value.filter((item) => item.id == equipeId)
 
-        for(const item of projetsId){
-            newProjets.push(projets.value.find((projet) => projet.id == item.projet_id))
+        for (const item of equipes.value){
+            newProjets.push(projets.value.filter((projet) => projet.equipe_id == item.id))
         }
-        projets.value = newProjets
+        projets.value = newProjets.flat();
     }
 }
 
@@ -87,7 +78,6 @@ onMounted(async () => {
     await getUtilisateurs()
     await getProjets()
     await getTaches()
-    await getEuipesProjets()
     montrerProjetsEtTachesEnFonctionDeLutilisateur()
 
     chargement.value = false
