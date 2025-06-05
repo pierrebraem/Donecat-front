@@ -2,6 +2,7 @@
 import { Button, Card, ConfirmDialog } from 'primevue'
 import { useConfirm } from 'primevue/useconfirm'
 import AjoutUtilisateur from '@/components/modals/AjoutUtilisateur.vue'
+import modifierUtilisateur from '@/components/modals/ModifierUtilisateur.vue'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import Cookies from 'js-cookie'
@@ -11,8 +12,12 @@ const router = useRouter()
 const confirm = useConfirm()
 
 const visibleAjoutUtilisateur = ref(false)
+const visibleModifierUtilisateur = ref(false)
+
 const chargement = ref(true)
+
 const utilisateurs = ref([])
+const utilisateurActuelPourModification = ref({})
 
 const cookie = ref({})
 
@@ -85,7 +90,7 @@ onMounted(async () => {
                                                 <p>{{ utilisateur.status }}</p>
                                             </div>
                                             <div class="flex justify-end gap-2">
-                                                <Button label="Modifier" severity="warn" />
+                                                <Button label="Modifier" severity="warn" @click="utilisateurActuelPourModification = utilisateur; visibleModifierUtilisateur = true"/>
                                                 <Button label="Supprimer" severity="danger" @click="supprimerUtilisateur(utilisateur.id, utilisateur.nom.toUpperCase(), utilisateur.prenom)" />
                                             </div>
                                         </template>
@@ -99,6 +104,7 @@ onMounted(async () => {
         </div>
 
         <AjoutUtilisateur v-model:visible="visibleAjoutUtilisateur" />
+        <modifierUtilisateur v-model:visible="visibleModifierUtilisateur" :utilisateur="utilisateurActuelPourModification" />
         <ConfirmDialog />
     </template>
 </template>
