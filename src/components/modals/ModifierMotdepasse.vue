@@ -2,18 +2,64 @@
 import { Dialog, Password, Button } from 'primevue'
 import { ref } from 'vue'
 
-defineProps({
+const props = defineProps({
     visible: {
         type: Boolean,
+        required: true
+    },
+    utilisateur: {
+        type: Object,
         required: true
     }
 })
 
-defineEmits(['update:visible'])
+const emit = defineEmits(['update:visible'])
+
+const ancienMotdepasseIncorrect = ref(false)
+const confirmationMotdepasseIncorrect = ref(false)
 
 const ancienMotdepasse = ref("")
 const nouveauMotdepasse = ref("")
 const confirmerMotdepasse = ref("")
+
+async function changerMotdepasse(){
+    ancienMotdepasseIncorrect.value = false
+    confirmationMotdepasseIncorrect.value = false
+
+    if(ancienMotdepasse.value != props.utilisateur.motdepasse){
+        ancienMotdepasseIncorrect.value = true
+        return
+    }
+
+    if(nouveauMotdepasse.value != confirmerMotdepasse.value){
+        confirmationMotdepasseIncorrect.value = true
+        return
+    }
+
+    const body = {
+        nom: props.utilisateur.nom,
+        prenom: props.utilisateur.prenom,
+        email: props.utilisateur.email,
+        pseudo: props.utilisateur.pseudo,
+        motdepasse: nouveauMotdepasse.value,
+        status: props.utilisateur.status,
+        equipe_id: props.utilisateur.equipe_id
+    }
+
+    await fetch("http://localhost:3000/utilisateurs/1", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+    })
+
+    emit('update:visible', false)
+}
+
+function resetInputs(){
+    ancienMotdepasse.value = ""
+    nouveauMotdepasse.value = ""
+    confirmerMotdepasse.value = ""
+}
 </script>
 
 <template>
@@ -33,8 +79,14 @@ const confirmerMotdepasse = ref("")
             </div>
             <div class="flex justify-end gap-2">
                 <Button label="Annuler" severity="secondary" @click="resetInputs(); $emit('update:visible', false)" />
-                <Button label="Modifier" @click="resetInputs(); $emit('update:visible', false)" />
+                <Button label="Modifier" @click="changerMotdepasse(); resetInputs()" />
             </div>
+            <template v-if="ancienMotdepasseIncorrect">
+                <p class="text-red-500">Votre saisie de votre ancien mot de passe ne correspond pas à votre mot de passe actuelle</p>
+            </template>
+            <template v-if="confirmationMotdepasseIncorrect">
+                <p class="text-red-500">Le champ "nouveau de passe" et "confirmer nouveau de passe" ne sont pas les mêmes</p>
+            </template>
         </div>
     </Dialog>
 </template>

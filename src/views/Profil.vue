@@ -67,5 +67,5 @@ onMounted(async () => {
     </div>
 
     <ModifierProfil v-model:visible="visibleModifierProfil" />
-    <ModifierMotdepasse v-model:visible="visibleModifierMotdepasse" />
+    <ModifierMotdepasse v-model:visible="visibleModifierMotdepasse" :utilisateur="utilisateur" />
 </template>
