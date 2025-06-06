@@ -3,9 +3,13 @@ import { Dialog, InputText } from 'primevue'
 import Bouton from '@/components/Bouton.vue'
 import { ref } from 'vue'
 
-defineProps({
+const props = defineProps({
     visible: {
         type: Boolean,
+        required: true
+    },
+    utilisateur: {
+        type: Object,
         required: true
     }
 })
@@ -17,6 +21,33 @@ const prenom = ref("")
 const email = ref("")
 const pseudo = ref("")
 
+function chargerDonnees(){
+    nom.value = props.utilisateur.nom
+    prenom.value = props.utilisateur.prenom
+    email.value = props.utilisateur.email
+    pseudo.value = props.utilisateur.pseudo
+}
+
+async function modifierProfil(){
+    const body = {
+        id: props.utilisateur.id,
+        nom: nom.value,
+        prenom: prenom.value,
+        email: email.value,
+        pseudo: pseudo.value,
+        motdepasse: props.utilisateur.motdepasse,
+        status: props.utilisateur.status
+    }
+
+    await fetch("http://localhost:3000/utilisateurs/" + props.utilisateur.id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+    })
+
+    emit('update:visible', false)
+}
+
 function resetInputs() {
     nom.value = ""
     prenom.value = ""
@@ -26,7 +57,7 @@ function resetInputs() {
 </script>
 
 <template>
-    <Dialog :visible="visible" @update:visible="$emit('update:visible', false)" @after-hide="resetInputs" modal header="Modification du profil" class="w-1/2">
+    <Dialog :visible="visible" @show="chargerDonnees" @update:visible="$emit('update:visible', false)" @after-hide="resetInputs" modal header="Modification du profil" class="w-1/2">
         <div class="flex flex-col space-y-6">
             <div class="flex flex-col">
                 <label>Nom :</label>
@@ -46,7 +77,7 @@ function resetInputs() {
             </div>
             <div class="flex justify-end gap-2">
                 <Bouton label="Annuler" severity="secondary" @callback="resetInputs(); $emit('update:visible', false)" />
-                <Bouton label="Modifier" @callback="resetInputs(); $emit('update:visible', false)" />
+                <Bouton label="Modifier" @callback="modifierProfil(); resetInputs(); $emit('update:visible', false)" />
             </div>
         </div>
     </Dialog>
