@@ -165,7 +165,7 @@ onMounted(async () => {
                                 <div>
                                     <p class="text-xl font-bold">{{ projet.nom }}</p>
                                 </div>
-                                <div class="flex space-x-4">
+                                <div class="flex space-x-4" v-if="cookie.status == 'Manager'">
                                     <span class="pi pi-pencil" style="font-size: 1.3rem;" @click="projetActuelPourModification = projet; visibleModifierProjet = true" />
                                     <span class="pi pi-trash" style="font-size: 1.3rem;" @click="supprimerProjet(projet.id, projet.nom)" />
                                 </div>
