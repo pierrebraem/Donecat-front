@@ -3,7 +3,8 @@ import { Card, ConfirmDialog } from 'primevue'
 import { useConfirm } from 'primevue/useconfirm'
 import AjoutEquipe from '@/components/modals/AjoutEquipe.vue'
 import AjoutProjet from '@/components/modals/AjoutProjet.vue'
-import modifierEquipe from '@/components/modals/modifierEquipe.vue'
+import ModifierEquipe from '@/components/modals/ModifierEquipe.vue'
+import ModifierProjet from '@/components/modals/ModifierProjet.vue'
 import DoughnutChart from '@/components/charts/DoughnutChart.vue'
 import Equipe from '@/components/cartes/Equipe.vue'
 import Projet from '@/components/cartes/Projet.vue'
@@ -22,6 +23,7 @@ const cookie = ref({})
 const visibleAjoutEquipe = ref(false)
 const visibleAjoutProjet = ref(false)
 const visibleModifierEquipe = ref(false)
+const visibleModifierProjet = ref(false)
 
 const chargement = ref(true)
 
@@ -31,6 +33,7 @@ const projets = ref([])
 const taches = ref([])
 
 const equipeActuelPourModification = ref({})
+const projetActuelPourModification = ref({})
 
 function compterTaches(id, type){
     if(type != "backlogs" && type != "todo" && type != "done"){
@@ -52,6 +55,10 @@ function montrerEquipesEtProjetsEnFonctionDeLutilisateur(){
     }
 }
 
+function trouverEquipe(id){
+    return equipes.value.find((item) => item.id == id)
+}
+
 function supprimerEquipe(id, nom){
     confirm.require({
         message: 'Vous êtes sur le point de supprimer l\'équipe ' + nom + '. Etes-vous sur de vouloir le supprimer définitivement?',
@@ -66,6 +73,26 @@ function supprimerEquipe(id, nom){
         },
         accept: async () => {
             await fetch("http://localhost:3000/equipes/" + id, {
+                method: "DELETE"
+            })
+        }
+    })
+}
+
+function supprimerProjet(id, nom){
+    confirm.require({
+        message: 'Vous êtes sur le point de supprimer le projet ' + nom + '. Etes-vous sur de vouloir le supprimer définitivement?',
+        header: 'Suppresion du projet ' + nom,
+        rejectProps: {
+            label: 'Annuler',
+            severity: 'secondary'
+        },
+        acceptProps: {
+            label: 'Supprimer',
+            severity: 'danger'
+        },
+        accept: async () => {
+            await fetch("http://localhost:3000/projets/" + id,  {
                 method: "DELETE"
             })
         }
@@ -142,7 +169,11 @@ onMounted(async () => {
                                 <template v-for="projet in projets">
                                     <Projet 
                                         :projet="projet"
+                                        :equipe="trouverEquipe(projet.equipe_id)"
                                         :compter-taches="compterTaches"
+                                        :cookie="cookie"
+                                        @modifier="projetActuelPourModification = projet; visibleModifierProjet = true"
+                                        @supprimer="supprimerProjet(projet.id, projet.nom)"
                                     />
                                 </template>
                             </template>
@@ -172,8 +203,9 @@ onMounted(async () => {
         </div>
 
         <AjoutEquipe v-model:visible="visibleAjoutEquipe" :utilisateurs="utilisateurs" />
-        <AjoutProjet v-model:visible="visibleAjoutProjet" />
-        <modifierEquipe v-model:visible="visibleModifierEquipe" :utilisateurs="utilisateurs" :equipe="equipeActuelPourModification" />
+        <AjoutProjet v-model:visible="visibleAjoutProjet" :equipes="equipes" />
+        <ModifierEquipe v-model:visible="visibleModifierEquipe" :utilisateurs="utilisateurs" :equipe="equipeActuelPourModification" />
+        <ModifierProjet v-model:visible="visibleModifierProjet" :equipes="equipes" :projet="projetActuelPourModification" />
         <ConfirmDialog />
     </template>
 </template>

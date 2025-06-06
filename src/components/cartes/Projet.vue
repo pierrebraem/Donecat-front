@@ -6,8 +6,16 @@ defineProps({
         type: Object,
         required: true
     },
+    equipe: {
+        type: Object,
+        required: true
+    },
     compterTaches: {
         type: Function,
+        required: true
+    },
+    cookie: {
+        type: Object,
         required: true
     }
 })
@@ -22,6 +30,14 @@ defineProps({
                 <li>Tâches en cours : {{ compterTaches(projet.id, 'todo') }}</li>
                 <li>Tâches terminées : {{ compterTaches(projet.id, 'done') }}</li>
             </ul>
+        </template>
+        <template #footer>
+            <div class="mt-auto flex justify-center gap-3">
+                <template v-if="cookie.id == equipe.manager">
+                    <span class="pi pi-pencil" style="font-size: 1.3rem;" @click="$emit('modifier')" />
+                    <span class="pi pi-trash" style="font-size: 1.3rem;" @click="$emit('supprimer')" />
+                </template>
+            </div>
         </template>
     </Card>
 </template>

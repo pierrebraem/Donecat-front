@@ -3,13 +3,17 @@ import { Dialog, InputText, Select } from 'primevue'
 import Bouton from '@/components/Bouton.vue'
 import { ref } from 'vue'
 
-defineProps({
+const props = defineProps({
     visible: {
         type: Boolean,
         required: true
     },
     equipes: {
         type: Array,
+        required: true
+    },
+    projet: {
+        type: Object,
         required: true
     }
 })
@@ -19,17 +23,25 @@ defineEmits(['update:visible'])
 const nom = ref("")
 const selectedEquipe = ref({})
 
-async function ajouterProjet(){
+function chargerDonnees(){
+    nom.value = props.projet.nom,
+    selectedEquipe.value = props.projet.equipe_id
+}
+
+async function modifierProjet() {
     const body = {
+        id: props.projet.id,
         nom: nom.value,
         equipe_id: selectedEquipe.value
     }
 
-    await fetch("http://localhost:3000/projets", {
-        method: "POST",
+    await fetch("http://localhost:3000/projets/" + props.projet.id, {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)
     })
+
+    emit('update:visible', false)
 }
 
 function resetInputs() {
@@ -39,7 +51,7 @@ function resetInputs() {
 </script>
 
 <template>
-    <Dialog :visible="visible" @update:visible="$emit('update:visible', false)" @after-hide="resetInputs" modal header="Création d'un projet" class="w-1/2">
+    <Dialog :visible="visible" @show="chargerDonnees" @update:visible="$emit('update:visible', false)" @after-hide="resetInputs" modal header="Modification d'un projet" class="w-1/2">
         <div class="flex flex-col space-y-6">
             <div class="flex flex-col">
                 <label>Nom du projet :</label>
@@ -51,7 +63,7 @@ function resetInputs() {
             </div>
             <div class="flex justify-end gap-2">
                 <Bouton label="Annuler" severity="secondary" @callback="resetInputs(); $emit('update:visible', false)" />
-                <Bouton label="Ajouter" @callback="ajouterProjet(); resetInputs(); $emit('update:visible', false)" />
+                <Bouton label="Modifier" @callback="modifierProjet(); resetInputs(); $emit('update:visible', false)" />
             </div>
         </div>
     </Dialog>
