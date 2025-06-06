@@ -1,5 +1,6 @@
 <script setup>
-import { Dialog, Button, InputText, Select } from 'primevue';
+import { Dialog, InputText, Select } from 'primevue'
+import Bouton from '@/components/Bouton.vue'
 import { ref } from 'vue'
 
 defineProps({
@@ -41,11 +42,11 @@ function resetInputs() {
                 </div>
             </div>
             <div class="flex justify-end">
-                <Button label="Ajouter une équipe" severity="warn" @click="ajouterEquipe" />
+                <Bouton label="Ajouter une équipe" severity="warn" @click="ajouterEquipe" />
             </div>
             <div class="flex justify-end gap-2">
-                <Button label="Annuler" severity="secondary" @click="resetInputs(); $emit('update:visible', false)" />
-                <Button label="Ajouter" @click="resetInputs(); $emit('update:visible', false)" />
+                <Bouton label="Annuler" severity="secondary" @callback="resetInputs(); $emit('update:visible', false)" />
+                <Bouton label="Ajouter" @callback="resetInputs(); $emit('update:visible', false)" />
             </div>
         </div>
     </Dialog>

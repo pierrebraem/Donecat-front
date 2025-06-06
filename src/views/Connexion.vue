@@ -1,8 +1,9 @@
 <script setup>
-import { Card, InputText, Password, Button } from 'primevue'
+import { Card, InputText, Password } from 'primevue'
 import { getUtilisateurs } from '@/utils/fonctionsRequete'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import Bouton from '@/components/Bouton.vue'
 import Cookies from 'js-cookie'
 
 const router = useRouter()
@@ -49,7 +50,7 @@ onMounted(() => {
                     </div>
 
                     <div class="pt-8">
-                        <Button label="Connexion" @click="login" />
+                        <Bouton label="Connexion" @callback="login" />
                     </div>
 
                     <div class="pt-6" v-if="is_email_or_password_invalid">

@@ -1,5 +1,6 @@
 <script setup>
-import { Card, Button } from 'primevue'
+import { Card } from 'primevue'
+import Bouton from '@/components/Bouton.vue'
 
 const props = defineProps({
     equipe: {
@@ -37,8 +38,8 @@ function trouverUtilisateur(id, manager){
         <template #footer>
             <div class="flex justify-center gap-3">
                 <template v-if="cookie.status == 'Administrateur'">
-                    <Button label="Modifier" severity="warn" @click="$emit('modifier')"/>
-                    <Button label="Supprimer" severity="danger" @click="$emit('supprimer')"/>
+                    <Bouton label="Modifier" severity="warn" @callback="$emit('modifier')" />
+                    <Bouton label="Supprimer" severity="danger" @callback="$emit('supprimer')"/>
                 </template>
             </div>
         </template>

@@ -1,5 +1,6 @@
 <script setup>
-import { Dialog, InputText, Button } from 'primevue'
+import { Dialog, InputText } from 'primevue'
+import Bouton from '@/components/Bouton.vue'
 import { ref } from 'vue'
 
 defineProps({
@@ -44,8 +45,8 @@ function resetInputs() {
                 <InputText v-model="pseudo" />
             </div>
             <div class="flex justify-end gap-2">
-                <Button label="Annuler" severity="secondary" @click="resetInputs(); $emit('update:visible', false)" />
-                <Button label="Modifier" @click="resetInputs(); $emit('update:visible', false)" />
+                <Bouton label="Annuler" severity="secondary" @callback="resetInputs(); $emit('update:visible', false)" />
+                <Bouton label="Modifier" @callback="resetInputs(); $emit('update:visible', false)" />
             </div>
         </div>
     </Dialog>

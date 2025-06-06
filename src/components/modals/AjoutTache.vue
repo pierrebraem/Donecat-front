@@ -1,5 +1,6 @@
 <script setup>
-import { Dialog, Button, InputText, Select, DatePicker } from 'primevue'
+import { Dialog, InputText, Select, DatePicker } from 'primevue'
+import Bouton from '@/components/Bouton.vue'
 import { ref } from 'vue'
 
 const props = defineProps({
@@ -95,8 +96,8 @@ function affecterValeurs(){
                 <DatePicker v-model="dateFin" date-format="dd/mm/yy" />
             </div>
             <div class="flex justify-end gap-2">
-                <Button label="Annuler" severity="secondary" @click="resetInputs(); $emit('update:visible', false)" />
-                <Button label="Ajouter" @click="ajouterTache(); resetInputs(); $emit('update:visible', false)" />
+                <Bouton label="Annuler" severity="secondary" @callback="resetInputs(); $emit('update:visible', false)" />
+                <Bouton label="Ajouter" @callback="ajouterTache(); resetInputs(); $emit('update:visible', false)" />
             </div>
         </div>
     </Dialog>

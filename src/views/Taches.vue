@@ -1,7 +1,8 @@
 <script setup>
-import { Button, Card, Tabs, TabList, Tab, TabPanels, Divider, TabPanel } from 'primevue'
+import { Card, Tabs, TabList, Tab, TabPanels, Divider, TabPanel } from 'primevue'
 import AjoutTache from '@/components/modals/AjoutTache.vue'
 import VisualisationTache from '@/components/modals/VisualisationTache.vue'
+import Bouton from '@/components/Bouton.vue'
 import Tache from '@/components/cartes/Tache.vue'
 import { getEquipes, getUtilisateurs, getProjets, getTaches } from '@/utils/fonctionsRequete'
 import { ref, onMounted } from 'vue'
@@ -68,7 +69,7 @@ onMounted(async () => {
     <template v-else>
         <div class="pt-4 flex flex-col space-y-6">
             <div class="flex justify-end pr-4" v-if="cookie.status == 'Manager'">
-                <Button label="Créer une tâche" @click="visibleAjoutTache = true" />
+                <Bouton label="Créer une tâche" @callback="visibleAjoutTache = true" />
             </div>
             <div class="flex justify-center">
                 <Card class="w-11/12">

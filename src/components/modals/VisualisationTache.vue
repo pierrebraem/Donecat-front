@@ -1,6 +1,7 @@
 <script setup>
-import { Dialog, Button, Select, InputText, DatePicker } from 'primevue'
+import { Dialog, Select, InputText, DatePicker } from 'primevue'
 import { getTache, getProjet, getUtilisateur } from '@/utils/fonctionsRequete'
+import Bouton from '@/components/Bouton.vue'
 import { ref } from 'vue'
 
 const props = defineProps({
@@ -108,7 +109,7 @@ function reset(){
                 <template v-if="changeNom">
                     <p>Nom :</p>
                     <InputText v-model="tache.nom" />
-                    <Button label="Valider" @click="changerTache"/>
+                    <Bouton label="Valider" @callback="changerTache"/>
                 </template>
                 <template v-else>
                     <p>Nom : {{ tache.nom }}</p>
@@ -118,7 +119,7 @@ function reset(){
                 <template v-if="changeDescription">
                     <p>Description :</p>
                     <InputText v-model="tache.description" />
-                    <Button label="Valider" @click="changerTache" />
+                    <Bouton label="Valider" @callback="changerTache" />
                 </template>
                 <template v-else>
                     <p>Description : {{ tache.description }}</p>
@@ -128,7 +129,7 @@ function reset(){
                 <template v-if="changeProjet">
                     <p>Projet :</p>
                     <Select v-model="tache.projet_id" :options="projets" option-label="nom" option-value="id" />
-                    <Button label="Valider" @click="changerTache" />
+                    <Bouton label="Valider" @callback="changerTache" />
                 </template>
                 <template v-else>
                     <p>Projet : {{ projet.nom }}</p>
@@ -138,7 +139,7 @@ function reset(){
                 <template v-if="changeStatus">
                     <p>Status :</p>
                     <Select v-model="tache.categorie" :options="status" option-label="label" option-value="value" />
-                    <Button label="Valider" @click="changerTache"/>
+                    <Bouton label="Valider" @callback="changerTache"/>
                 </template>
                 <template v-else>
                     <p>Status : {{ tache.categorie }}</p>
@@ -148,7 +149,7 @@ function reset(){
                 <template v-if="changeDeveloppeur">
                     <p>Développeur :</p>
                     <Select v-model="tache.developpeur_id" :options="utilisateurs" option-label="label" option-value="id" />
-                    <Button label="Valider" @click="changerTache"/>
+                    <Bouton label="Valider" @callback="changerTache"/>
                 </template>
                 <template v-else>
                     <p>Développeur : {{ utilisateur.nom + ' ' + utilisateur.prenom }}</p>
@@ -158,14 +159,14 @@ function reset(){
                 <template v-if="changeDatefin">
                     <p>Date de fin estimé :</p>
                     <DatePicker v-model="tache.datefin" date-format="dd/mm/yy" />
-                    <Button label="Valider" @click="changerTache" />
+                    <Bouton label="Valider" @callback="changerTache" />
                 </template>
                 <template v-else>
                     <p>Date de fin estimé : {{ tache.datefin }}</p>
                 </template>
             </div>
             <div class="flex justify-end gap-1">
-                <Button label="Fermer" severity="secondary" @click="$emit('update:visible', false)" />
+                <Bouton label="Fermer" severity="secondary" @callback="$emit('update:visible', false)" />
             </div>
         </div>
     </Dialog>

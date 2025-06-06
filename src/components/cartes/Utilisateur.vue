@@ -1,5 +1,6 @@
 <script setup>
-import { Card, Button } from 'primevue'
+import { Card } from 'primevue'
+import Bouton from '@/components/Bouton.vue'
 
 defineProps({
     utilisateur: {
@@ -18,8 +19,8 @@ defineProps({
                 <p>{{ utilisateur.status }}</p>
             </div>
             <div class="flex justify-end gap-2">
-                <Button label="Modifier" severity="warn" @click="$emit('modifier')"/>
-                <Button label="Supprimer" severity="danger" @click="$emit('supprimer')" />
+                <Bouton label="Modifier" severity="warn" @callback="$emit('modifier')"/>
+                <Bouton label="Supprimer" severity="danger" @callback="$emit('supprimer')" />
             </div>
         </template>
     </Card>

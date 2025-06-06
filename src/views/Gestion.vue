@@ -1,5 +1,5 @@
 <script setup>
-import { Button, Card, ConfirmDialog } from 'primevue'
+import { Card, ConfirmDialog } from 'primevue'
 import { useConfirm } from 'primevue/useconfirm'
 import AjoutEquipe from '@/components/modals/AjoutEquipe.vue'
 import AjoutProjet from '@/components/modals/AjoutProjet.vue'
@@ -7,6 +7,7 @@ import modifierEquipe from '@/components/modals/modifierEquipe.vue'
 import DoughnutChart from '@/components/charts/DoughnutChart.vue'
 import Equipe from '@/components/cartes/Equipe.vue'
 import Projet from '@/components/cartes/Projet.vue'
+import Bouton from '@/components/Bouton.vue'
 import { getEquipes, getUtilisateurs, getProjets, getTaches } from '@/utils/fonctionsRequete'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
@@ -100,10 +101,10 @@ onMounted(async () => {
                 </div>
                 <div class="flex pr-4">
                     <template v-if="cookie.status == 'Manager'">
-                        <Button label="Créer un projet" @click="visibleAjoutProjet = true" />
+                        <Bouton label="Créer un projet" @callback="visibleAjoutProjet = true" />
                     </template>
                     <template v-if="cookie.status == 'Administrateur'">
-                        <Button label="Créer une équipe" severity="info" @click="visibleAjoutEquipe = true"/>
+                        <Bouton label="Créer une équipe" severity="info" @callback="visibleAjoutEquipe = true"/>
                     </template>
                 </div>
             </div>

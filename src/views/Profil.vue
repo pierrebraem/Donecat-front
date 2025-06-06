@@ -1,7 +1,8 @@
 <script setup>
-import { Card, Button } from 'primevue'
+import { Card } from 'primevue'
 import ModifierProfil from '@/components/modals/ModifierProfil.vue'
 import ModifierMotdepasse from '@/components/modals/ModifierMotdepasse.vue'
+import Bouton from '@/components/Bouton.vue'
 import { getUtilisateur } from '@/utils/fonctionsRequete'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
@@ -54,8 +55,8 @@ onMounted(async () => {
                     <p>{{ utilisateur.status }}</p>
                 </div>
                 <div class="flex justify-center space-x-6 pt-4">
-                    <Button label="Modifier le profil" severity="warn" @click="visibleModifierProfil = true" />
-                    <Button label="Modifier le mot de passe" severity="warn" @click="visibleModifierMotdepasse = true" />
+                    <Bouton label="Modifier le profil" severity="warn" @callback="visibleModifierProfil = true" />
+                    <Bouton label="Modifier le mot de passe" severity="warn" @callback="visibleModifierMotdepasse = true" />
                 </div>
             </template>
         </Card>

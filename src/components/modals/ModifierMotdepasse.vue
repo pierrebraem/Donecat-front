@@ -1,5 +1,6 @@
 <script setup>
-import { Dialog, Password, Button } from 'primevue'
+import { Dialog, Password } from 'primevue'
+import Bouton from '@/components/Bouton.vue'
 import { ref } from 'vue'
 
 const props = defineProps({
@@ -78,8 +79,8 @@ function resetInputs(){
                 <Password v-model="confirmerMotdepasse" :feedback="false" toggle-mask :style="{ width: '100%'}" :input-style="{ width: '100%'}" />
             </div>
             <div class="flex justify-end gap-2">
-                <Button label="Annuler" severity="secondary" @click="resetInputs(); $emit('update:visible', false)" />
-                <Button label="Modifier" @click="changerMotdepasse(); resetInputs()" />
+                <Bouton label="Annuler" severity="secondary" @callback="resetInputs(); $emit('update:visible', false)" />
+                <Bouton label="Modifier" @callback="changerMotdepasse(); resetInputs()" />
             </div>
             <template v-if="ancienMotdepasseIncorrect">
                 <p class="text-red-500">Votre saisie de votre ancien mot de passe ne correspond pas à votre mot de passe actuelle</p>

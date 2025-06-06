@@ -1,5 +1,6 @@
 <script setup>
-import { Dialog, Button, InputText, Select } from 'primevue'
+import { Dialog, InputText, Select } from 'primevue'
+import Bouton from '@/components/Bouton.vue'
 import { ref } from 'vue'
 
 const props = defineProps({
@@ -80,8 +81,8 @@ function affecterValeurs(){
                 <Select v-model="selectedManager" :options="utilisateurs" option-label="label" option-value="id" empty-message="Aucun manager n'existe dans la base de données" />
             </div>
             <div class="flex justify-end gap-2">
-                <Button label="Annuler" severity="secondary" @click="resetInputs(); $emit('update:visible', false)" />
-                <Button label="Modifier" @click="modifierEquipe(); resetInputs(); $emit('update:visible', false)" />
+                <Bouton label="Annuler" severity="secondary" @callback="resetInputs(); $emit('update:visible', false)" />
+                <Bouton label="Modifier" @callback="modifierEquipe(); resetInputs(); $emit('update:visible', false)" />
             </div>
         </div>
     </Dialog>

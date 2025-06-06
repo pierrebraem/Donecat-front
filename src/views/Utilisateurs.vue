@@ -1,8 +1,9 @@
 <script setup>
-import { Button, Card, ConfirmDialog } from 'primevue'
+import { Card, ConfirmDialog } from 'primevue'
 import { useConfirm } from 'primevue/useconfirm'
 import AjoutUtilisateur from '@/components/modals/AjoutUtilisateur.vue'
 import modifierUtilisateur from '@/components/modals/ModifierUtilisateur.vue'
+import Bouton from '@/components/Bouton.vue'
 import Utilisateur from '@/components/cartes/Utilisateur.vue'
 import { getUtilisateurs } from '@/utils/fonctionsRequete'
 import { ref, onMounted } from 'vue'
@@ -67,7 +68,7 @@ onMounted(async () => {
     <template v-else>
         <div class="pt-4 flex flex-col space-y-6">
             <div class="flex justify-end pr-4">
-                <Button label="Créer un utilisateur" severity="info" @click="visibleAjoutUtilisateur = true" />
+                <Bouton label="Créer un utilisateur" severity="info" @callback="visibleAjoutUtilisateur = true" />
             </div>
             <div class="flex justify-center">
                 <Card class="w-11/12">
