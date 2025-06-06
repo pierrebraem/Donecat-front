@@ -1,6 +1,6 @@
 <script setup>
 import { Dialog, Select, InputText, DatePicker } from 'primevue'
-import { getTache, getProjet, getUtilisateur } from '@/utils/fonctionsRequete'
+import { getProjet, getUtilisateur } from '@/utils/fonctionsRequete'
 import Bouton from '@/components/Bouton.vue'
 import { ref } from 'vue'
 
@@ -102,10 +102,7 @@ function reset(){
 <template>
     <Dialog :visible="visible" @show="getData" @update:visible="$emit('update:visible', false)" @after-hide="reset" modal header="Visualisation de la tâche" class="w-1/2">
         <div class="flex flex-col space-y-4">
-            <div>
-                <p class="font-bold text-xl">{{ role == 'Manager' ? 'Pour changer une information de la tâche, cliquez sur le texte auquel vous voulez modifier' : 'Pour changer de status, cliquez sur le texte du status' }}</p>
-            </div>
-            <div @click="role == 'Manager' ? changeNom = true : ''" :class="{ 'flex items-center space-x-2': changeNom }">
+            <div @click="role == 'Manager' ? changeNom = true : ''" :class="{ 'flex items-center space-x-2': changeNom, 'hover:text-stone-500': role == 'Manager' && !changeNom }">
                 <template v-if="changeNom">
                     <p>Nom :</p>
                     <InputText v-model="tache.nom" />
@@ -115,7 +112,7 @@ function reset(){
                     <p>Nom : {{ tache.nom }}</p>
                 </template>
             </div>
-            <div @click="role == 'Manager' ? changeDescription = true : ''" :class="{ 'flex items-center space-x-2': changeDescription }">
+            <div @click="role == 'Manager' ? changeDescription = true : ''" :class="{ 'flex items-center space-x-2': changeDescription, 'hover:text-stone-500': role == 'Manager' && !changeDescription }">
                 <template v-if="changeDescription">
                     <p>Description :</p>
                     <InputText v-model="tache.description" />
@@ -125,7 +122,7 @@ function reset(){
                     <p>Description : {{ tache.description }}</p>
                 </template>
             </div>
-            <div @click="role == 'Manager' ? changeProjet = true : ''" :class="{ 'flex items-center space-x-2': changeProjet }">
+            <div @click="role == 'Manager' ? changeProjet = true : ''" :class="{ 'flex items-center space-x-2': changeProjet, 'hover:text-stone-500': role == 'Manager' && !changeProjet }">
                 <template v-if="changeProjet">
                     <p>Projet :</p>
                     <Select v-model="tache.projet_id" :options="projets" option-label="nom" option-value="id" />
@@ -135,7 +132,7 @@ function reset(){
                     <p>Projet : {{ projet.nom }}</p>
                 </template>
             </div>
-            <div @click="changeStatus = true" :class="{ 'flex items-center space-x-2': changeStatus }">
+            <div @click="changeStatus = true" :class="{ 'flex items-center space-x-2': changeStatus, 'hover:text-stone-500': !changeStatus }">
                 <template v-if="changeStatus">
                     <p>Status :</p>
                     <Select v-model="tache.categorie" :options="status" option-label="label" option-value="value" />
@@ -145,7 +142,7 @@ function reset(){
                     <p>Status : {{ tache.categorie }}</p>
                 </template>
             </div>
-            <div @click="changeDeveloppeur = true" :class="{ 'flex items-center space-x-2': changeDeveloppeur }">
+            <div @click="changeDeveloppeur = true" :class="{ 'flex items-center space-x-2': changeDeveloppeur, 'hover:text-stone-500': role == 'Manager' && !changeDeveloppeur }">
                 <template v-if="changeDeveloppeur">
                     <p>Développeur :</p>
                     <Select v-model="tache.developpeur_id" :options="utilisateurs" option-label="label" option-value="id" />
@@ -155,7 +152,7 @@ function reset(){
                     <p>Développeur : {{ utilisateur.nom + ' ' + utilisateur.prenom }}</p>
                 </template>
             </div>
-            <div @click="role == 'Manager' ? changeDatefin = true : ''" :class="{ 'flex items-center space-x-2': changeDatefin }">
+            <div @click="role == 'Manager' ? changeDatefin = true : ''" :class="{ 'flex items-center space-x-2': changeDatefin, 'hover:text-stone-500': role == 'Manager' && !changeDatefin }">
                 <template v-if="changeDatefin">
                     <p>Date de fin estimé :</p>
                     <DatePicker v-model="tache.datefin" date-format="dd/mm/yy" />
