@@ -21,7 +21,7 @@ async function login(){
         return;
     }
 
-    Cookies.set('utilisateur', JSON.stringify({id: result.id, status: result.status}), { expires: 1 })
+    Cookies.set('utilisateur', JSON.stringify({id: result.id, status: result.status, nom: result.prenom + ' ' + result.nom}), { expires: 1 })
     router.push('/gestion')
 }
 

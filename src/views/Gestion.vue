@@ -126,7 +126,7 @@ onMounted(async () => {
         <div class="pt-4 flex flex-col space-y-6">
             <div class="flex justify-between w-full">
                 <div>
-                    <p>Bienvenue Dev1</p>
+                    <p>Bienvenue {{ cookie.nom }}</p>
                 </div>
                 <div class="flex pr-4">
                     <template v-if="cookie.status == 'Manager'">
