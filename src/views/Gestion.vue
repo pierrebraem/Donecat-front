@@ -157,8 +157,8 @@ onMounted(async () => {
             </div>
 
             
-            <div class="flex flex-col space-y-2">
-                <template v-for="projet in projets">
+            <div class="grid grid-cols-2 gap-2">
+                <div v-for="projet in projets">
                     <Card class="w-full">
                         <template #title>
                             <div class="flex justify-between">
@@ -173,7 +173,7 @@ onMounted(async () => {
                         </template>
                         <template #content>
                             <p>Equipe auquelle le projet est associé : {{ trouverNomEquipe(projet.equipe_id) }}</p>
-                            <div class="w-1/2">
+                            <div class="w-8/12">
                                 <DoughnutChart 
                                     :nom-graphe="projet.nom" 
                                     :backlogs="compterTaches(projet.id, 'backlogs')"
@@ -185,7 +185,7 @@ onMounted(async () => {
                             </div>
                         </template>
                     </Card>
-                </template>
+                </div>
             </div>
         </div>
 
