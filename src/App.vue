@@ -1,21 +1,24 @@
 <script setup>
 import { Menubar } from "primevue"
-import { onMounted, ref } from "vue"
+import { onMounted, ref, watch } from "vue"
 import { useRouter } from 'vue-router'
 import Cookies from "js-cookie"
 
 const router = useRouter()
-const items = ref([
-    {
-        label: 'Accueil',
-        command: () => {
-            router.push('/')
-        }
-    }
-])
+const items = ref([])
+
+const utilisateur = ref(Cookies.get('utilisateur'))
 
 function navbar(){
-    if(Cookies.get('utilisateur') == undefined){
+    items.value = [
+        {
+            label: 'Accueil',
+            command: () => {
+                router.push('/')
+            }
+        }
+    ]
+    if(utilisateur.value == undefined){
         items.value.push(
             {
                 label: 'Connexion',
@@ -60,6 +63,7 @@ function navbar(){
                 label: 'Deconnexion',
                 command: () => {
                     Cookies.remove('utilisateur')
+                    utilisateur.value = undefined
                     router.push('/connexion')
                 }
             }
@@ -68,6 +72,10 @@ function navbar(){
 }
 
 onMounted(() => {
+    navbar()
+})
+
+watch(utilisateur, () => {
     navbar()
 })
 </script>
