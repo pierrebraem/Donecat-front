@@ -80,10 +80,10 @@ onMounted(async () => {
                             </TabList>
                             <TabPanels>
                                 <TabPanel v-for="projet in projets" :key="projet.nom" :value="projet.id">
-                                    <div class="flex justify-between overflow-x-auto">
+                                    <div class="flex justify-between">
                                         <template v-for="item in status">
-                                            <div class="flex flex-col">
-                                                <h1 class="3xl font-bold">{{ item.label }}</h1>
+                                            <div class="flex-1 px-4">
+                                                <h1 class="3xl font-bold text-center">{{ item.label }}</h1>
                                                 <template v-for="tache in taches">
                                                     <template v-if="tache.projet_id == projet.id && tache.categorie == item.value">
                                                         <div class="flex flex-col space-y-2 pt-4" @click="tacheActuelPourVisionnage = tache; visibleVisualisationTache = true">
@@ -92,7 +92,7 @@ onMounted(async () => {
                                                     </template>
                                                 </template>
                                             </div>
-                                            <Divider layout="vertical" />
+                                            <div class="w-px h-100 bg-gray-300"></div>
                                         </template>
                                     </div>
                                 </TabPanel>

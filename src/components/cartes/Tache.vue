@@ -19,7 +19,7 @@ function formatageUtilisateur(developpeur_id){
 </script>
 
 <template>
-    <Card style="background-color: aqua;" class="w-80">
+    <Card style="background-color: aqua;">
         <template #content>
             <div class="flex flex-col space-y-2">
                 <p class="font-bold">{{ tache.nom }}</p>
