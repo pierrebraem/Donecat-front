@@ -39,7 +39,7 @@ function navbar(){
         }
         items.value.push(
             {
-                label: 'Administration',
+                label: 'Tableau de bord',
                 command: () => {
                     router.push('/gestion')
                 }
