@@ -23,6 +23,14 @@ const props = defineProps({
         type: Number,
         required: true
     },
+    inprogress: {
+        type: Number,
+        required: true
+    },
+    inreview: {
+        type: Number,
+        required: true
+    },
     done: {
         type: Number,
         required: true
@@ -30,12 +38,12 @@ const props = defineProps({
 })
 
 const chartData = {
-    labels: ['Tâches non commencées', 'Tâches en cours', 'Tâches terminées'],
+    labels: ['Tâches non commencées', 'Tâches à faire', 'Tâches en cours', 'Tâches en revue', 'Tâches terminées'],
     datasets: [
         {
             label: 'Progression des tâches',
-            data: [props.backlogs, props.todo, props.done],
-            backgroundColor: ['#FF0000', '#FFA500', '#008000']
+            data: [props.backlogs, props.todo, props.inprogress, props.inreview, props.done],
+            backgroundColor: ['#FF0000', '#0000FF', '#FFA500', '#EEC4C9', '#008000']
         }
     ]
 }
@@ -45,10 +53,6 @@ const chartOptions = {
     plugins: {
         legend: {
             position: 'top'
-        },
-        title: {
-            display: true,
-            text: 'Répartition des tâches pour le projet : ' + props.nomGraphe
         }
     }
 }

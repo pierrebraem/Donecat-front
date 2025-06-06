@@ -39,10 +39,6 @@ const equipeActuelPourModification = ref({})
 const projetActuelPourModification = ref({})
 
 function compterTaches(id, type){
-    if(type != "backlogs" && type != "todo" && type != "done"){
-        return "N/A";
-    }
-
     return taches.value.filter((item) => item.categorie == type && item.projet_id == id).length;
 }
 
@@ -58,8 +54,8 @@ function montrerEquipesEtProjetsEnFonctionDeLutilisateur(){
     }
 }
 
-function trouverEquipe(id){
-    return equipes.value.find((item) => item.id == id)
+function trouverNomEquipe(id){
+    return equipes.value.find((item) => item.id == id).nom
 }
 
 function supprimerEquipe(id, nom){
@@ -137,12 +133,12 @@ onMounted(async () => {
                 </div>
             </div>
 
-            <div class="flex justify-center gap-2">
+            <div class="flex justify-center">
                 <Card class="w-full overflow-x-auto">
                     <template #content>
                         <div class="flex space-x-2">
                             <template v-if="equipes.length == 0">
-                                <p class="text-center">Aucune équipe enregistrée</p>
+                                <p>Aucune équipe enregistrée</p>
                             </template>
                             <template v-else>
                                 <template v-for="equipe in equipes">
@@ -158,51 +154,38 @@ onMounted(async () => {
                         </div>
                     </template>
                 </Card>
-                <Card class="w-full overflow-x-auto">
-                    <template #content>
-                        <div class="flex space-x-2">
-                            <template v-if="projets.length == 0">
-                                <p class="text-center">Aucun projet enregistré</p>
-                            </template>
-                            <template v-else>
-                                <template v-for="projet in projets">
-                                    <Projet 
-                                        :projet="projet"
-                                        :equipe="trouverEquipe(projet.equipe_id)"
-                                        :compter-taches="compterTaches"
-                                        :cookie="cookie"
-                                        @modifier="projetActuelPourModification = projet; visibleModifierProjet = true"
-                                        @supprimer="supprimerProjet(projet.id, projet.nom)"
-                                    />
-                                </template>
-                            </template>
-                        </div>
-                    </template>
-                </Card>
             </div>
 
-            <div class="flex justify-center">
-                <Card class="w-full overflow-x-auto">
-                    <template #content>
-                        <div class="flex space-x-2">
-                            <template v-if="projets.length == 0">
-                                <p class="text-center">Aucun graphe affiché, car aucun projet n'existe</p>
-                            </template>
-                            <template v-else>
-                                <Card v-for="projet in projets">
-                                    <template #content>
-                                        <DoughnutChart 
-                                            :nom-graphe="projet.nom" 
-                                            :backlogs="compterTaches(projet.id, 'backlogs')"
-                                            :todo="compterTaches(projet.id, 'todo')"
-                                            :done="compterTaches(projet.id, 'done')"
-                                        />
-                                    </template>
-                                </Card>
-                            </template>
-                        </div>
-                    </template>
-                </Card>
+            
+            <div class="flex flex-col space-y-2">
+                <template v-for="projet in projets">
+                    <Card class="w-full">
+                        <template #title>
+                            <div class="flex justify-between">
+                                <div>
+                                    <p class="text-xl font-bold">{{ projet.nom }}</p>
+                                </div>
+                                <div class="flex space-x-4">
+                                    <span class="pi pi-pencil" style="font-size: 1.3rem;" @click="projetActuelPourModification = projet; visibleModifierProjet = true" />
+                                    <span class="pi pi-trash" style="font-size: 1.3rem;" @click="supprimerProjet(projet.id, projet.nom)" />
+                                </div>
+                            </div>
+                        </template>
+                        <template #content>
+                            <p>Equipe auquelle le projet est associé : {{ trouverNomEquipe(projet.equipe_id) }}</p>
+                            <div class="w-1/2">
+                                <DoughnutChart 
+                                    :nom-graphe="projet.nom" 
+                                    :backlogs="compterTaches(projet.id, 'backlogs')"
+                                    :todo="compterTaches(projet.id, 'todo')"
+                                    :inprogress="compterTaches(projet.id, 'inprogress')"
+                                    :inreview="compterTaches(projet.id, 'inreview')"
+                                    :done="compterTaches(projet.id, 'done')"
+                                />
+                            </div>
+                        </template>
+                    </Card>
+                </template>
             </div>
         </div>
 
