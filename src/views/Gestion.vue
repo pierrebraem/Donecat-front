@@ -186,16 +186,21 @@ onMounted(async () => {
                 <Card class="w-full overflow-x-auto">
                     <template #content>
                         <div class="flex space-x-2">
-                            <Card v-for="projet in projets">
-                                <template #content>
-                                    <DoughnutChart 
-                                        :nom-graphe="projet.nom" 
-                                        :backlogs="compterTaches(projet.id, 'backlogs')"
-                                        :todo="compterTaches(projet.id, 'todo')"
-                                        :done="compterTaches(projet.id, 'done')"
-                                    />
-                                </template>
-                            </Card>
+                            <template v-if="projets.length == 0">
+                                <p class="text-center">Aucun graphe affiché, car aucun projet n'existe</p>
+                            </template>
+                            <template v-else>
+                                <Card v-for="projet in projets">
+                                    <template #content>
+                                        <DoughnutChart 
+                                            :nom-graphe="projet.nom" 
+                                            :backlogs="compterTaches(projet.id, 'backlogs')"
+                                            :todo="compterTaches(projet.id, 'todo')"
+                                            :done="compterTaches(projet.id, 'done')"
+                                        />
+                                    </template>
+                                </Card>
+                            </template>
                         </div>
                     </template>
                 </Card>
