@@ -3,6 +3,7 @@ import { Button, Card, ConfirmDialog } from 'primevue'
 import { useConfirm } from 'primevue/useconfirm'
 import AjoutUtilisateur from '@/components/modals/AjoutUtilisateur.vue'
 import modifierUtilisateur from '@/components/modals/ModifierUtilisateur.vue'
+import Utilisateur from '@/components/cartes/Utilisateur.vue'
 import { getUtilisateurs } from '@/utils/fonctionsRequete'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
@@ -77,19 +78,11 @@ onMounted(async () => {
                         <template v-else>
                             <div class="flex flex-col space-y-2">
                                 <template v-for="utilisateur in utilisateurs">
-                                    <Card style="background-color: aqua;" v-if="utilisateur.status != 'Administrateur'">
-                                        <template #content>
-                                            <div class="flex flex-col space-y-2">
-                                                <p class="font-bold">{{ utilisateur.nom.toUpperCase() }} {{ utilisateur.prenom }}</p>
-                                                <p>{{ utilisateur.email }}</p>
-                                                <p>{{ utilisateur.status }}</p>
-                                            </div>
-                                            <div class="flex justify-end gap-2">
-                                                <Button label="Modifier" severity="warn" @click="utilisateurActuelPourModification = utilisateur; visibleModifierUtilisateur = true"/>
-                                                <Button label="Supprimer" severity="danger" @click="supprimerUtilisateur(utilisateur.id, utilisateur.nom.toUpperCase(), utilisateur.prenom)" />
-                                            </div>
-                                        </template>
-                                    </Card>
+                                    <Utilisateur 
+                                        :utilisateur="utilisateur" 
+                                        @modifier="utilisateurActuelPourModification = utilisateur; visibleModifierUtilisateur = true" 
+                                        @supprimer="supprimerUtilisateur(utilisateur.id, utilisateur.nom.toUpperCase(), utilisateur.prenom)"
+                                    />
                                 </template>
                             </div>
                         </template>

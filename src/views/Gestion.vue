@@ -5,6 +5,8 @@ import AjoutEquipe from '@/components/modals/AjoutEquipe.vue'
 import AjoutProjet from '@/components/modals/AjoutProjet.vue'
 import modifierEquipe from '@/components/modals/modifierEquipe.vue'
 import DoughnutChart from '@/components/charts/DoughnutChart.vue'
+import Equipe from '@/components/cartes/Equipe.vue'
+import Projet from '@/components/cartes/Projet.vue'
 import { getEquipes, getUtilisateurs, getProjets, getTaches } from '@/utils/fonctionsRequete'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
@@ -37,16 +39,6 @@ function compterTaches(id, type){
     return taches.value.filter((item) => item.categorie == type && item.projet_id == id).length;
 }
 
-function trouverUtilisateur(id, manager){
-    if(id == "None"){
-        return
-    }
-    
-    const resultat = utilisateurs.value.find((item) => item.id == id)
-    
-    return resultat.nom + ' ' + resultat.prenom + (manager ? ' (Manager)' : '')
-}
-
 function montrerEquipesEtProjetsEnFonctionDeLutilisateur(){
     if(cookie.value.status != "Administrateur"){
         equipes.value = equipes.value.filter((item) => item.membres.find((item2) => item2 == cookie.value.id) || item.manager == cookie.value.id)
@@ -61,7 +53,7 @@ function montrerEquipesEtProjetsEnFonctionDeLutilisateur(){
 
 function supprimerEquipe(id, nom){
     confirm.require({
-        message: 'Vous êtes sur le point de supprimer l\'équipe' + nom + '. Etes-vous sur de vouloir le supprimer définitivement?',
+        message: 'Vous êtes sur le point de supprimer l\'équipe ' + nom + '. Etes-vous sur de vouloir le supprimer définitivement?',
         header: 'Suppression de l\'équipe ' + nom,
         rejectProps: {
             label: 'Annuler',
@@ -124,26 +116,15 @@ onMounted(async () => {
                                 <p class="text-center">Aucune équipe enregistrée</p>
                             </template>
                             <template v-else>
-                                <Card style="background-color: aqua;" class="w-70 h-70" v-for="equipe in equipes">
-                                    <template #title>{{ equipe.nom }}</template>
-                                    <template #content>
-                                        <ul>
-                                            <li>{{ trouverUtilisateur(equipe.manager, true) }}</li>
-                                            <template v-for="membre in equipe.membres">
-                                                <li>{{ trouverUtilisateur(membre, false)}}</li>
-                                            </template>
-                                        </ul>
-                                    </template>
-                                    <template #footer>
-                                        <div class="flex justify-center gap-3">
-                                            <template v-if="cookie.status == 'Administrateur'">
-                                                <Button label="Ajouter" />
-                                                <Button label="Modifier" severity="warn" @click="equipeActuelPourModification = equipe; visibleModifierEquipe = true"/>
-                                                <Button label="Supprimer" severity="danger" @click="supprimerEquipe(equipe.id, equipe.nom)"/>
-                                            </template>
-                                        </div>
-                                    </template>
-                                </Card>
+                                <template v-for="equipe in equipes">
+                                    <Equipe 
+                                        :equipe="equipe"
+                                        :utilisateurs="utilisateurs"
+                                        :cookie="cookie"
+                                        @modifier="equipeActuelPourModification = equipe; visibleModifierEquipe = true"
+                                        @supprimer="supprimerEquipe(equipe.id, equipe.nom)"
+                                    />
+                                </template>
                             </template>
                         </div>
                     </template>
@@ -155,16 +136,12 @@ onMounted(async () => {
                                 <p class="text-center">Aucun projet enregistré</p>
                             </template>
                             <template v-else>
-                                <Card style="background-color: aqua;" class="w-70 h-70" v-for="projet in projets">
-                                    <template #title>{{ projet.nom }}</template>
-                                    <template #content>
-                                        <ul>
-                                            <li>Tâches non commencées : {{ compterTaches(projet.id, 'backlogs') }}</li>
-                                            <li>Tâches en cours : {{ compterTaches(projet.id, 'todo') }}</li>
-                                            <li>Tâches terminées : {{ compterTaches(projet.id, 'done') }}</li>
-                                        </ul>
-                                    </template>
-                                </Card>
+                                <template v-for="projet in projets">
+                                    <Projet 
+                                        :projet="projet"
+                                        :compter-taches="compterTaches"
+                                    />
+                                </template>
                             </template>
                         </div>
                     </template>

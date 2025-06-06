@@ -2,6 +2,7 @@
 import { Button, Card, Tabs, TabList, Tab, TabPanels, Divider, TabPanel } from 'primevue'
 import AjoutTache from '@/components/modals/AjoutTache.vue'
 import VisualisationTache from '@/components/modals/VisualisationTache.vue'
+import Tache from '@/components/cartes/Tache.vue'
 import { getEquipes, getUtilisateurs, getProjets, getTaches } from '@/utils/fonctionsRequete'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
@@ -22,11 +23,6 @@ const taches = ref([])
 const tacheActuelPourVisionnage = ref({})
 
 const cookie = ref({})
-
-function formatageUtilisateur(developpeur_id){
-    const utilisateur = utilisateurs.value.find((item) => item.id == developpeur_id)
-    return utilisateur.nom + ' ' + utilisateur.prenom
-}
 
 function montrerProjetsEtTachesEnFonctionDeLutilisateur(){
     if(cookie.value.status != "Administrateur"){
@@ -90,15 +86,7 @@ onMounted(async () => {
                                                 <template v-for="tache in taches">
                                                     <template v-if="tache.projet_id == projet.id && tache.categorie == item.value">
                                                         <div class="flex flex-col space-y-2 pt-4" @click="tacheActuelPourVisionnage = tache; visibleVisualisationTache = true">
-                                                            <Card style="background-color: aqua;" class="w-80">
-                                                                <template #content>
-                                                                    <div class="flex flex-col space-y-2">
-                                                                        <p class="font-bold">{{ tache.nom }}</p>
-                                                                        <p>{{ formatageUtilisateur(tache.developpeur_id) }}</p>
-                                                                        <p>Date de fin : {{ tache.datefin }}</p>
-                                                                    </div>
-                                                                </template>
-                                                            </Card>
+                                                            <Tache :tache="tache" :utilisateurs="utilisateurs" />
                                                         </div>
                                                     </template>
                                                 </template>
