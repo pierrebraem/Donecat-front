@@ -1,6 +1,8 @@
 <script setup>
 import { Dialog, Select, InputText, DatePicker } from 'primevue'
-import { getProjet, getUtilisateur } from '@/utils/fonctionsRequete'
+import { getUtilisateur } from '@/utils/requetes/utilisateur'
+import { getProjet } from '@/utils/requetes/projet'
+import { putTache } from '@/utils/requetes/tache'
 import Bouton from '@/components/Bouton.vue'
 import { ref } from 'vue'
 
@@ -75,11 +77,7 @@ async function changerTache(){
         datefin: tache.value.datefin
     }
 
-    await fetch('http://localhost:3000/taches/' + tache.value.id, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application-json' },
-        body: JSON.stringify(body)
-    })
+    await putTache(props.tache.id, body)
 
     changeNom.value = false;
     changeDescription.value = false;

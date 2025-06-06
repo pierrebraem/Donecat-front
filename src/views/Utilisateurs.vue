@@ -5,7 +5,7 @@ import AjoutUtilisateur from '@/components/modals/AjoutUtilisateur.vue'
 import modifierUtilisateur from '@/components/modals/ModifierUtilisateur.vue'
 import Bouton from '@/components/Bouton.vue'
 import Utilisateur from '@/components/cartes/Utilisateur.vue'
-import { getUtilisateurs } from '@/utils/fonctionsRequete'
+import { getUtilisateurs, deleteUtilisateur } from '@/utils/requetes/utilisateur'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import Cookies from 'js-cookie'
@@ -37,9 +37,7 @@ function supprimerUtilisateur(id, nom, prenom){
             severity: 'danger'
         },
         accept: async () => {
-            await fetch("http://localhost:3000/utilisateurs/" + id, {
-                method: "DELETE"
-            })
+            await deleteUtilisateur(id)
         }
     })
 }

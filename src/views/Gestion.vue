@@ -9,7 +9,10 @@ import DoughnutChart from '@/components/charts/DoughnutChart.vue'
 import Equipe from '@/components/cartes/Equipe.vue'
 import Projet from '@/components/cartes/Projet.vue'
 import Bouton from '@/components/Bouton.vue'
-import { getEquipes, getUtilisateurs, getProjets, getTaches } from '@/utils/fonctionsRequete'
+import { getTaches } from '@/utils/requetes/tache'
+import { getProjets, deleteProjet } from '@/utils/requetes/projet'
+import { getEquipes, deleteEquipe } from '@/utils/requetes/equipe'
+import { getUtilisateurs } from '@/utils/requetes/utilisateur'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import Cookies from 'js-cookie'
@@ -72,9 +75,7 @@ function supprimerEquipe(id, nom){
             severity: 'danger'
         },
         accept: async () => {
-            await fetch("http://localhost:3000/equipes/" + id, {
-                method: "DELETE"
-            })
+            await deleteEquipe(id)
         }
     })
 }
@@ -92,9 +93,7 @@ function supprimerProjet(id, nom){
             severity: 'danger'
         },
         accept: async () => {
-            await fetch("http://localhost:3000/projets/" + id,  {
-                method: "DELETE"
-            })
+            await deleteProjet(id)
         }
     })
 }

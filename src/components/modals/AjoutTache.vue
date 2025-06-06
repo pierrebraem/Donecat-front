@@ -1,6 +1,7 @@
 <script setup>
 import { Dialog, InputText, Select, DatePicker } from 'primevue'
 import Bouton from '@/components/Bouton.vue'
+import { postTache } from '@/utils/requetes/tache'
 import { ref } from 'vue'
 
 const props = defineProps({
@@ -47,11 +48,7 @@ async function ajouterTache(){
         datefin: dateFin.value.getDate() + "/" + (dateFin.value.getMonth() + 1) + "/" + dateFin.value.getFullYear()
     }
 
-    await fetch("http://localhost:3000/taches", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-    })
+    await postTache(body)
 }
 
 function resetInputs() {

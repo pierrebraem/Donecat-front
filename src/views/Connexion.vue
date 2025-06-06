@@ -1,6 +1,6 @@
 <script setup>
 import { Card, InputText, Password } from 'primevue'
-import { getUtilisateurs } from '@/utils/fonctionsRequete'
+import { getUtilisateurs } from '@/utils/requetes/utilisateur'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Bouton from '@/components/Bouton.vue'

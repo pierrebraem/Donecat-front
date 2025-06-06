@@ -1,6 +1,7 @@
 <script setup>
 import { Dialog, InputText, Select } from 'primevue'
 import Bouton from '@/components/Bouton.vue'
+import { postProjet } from '@/utils/requetes/projet'
 import { ref } from 'vue'
 
 defineProps({
@@ -25,11 +26,7 @@ async function ajouterProjet(){
         equipe_id: selectedEquipe.value
     }
 
-    await fetch("http://localhost:3000/projets", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-    })
+    await postProjet(body)
 }
 
 function resetInputs() {

@@ -1,6 +1,7 @@
 <script setup>
 import { Dialog, Password } from 'primevue'
 import Bouton from '@/components/Bouton.vue'
+import { putUtilisateur } from '@/utils/requetes/utilisateur'
 import { ref } from 'vue'
 
 const props = defineProps({
@@ -47,11 +48,7 @@ async function changerMotdepasse(){
         status: props.utilisateur.status
     }
 
-    await fetch("http://localhost:3000/utilisateurs/" + props.utilisateur.id, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-    })
+    await putUtilisateur(props.utilisateur.id, body)
 
     emit('update:visible', false)
 }

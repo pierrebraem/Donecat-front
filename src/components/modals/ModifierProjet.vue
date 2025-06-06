@@ -1,6 +1,7 @@
 <script setup>
 import { Dialog, InputText, Select } from 'primevue'
 import Bouton from '@/components/Bouton.vue'
+import { putProjet } from '@/utils/requetes/projet'
 import { ref } from 'vue'
 
 const props = defineProps({
@@ -35,11 +36,7 @@ async function modifierProjet() {
         equipe_id: selectedEquipe.value
     }
 
-    await fetch("http://localhost:3000/projets/" + props.projet.id, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-    })
+    await putProjet(props.projet.id, body)
 
     emit('update:visible', false)
 }

@@ -1,6 +1,7 @@
 <script setup>
 import { Dialog, InputText, Select, Password } from 'primevue'
 import Bouton from '@/components/Bouton.vue'
+import { postUtilisateur } from '@/utils/requetes/utilisateur'
 import { ref } from 'vue'
 
 defineProps({
@@ -34,11 +35,7 @@ async function ajouterUtilisateur(){
         status: selectedStatus.value
     }
 
-    await fetch("http://localhost:3000/utilisateurs", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-    })
+    await postUtilisateur(body)
 }
 
 function resetInputs() {

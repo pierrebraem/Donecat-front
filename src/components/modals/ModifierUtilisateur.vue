@@ -1,5 +1,6 @@
 <script setup>
-import { Dialog, InputText, Select, Password } from 'primevue'
+import { Dialog, InputText, Select } from 'primevue'
+import { putUtilisateur } from '@/utils/requetes/utilisateur'
 import Bouton from '@/components/Bouton.vue'
 import { ref } from 'vue'
 
@@ -46,11 +47,7 @@ async function modifierUtilisateur() {
         status: selectedStatus.value
     }
 
-    await fetch("http://localhost:3000/utilisateurs/" + props.utilisateur.id, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-    })
+    await putUtilisateur(props.utilisateur.id, body)
 
     emit('update:visible', false)
 }
