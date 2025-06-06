@@ -11,7 +11,7 @@ defineProps({
 </script>
 
 <template>
-    <Card style="background-color: aqua;" v-if="utilisateur.status != 'Administrateur'">
+    <Card class="carte" v-if="utilisateur.status != 'Administrateur'">
         <template #content>
             <div class="flex flex-col space-y-2">
                 <p class="font-bold">{{ utilisateur.nom.toUpperCase() }} {{ utilisateur.prenom }}</p>
@@ -25,3 +25,10 @@ defineProps({
         </template>
     </Card>
 </template>
+
+<style scoped>
+.carte {
+    color: white;
+    background-color: #1A202C;
+}
+</style>

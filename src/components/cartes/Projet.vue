@@ -14,7 +14,7 @@ defineProps({
 </script>
 
 <template>
-    <Card style="background-color: aqua;" class="w-70 h-70">
+    <Card class="carte h-70">
         <template #title>{{ projet.nom }}</template>
         <template #content>
             <ul>
@@ -25,3 +25,14 @@ defineProps({
         </template>
     </Card>
 </template>
+
+<style scoped>
+.carte {
+    color: white;
+    background-color: #1A202C;
+}
+
+li {
+    list-style-type: circle;
+}
+</style>

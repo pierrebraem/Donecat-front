@@ -19,7 +19,7 @@ function formatageUtilisateur(developpeur_id){
 </script>
 
 <template>
-    <Card style="background-color: aqua;">
+    <Card class="carte">
         <template #content>
             <div class="flex flex-col space-y-2">
                 <p class="font-bold">{{ tache.nom }}</p>
@@ -29,3 +29,14 @@ function formatageUtilisateur(developpeur_id){
         </template>
     </Card>
 </template>
+
+<style scoped>
+.carte {
+    color: white;
+    background-color: #1A202C;
+}
+
+.carte:hover {
+    background-color: #2D3748;
+}
+</style>

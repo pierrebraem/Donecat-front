@@ -91,7 +91,9 @@ onMounted(async () => {
 
 <template>
     <template v-if="chargement">
-        <p class="text-center">Chargement des données...</p>
+        <div class="flex justify-center">
+            <span class="pi pi-spon pi-spinner" style="font-size: 3rem;"/>
+        </div>
     </template>
     <template v-else>
         <div class="pt-4 flex flex-col space-y-6">

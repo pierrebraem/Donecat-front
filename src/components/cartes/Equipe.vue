@@ -25,7 +25,7 @@ function trouverUtilisateur(id, manager){
 </script>
 
 <template>
-    <Card style="background-color: aqua;" class="w-70 h-70">
+    <Card class="carte h-70">
         <template #title>{{ equipe.nom }}</template>
         <template #content>
             <ul>
@@ -36,12 +36,23 @@ function trouverUtilisateur(id, manager){
             </ul>
         </template>
         <template #footer>
-            <div class="flex justify-center gap-3">
+            <div class="mt-auto flex justify-center gap-3">
                 <template v-if="cookie.status == 'Administrateur'">
-                    <Bouton label="Modifier" severity="warn" @callback="$emit('modifier')" />
-                    <Bouton label="Supprimer" severity="danger" @callback="$emit('supprimer')"/>
+                    <span class="pi pi-pencil" style="font-size: 1.3rem;" @click="$emit('modifier')"/>
+                    <span class="pi pi-trash" style="font-size: 1.3rem;" @click="$emit('supprimer')"/>
                 </template>
             </div>
         </template>
     </Card>
 </template>
+
+<style scoped>
+.carte {
+    color: white;
+    background-color: #1A202C;
+}
+
+li {
+    list-style-type: circle;
+}
+</style>
