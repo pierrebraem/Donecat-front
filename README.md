@@ -1,8 +1,8 @@
-# Donezilla
-Donezilla est un outil web de gestion des tâches, similaire à Jira ou GitHub Projects, développé avec Vue 3. En plus de la gestion des tâches, il permet aussi de gérer les équipes et les projets.
+# Donecat
+Donecat est un outil web de gestion des tâches, similaire à Jira ou GitHub Projects, développé avec Vue 3. En plus de la gestion des tâches, il permet aussi de gérer les équipes et les projets.
 
 # Installation
-Pour lancer Donezilla en local, vous devez d’abord ouvrir un terminal à la racine du projet, puis exécuter la commande suivante :
+Pour lancer Donecat en local, vous devez d’abord ouvrir un terminal à la racine du projet, puis exécuter la commande suivante :
 ```
 npm install
 ```
