@@ -26,6 +26,15 @@
       "pseudo": "MonsieurJean",
       "motdepasse": "motdepasse",
       "status": "Dev"
+    },
+    {
+      "id": "4",
+      "nom": "Dev1",
+      "prenom": "Dev1",
+      "email": "dev1.dev1@test.com",
+      "pseudo": "dev1",
+      "motdepasse": "motdepasse",
+      "status": "Dev"
     }
   ],
   "equipes": [
@@ -33,7 +42,7 @@
       "id": "1",
       "nom": "Equipe 1",
       "membres": [
-        "1",
+        "4",
         "3"
       ],
       "manager": "2"
@@ -42,7 +51,7 @@
       "id": "2",
       "nom": "Equipe 2",
       "membres": [
-        "1"
+        "4"
       ],
       "manager": "2"
     }
@@ -71,7 +80,7 @@
       "description": "Tâche 1",
       "projet_id": "1",
       "categorie": "backlogs",
-      "developpeur_id": "1",
+      "developpeur_id": "3",
       "datefin": "25/6/2025"
     },
     {
@@ -80,7 +89,7 @@
       "description": "Tâche 2",
       "projet_id": "1",
       "categorie": "backlogs",
-      "developpeur_id": "1",
+      "developpeur_id": "2",
       "datefin": "23/6/2025"
     },
     {
@@ -89,7 +98,7 @@
       "description": "Tâche 3",
       "projet_id": "1",
       "categorie": "todo",
-      "developpeur_id": "1",
+      "developpeur_id": "4",
       "datefin": "21/6/2025"
     },
     {
@@ -98,7 +107,7 @@
       "description": "Tâche 4",
       "projet_id": "1",
       "categorie": "done",
-      "developpeur_id": "1",
+      "developpeur_id": "4",
       "datefin": "19/6/2025"
     },
     {
@@ -107,7 +116,7 @@
       "description": "Tâche 5",
       "projet_id": "2",
       "categorie": "backlogs",
-      "developpeur_id": "1",
+      "developpeur_id": "4",
       "datefin": "09/6/2025"
     },
     {
@@ -116,7 +125,7 @@
       "description": "Tâche 6",
       "projet_id": "3",
       "categorie": "todo",
-      "developpeur_id": "1",
+      "developpeur_id": "2",
       "datefin": "07/6/2025"
     },
     {
@@ -125,7 +134,7 @@
       "description": "Tâche 7",
       "projet_id": "3",
       "categorie": "todo",
-      "developpeur_id": "1",
+      "developpeur_id": "4",
       "datefin": "12/6/2025"
     },
     {
@@ -134,7 +143,7 @@
       "description": "Tâche 8",
       "projet_id": "2",
       "categorie": "inreview",
-      "developpeur_id": "1",
+      "developpeur_id": "2",
       "datefin": "10/6/2025"
     }
   ]
