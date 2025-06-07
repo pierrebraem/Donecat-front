@@ -1,6 +1,5 @@
 <script setup>
 import { Card } from 'primevue'
-import Bouton from '@/components/Bouton.vue'
 
 const props = defineProps({
     equipe: {
@@ -20,6 +19,10 @@ const props = defineProps({
 function trouverUtilisateur(id, manager){    
     const resultat = props.utilisateurs.find((item) => item.id == id)
     
+    if(resultat == undefined){
+        return
+    }
+
     return resultat.nom + ' ' + resultat.prenom + (manager ? ' (Manager)' : '')
 }
 </script>
