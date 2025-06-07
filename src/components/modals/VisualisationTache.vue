@@ -98,7 +98,7 @@ function reset(){
 </script>
 
 <template>
-    <Dialog :visible="visible" @show="getData" @update:visible="$emit('update:visible', false)" @after-hide="reset" modal header="Visualisation de la tâche" class="w-1/2">
+    <Dialog :visible="visible" @show="getData" @update:visible="$emit('update:visible', false)" @after-hide="reset" modal :header="'Visualisation de la tâche : ' + tache.nom" class="w-1/2">
         <div class="flex flex-col space-y-4">
             <div @click="role == 'Manager' ? changeNom = true : ''" :class="{ 'flex items-center space-x-2': changeNom, 'hover:text-stone-500': role == 'Manager' && !changeNom }">
                 <template v-if="changeNom">

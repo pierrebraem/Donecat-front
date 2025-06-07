@@ -48,7 +48,7 @@ function resetInputs() {
 </script>
 
 <template>
-    <Dialog :visible="visible" @show="chargerDonnees" @update:visible="$emit('update:visible', false)" @after-hide="resetInputs" modal header="Modification d'un projet" class="w-1/2">
+    <Dialog :visible="visible" @show="chargerDonnees" @update:visible="$emit('update:visible', false)" @after-hide="resetInputs" modal :header="'Modification du projet : ' + projet.nom" class="w-1/2">
         <div class="flex flex-col space-y-6">
             <div class="flex flex-col">
                 <label>Nom du projet :</label>

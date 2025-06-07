@@ -84,7 +84,7 @@ function affecterValeurs(){
 </script>
 
 <template>
-    <Dialog :visible="visible" @show="chargerDonnees(); affecterValeurs()" @update:visible="$emit('update:visible', false)" @after-hide="resetInputs" modal header="Modification d'une équipe" class="w-1/2">
+    <Dialog :visible="visible" @show="chargerDonnees(); affecterValeurs()" @update:visible="$emit('update:visible', false)" @after-hide="resetInputs" modal :header="'Modification de l\'équipe : ' + equipe.nom" class="w-1/2">
          <div class="flex flex-col space-y-6">
             <div class="flex flex-col">
                 <label>Nom de l'équipe :</label>
