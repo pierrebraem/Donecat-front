@@ -3,6 +3,7 @@ import { Card, Tabs, TabList, Tab, TabPanels, Divider, TabPanel } from 'primevue
 import AjoutTache from '@/components/modals/AjoutTache.vue'
 import VisualisationTache from '@/components/modals/VisualisationTache.vue'
 import Bouton from '@/components/Bouton.vue'
+import Chargement from '@/components/Chargement.vue'
 import Tache from '@/components/cartes/Tache.vue'
 import { getTaches } from '@/utils/requetes/tache'
 import { getProjets } from '@/utils/requetes/projet'
@@ -67,9 +68,7 @@ onMounted(async () => {
 
 <template>
     <template v-if="chargement">
-        <div class="flex justify-center">
-            <span class="pi pi-spon pi-spinner" style="font-size: 3rem;"/>
-        </div>
+        <Chargement />
     </template>
     <template v-else>
         <div class="pt-4 flex flex-col space-y-6">

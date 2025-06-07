@@ -5,6 +5,7 @@ import AjoutUtilisateur from '@/components/modals/AjoutUtilisateur.vue'
 import modifierUtilisateur from '@/components/modals/ModifierUtilisateur.vue'
 import Bouton from '@/components/Bouton.vue'
 import Utilisateur from '@/components/cartes/Utilisateur.vue'
+import Chargement from '@/components/Chargement.vue'
 import { getUtilisateurs, deleteUtilisateur } from '@/utils/requetes/utilisateur'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
@@ -61,9 +62,7 @@ onMounted(async () => {
 
 <template>
     <template v-if="chargement">
-        <div class="flex justify-center">
-            <span class="pi pi-spon pi-spinner" style="font-size: 3rem;"/>
-        </div>
+        <Chargement />
     </template>
     <template v-else>
         <div class="pt-4 flex flex-col space-y-6">

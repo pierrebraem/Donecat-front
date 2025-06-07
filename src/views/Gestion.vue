@@ -7,8 +7,8 @@ import ModifierEquipe from '@/components/modals/ModifierEquipe.vue'
 import ModifierProjet from '@/components/modals/ModifierProjet.vue'
 import DoughnutChart from '@/components/charts/DoughnutChart.vue'
 import Equipe from '@/components/cartes/Equipe.vue'
-import Projet from '@/components/cartes/Projet.vue'
 import Bouton from '@/components/Bouton.vue'
+import Chargement from '@/components/Chargement.vue'
 import { getTaches } from '@/utils/requetes/tache'
 import { getProjets, deleteProjet } from '@/utils/requetes/projet'
 import { getEquipes, deleteEquipe } from '@/utils/requetes/equipe'
@@ -113,9 +113,7 @@ onMounted(async () => {
 
 <template>
     <template v-if="chargement">
-        <div class="flex justify-center">
-            <span class="pi pi-spon pi-spinner" style="font-size: 3rem;"/>
-        </div>
+        <Chargement />
     </template>
     <template v-else>
         <div class="pt-4 flex flex-col space-y-6">
