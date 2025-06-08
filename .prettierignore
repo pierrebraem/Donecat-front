@@ -1,0 +1,9 @@
+# Ignore artifacts:
+build
+coverage
+
+# Ignore all .md, .json, .config.js files:
+**/*.md
+**/*.json
+**/*.config.js
+
