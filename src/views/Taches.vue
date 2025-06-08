@@ -5,7 +5,7 @@ import {
   TabList,
   Tab,
   TabPanels,
-  Divider,
+  Checkbox,
   TabPanel,
 } from "primevue";
 import AjoutTache from "@/components/modals/AjoutTache.vue";
@@ -32,8 +32,11 @@ const equipes = ref([]);
 const utilisateurs = ref([]);
 const projets = ref([]);
 const taches = ref([]);
+const tachesFiltree = ref([]);
 
 const tacheActuelPourVisionnage = ref({});
+
+const voirCesPropresTaches = ref(false);
 
 const cookie = ref({});
 
@@ -52,6 +55,16 @@ function montrerProjetsEtTachesEnFonctionDeLutilisateur() {
       );
     }
     projets.value = newProjets.flat();
+  }
+}
+
+function filtrerTaches() {
+  if (voirCesPropresTaches.value) {
+    tachesFiltree.value = tachesFiltree.value.filter(
+      (item) => item.developpeur_id == cookie.value.id,
+    );
+  } else {
+    tachesFiltree.value = taches.value;
   }
 }
 
@@ -74,6 +87,7 @@ onMounted(async () => {
   utilisateurs.value = await getUtilisateurs();
   projets.value = await getProjets();
   taches.value = await getTaches();
+  tachesFiltree.value = taches.value;
   montrerProjetsEtTachesEnFonctionDeLutilisateur();
 
   chargement.value = false;
@@ -92,6 +106,14 @@ onMounted(async () => {
       <div class="flex justify-center">
         <Card class="w-11/12">
           <template #content>
+            <div class="flex items-center gap-2">
+              <Checkbox
+                v-model="voirCesPropresTaches"
+                binary
+                @change="filtrerTaches"
+              />
+              <label>Afficher uniquement mes tâches</label>
+            </div>
             <Tabs :value="projets[0].id">
               <TabList>
                 <Tab
@@ -113,7 +135,7 @@ onMounted(async () => {
                         <h1 class="3xl font-bold text-center">
                           {{ item.label }}
                         </h1>
-                        <template v-for="tache in taches">
+                        <template v-for="tache in tachesFiltree">
                           <template
                             v-if="
                               tache.projet_id == projet.id &&
