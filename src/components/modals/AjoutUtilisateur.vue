@@ -12,7 +12,7 @@ defineProps({
   },
 });
 
-defineEmits(["update:visible"]);
+const emit = defineEmits(["update:visible"]);
 
 const status = ref([
   { label: "Manager", value: "Manager" },
@@ -24,9 +24,19 @@ const prenom = ref("");
 const email = ref("");
 const pseudo = ref("");
 const motdepasse = ref("");
+const confirmerMotdepasse = ref("");
 const selectedStatus = ref({});
 
+const confirmationMotdepassIncorrect = ref(false);
+
 async function ajouterUtilisateur() {
+  confirmationMotdepassIncorrect.value = false;
+
+  if (motdepasse.value != confirmerMotdepasse.value) {
+    confirmationMotdepassIncorrect.value = true;
+    return;
+  }
+
   const hash = bcrypt.hashSync(motdepasse.value, 10);
 
   const body = {
@@ -39,6 +49,8 @@ async function ajouterUtilisateur() {
   };
 
   await postUtilisateur(body);
+
+  emit("update:visible", false);
 }
 
 function resetInputs() {
@@ -47,6 +59,7 @@ function resetInputs() {
   email.value = "";
   pseudo.value = "";
   motdepasse.value = "";
+  confirmerMotdepasse.value = "";
   selectedStatus.value = {};
 }
 </script>
@@ -88,6 +101,16 @@ function resetInputs() {
         />
       </div>
       <div class="flex flex-col">
+        <label>Confirmer mot de passe :</label>
+        <Password
+          v-model="confirmerMotdepasse"
+          :feedback="false"
+          toggle-mask
+          :style="{ width: '100%' }"
+          :input-style="{ width: '100%' }"
+        />
+      </div>
+      <div class="flex flex-col">
         <label>Status:</label>
         <Select
           v-model="selectedStatus"
@@ -110,10 +133,15 @@ function resetInputs() {
           @callback="
             ajouterUtilisateur();
             resetInputs();
-            $emit('update:visible', false);
           "
         />
       </div>
+      <template v-if="confirmationMotdepassIncorrect">
+        <p class="text-red-500">
+          Le champ "Mot de passe" et "Confirmer mot de passe" ne sont pas les
+          mêmes
+        </p>
+      </template>
     </div>
   </Dialog>
 </template>
