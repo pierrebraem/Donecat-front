@@ -2,6 +2,7 @@
 import { Dialog, Password } from "primevue";
 import Bouton from "@/components/Bouton.vue";
 import { putUtilisateur } from "@/utils/requetes/utilisateur";
+import bcrypt from "bcryptjs";
 import { ref } from "vue";
 
 const props = defineProps({
@@ -28,7 +29,9 @@ async function changerMotdepasse() {
   ancienMotdepasseIncorrect.value = false;
   confirmationMotdepasseIncorrect.value = false;
 
-  if (ancienMotdepasse.value != props.utilisateur.motdepasse) {
+  if (
+    !bcrypt.compareSync(ancienMotdepasse.value, props.utilisateur.motdepasse)
+  ) {
     ancienMotdepasseIncorrect.value = true;
     return;
   }
@@ -38,13 +41,15 @@ async function changerMotdepasse() {
     return;
   }
 
+  const hash = bcrypt.hashSync(nouveauMotdepasse.value);
+
   const body = {
     id: props.utilisateur.id,
     nom: props.utilisateur.nom,
     prenom: props.utilisateur.prenom,
     email: props.utilisateur.email,
     pseudo: props.utilisateur.pseudo,
-    motdepasse: nouveauMotdepasse.value,
+    motdepasse: hash,
     status: props.utilisateur.status,
   };
 
