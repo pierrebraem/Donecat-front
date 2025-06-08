@@ -14,3 +14,22 @@ Dans un autre terminal, toujours à la racine du projet, démarrez l’interface
 ```
 npm run dev
 ```
+# Comptes par défaut
+Voici les adresses mails, les mots de passe et les rôles des comptes precréés :
+```
+email : pierre.braem@test.com
+mot de passe : admin
+rôle : Administrateur
+
+email : martin.dupont@test.com
+mot de passe : 123456
+rôle : Manager
+
+email : jean.rain@test.com
+mot de passe : azerty
+rôle : Développeur
+
+email : dev1.dev1@test.com
+mot de passe : qwerty
+rôle : Développeur
+```
