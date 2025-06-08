@@ -2,6 +2,7 @@
 import { Dialog, InputText, Select, Password } from 'primevue'
 import Bouton from '@/components/Bouton.vue'
 import { postUtilisateur } from '@/utils/requetes/utilisateur'
+import bcrypt from 'bcryptjs'
 import { ref } from 'vue'
 
 defineProps({
@@ -26,12 +27,14 @@ const motdepasse = ref("")
 const selectedStatus = ref({})
 
 async function ajouterUtilisateur(){
+    const hash = bcrypt.hashSync(motdepasse.value, 10)
+
     const body = {
         nom: nom.value,
         prenom: prenom.value,
         email: email.value,
         pseudo: pseudo.value,
-        motdepasse: motdepasse.value,
+        motdepasse: hash,
         status: selectedStatus.value
     }
 

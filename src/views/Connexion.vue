@@ -4,6 +4,7 @@ import { getUtilisateurs } from '@/utils/requetes/utilisateur'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Bouton from '@/components/Bouton.vue'
+import bcrypt from 'bcryptjs'
 import Cookies from 'js-cookie'
 
 const router = useRouter()
@@ -15,13 +16,18 @@ const is_email_or_password_invalid = ref(false)
 async function login(){
     const utilisateurs = await getUtilisateurs()
 
-    const result = utilisateurs.find((item) => item.email == email.value && item.motdepasse == password.value)
-    if(result == undefined){
+    const res = utilisateurs.find((item) => item.email == email.value)
+    if(res == undefined){
         is_email_or_password_invalid.value = true;
         return;
     }
 
-    Cookies.set('utilisateur', JSON.stringify({id: result.id, status: result.status, nom: result.prenom + ' ' + result.nom}), { expires: 1 })
+    if(!bcrypt.compareSync(password.value, res.motdepasse)){
+        is_email_or_password_invalid.value = true;
+        return;
+    }
+
+    Cookies.set('utilisateur', JSON.stringify({id: res.id, status: res.status, nom: res.prenom + ' ' + res.nom}), { expires: 1 })
     router.push('/gestion')
 }
 

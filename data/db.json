@@ -6,7 +6,7 @@
       "prenom": "Pierre",
       "email": "pierre.braem@test.com",
       "pseudo": "MonsieurBraem",
-      "motdepasse": "motdepasse",
+      "motdepasse": "$2b$10$9pW6LZIqW1BHVuytvOqnme0eHR3SdE9syl/Gos0B4tdQhg.mtSAae",
       "status": "Administrateur"
     },
     {
@@ -15,7 +15,7 @@
       "prenom": "Martin",
       "email": "martin.dupont@test.com",
       "pseudo": "xXDarkDu59Xx",
-      "motdepasse": "motdepasse",
+      "motdepasse": "$2b$10$aoCv3y.mSZYBrLt4Pc7hrOvr5kNHkGiFfzn6CTKGEm/E6zL90nPkO",
       "status": "Manager"
     },
     {
@@ -24,7 +24,7 @@
       "prenom": "Jean",
       "email": "jean.rain@test.com",
       "pseudo": "MonsieurJean",
-      "motdepasse": "motdepasse",
+      "motdepasse": "$2b$10$fPPTrB.PI4D6BeIWu8uNAuHKMvAM2fQSi.klE4cA4swVr7IiT0fiW",
       "status": "Dev"
     },
     {
@@ -33,7 +33,7 @@
       "prenom": "Dev1",
       "email": "dev1.dev1@test.com",
       "pseudo": "dev1",
-      "motdepasse": "motdepasse",
+      "motdepasse": "$2b$10$xG0cNjCkQ4VJdeeEx6bQmeMwKyzGR9es0XlCSyIuM/uqwwNAXGupm",
       "status": "Dev"
     }
   ],
