@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "launchapi": "json-server data/db.json",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@primeuix/themes": "1.1.1",
@@ -28,5 +29,8 @@
     "prettier": "3.5.3",
     "vite": "6.2.4",
     "vite-plugin-vue-devtools": "7.7.2"
+  },
+  "lint-staged": {
+    "*.{js,css,vue}": "prettier --write"
   }
 }
