@@ -23,8 +23,8 @@ const props = defineProps({
     type: Array,
     required: true,
   },
-  role: {
-    type: String,
+  cookie: {
+    type: Object,
     required: true,
   },
 });
@@ -40,6 +40,7 @@ const status = ref([
 ]);
 
 const utilisateurs = ref([]);
+const role = ref({});
 
 const projet = ref({});
 const utilisateur = ref({});
@@ -57,6 +58,8 @@ async function getData() {
   utilisateur.value = await getUtilisateur(props.tache.developpeur_id);
 
   tache.value = props.tache;
+
+  role.value = props.cookie.status;
 
   for (const utilisateur of props.utilisateurs) {
     utilisateurs.value.push({
@@ -162,10 +165,16 @@ function reset() {
         </template>
       </div>
       <div
-        @click="changeStatus = true"
+        @click="
+          role == 'Manager' || cookie.id == tache.developpeur_id
+            ? (changeStatus = true)
+            : ''
+        "
         :class="{
           'flex items-center space-x-2': changeStatus,
-          'hover:text-stone-500': !changeStatus,
+          'hover:text-stone-500':
+            (role == 'Manager' || cookie.id == tache.developpeur_id) &&
+            !changeStatus,
         }"
       >
         <template v-if="changeStatus">

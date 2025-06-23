@@ -178,7 +178,7 @@ onMounted(async () => {
       :tache="tacheActuelPourVisionnage"
       :projets="projets"
       :utilisateurs="utilisateurs"
-      :role="cookie.status"
+      :cookie="cookie"
     />
   </template>
 </template>
