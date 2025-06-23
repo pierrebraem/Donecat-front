@@ -192,7 +192,7 @@ function reset() {
         </template>
       </div>
       <div
-        @click="changeDeveloppeur = true"
+        @click="role == 'Manager' ? (changeDeveloppeur = true) : ''"
         :class="{
           'flex items-center space-x-2': changeDeveloppeur,
           'hover:text-stone-500': role == 'Manager' && !changeDeveloppeur,
