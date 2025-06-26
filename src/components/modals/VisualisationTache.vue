@@ -1,5 +1,6 @@
 <script setup>
 import { Dialog, Select, InputText, DatePicker } from "primevue";
+import { formatageDate } from "@/utils/formatageDate";
 import { getUtilisateur } from "@/utils/requetes/utilisateur";
 import { getProjet } from "@/utils/requetes/projet";
 import { putTache } from "@/utils/requetes/tache";
@@ -77,7 +78,7 @@ async function changerTache() {
     projet_id: tache.value.projet_id,
     categorie: tache.value.categorie,
     developpeur_id: tache.value.developpeur_id,
-    datefin: tache.value.datefin,
+    datefin: formatageDate(tache.value.datefin),
   };
 
   await putTache(props.tache.id, body);

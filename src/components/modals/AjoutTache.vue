@@ -1,5 +1,6 @@
 <script setup>
 import { Dialog, InputText, Select, DatePicker } from "primevue";
+import { formatageDate } from "@/utils/formatageDate";
 import Bouton from "@/components/Bouton.vue";
 import { postTache } from "@/utils/requetes/tache";
 import { ref } from "vue";
@@ -45,12 +46,7 @@ async function ajouterTache() {
     projet_id: selectedProjet.value,
     categorie: selectedStatus.value,
     developpeur_id: selectedDev.value,
-    datefin:
-      dateFin.value.getDate() +
-      "/" +
-      (dateFin.value.getMonth() + 1) +
-      "/" +
-      dateFin.value.getFullYear(),
+    datefin: formatageDate(dateFin.value),
   };
 
   await postTache(body);
