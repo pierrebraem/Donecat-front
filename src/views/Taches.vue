@@ -40,7 +40,7 @@ const voirCesPropresTaches = ref(false);
 
 const cookie = ref({});
 
-function montrerProjetsEtTachesEnFonctionDeLutilisateur() {
+function filtrageProjetsTachesEtUtilisateurs() {
   if (cookie.value.status != "Administrateur") {
     equipes.value = equipes.value.filter(
       (item) =>
@@ -48,12 +48,31 @@ function montrerProjetsEtTachesEnFonctionDeLutilisateur() {
         item.manager == cookie.value.id,
     );
     const newProjets = [];
+    const newUtilisateurs = [];
 
-    for (const item of equipes.value) {
+    for (const equipe of equipes.value) {
       newProjets.push(
-        projets.value.filter((projet) => projet.equipe_id == item.id),
+        projets.value.filter((projet) => projet.equipe_id == equipe.id),
       );
+
+      for (const utilisateur of utilisateurs.value) {
+        const checkIfMemberExistInEquipe = equipe.membres.includes(
+          utilisateur.id,
+        );
+        const checkIfUtilisateurAlreadyExist = newUtilisateurs.find(
+          (item) => item.id == utilisateur.id,
+        );
+
+        if (
+          (checkIfMemberExistInEquipe || utilisateur.id == equipe.manager) &&
+          checkIfUtilisateurAlreadyExist == undefined
+        ) {
+          newUtilisateurs.push(utilisateur);
+        }
+      }
     }
+
+    utilisateurs.value = newUtilisateurs.flat();
     projets.value = newProjets.flat();
   }
 }
@@ -88,7 +107,7 @@ onMounted(async () => {
   projets.value = await getProjets();
   taches.value = await getTaches();
   tachesFiltree.value = taches.value;
-  montrerProjetsEtTachesEnFonctionDeLutilisateur();
+  filtrageProjetsTachesEtUtilisateurs();
 
   chargement.value = false;
 });
