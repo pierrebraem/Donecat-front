@@ -5,7 +5,7 @@ import { getUtilisateur } from "@/utils/requetes/utilisateur";
 import { getProjet } from "@/utils/requetes/projet";
 import { putTache } from "@/utils/requetes/tache";
 import Bouton from "@/components/Bouton.vue";
-import { statusTache } from "@/utils/statusTache";
+import { statusTache, traduireValeurParLabel } from "@/utils/statusTache";
 import { ref } from "vue";
 
 const props = defineProps({
@@ -184,7 +184,7 @@ function reset() {
           <Bouton label="Valider" @callback="changerTache" />
         </template>
         <template v-else>
-          <p>Status : {{ tache.categorie }}</p>
+          <p>Status : {{ traduireValeurParLabel(tache.categorie) }}</p>
         </template>
       </div>
       <div
