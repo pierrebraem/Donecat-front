@@ -2,12 +2,13 @@
 import { Menubar } from "primevue";
 import { onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
+import { useUtilisateurStore } from "./stores/utilisateur";
 import Cookies from "js-cookie";
 
 const router = useRouter();
-const items = ref([]);
+const utilisateurStore = useUtilisateurStore();
 
-const utilisateur = ref(Cookies.get("utilisateur"));
+const items = ref([]);
 
 function navbar() {
   items.value = [
@@ -18,7 +19,7 @@ function navbar() {
       },
     },
   ];
-  if (utilisateur.value == undefined) {
+  if (!utilisateurStore.utilisateur) {
     items.value.push({
       label: "Connexion",
       command: () => {
@@ -26,8 +27,7 @@ function navbar() {
       },
     });
   } else {
-    const cookie = JSON.parse(Cookies.get("utilisateur"));
-    if (cookie.status == "Administrateur") {
+    if (utilisateurStore.utilisateur.status == "Administrateur") {
       items.value.push({
         label: "Gestion des utilisateurs",
         command: () => {
@@ -57,8 +57,7 @@ function navbar() {
       {
         label: "Deconnexion",
         command: () => {
-          Cookies.remove("utilisateur");
-          utilisateur.value = undefined;
+          utilisateurStore.logout();
           router.push("/connexion");
         },
       },
@@ -70,9 +69,12 @@ onMounted(() => {
   navbar();
 });
 
-watch(utilisateur, () => {
-  navbar();
-});
+watch(
+  () => utilisateurStore.utilisateur,
+  () => {
+    navbar();
+  },
+);
 </script>
 
 <template>
