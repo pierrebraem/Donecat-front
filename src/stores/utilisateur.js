@@ -36,5 +36,11 @@ export const useUtilisateurStore = defineStore("utilisateur", () => {
     utilisateur.value = null;
   }
 
-  return { utilisateur, login, logout };
+  function checkIfCookiesIsSet() {
+    if (Cookies.get("utilisateur") != undefined) {
+      utilisateur.value = JSON.stringify(Cookies.get("utilisateur"));
+    }
+  }
+
+  return { utilisateur, login, logout, checkIfCookiesIsSet };
 });

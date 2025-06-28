@@ -66,6 +66,7 @@ function navbar() {
 }
 
 onMounted(() => {
+  utilisateurStore.checkIfCookiesIsSet();
   navbar();
 });
 
