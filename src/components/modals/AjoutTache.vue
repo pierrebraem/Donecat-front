@@ -3,6 +3,7 @@ import { Dialog, InputText, Select, DatePicker } from "primevue";
 import { formatageDate } from "@/utils/formatageDate";
 import Bouton from "@/components/Bouton.vue";
 import { postTache } from "@/utils/requetes/tache";
+import { statusTache } from "@/utils/statusTache";
 import { ref } from "vue";
 
 const props = defineProps({
@@ -22,13 +23,7 @@ const props = defineProps({
 
 defineEmits(["update:visible"]);
 
-const status = ref([
-  { label: "Backlogs", value: "backlogs" },
-  { label: "To do", value: "todo" },
-  { label: "In Progress", value: "inprogress" },
-  { label: "In Review", value: "inreview" },
-  { label: "Done", value: "done" },
-]);
+const status = ref(statusTache);
 
 const utilisateurs = ref([]);
 const projets = ref([]);

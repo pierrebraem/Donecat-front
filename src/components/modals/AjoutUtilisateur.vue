@@ -2,6 +2,7 @@
 import { Dialog, InputText, Select, Password } from "primevue";
 import Bouton from "@/components/Bouton.vue";
 import { postUtilisateur } from "@/utils/requetes/utilisateur";
+import { statusUtilisateur } from "@/utils/statusUtilisateur";
 import bcrypt from "bcryptjs";
 import { ref } from "vue";
 
@@ -14,10 +15,7 @@ defineProps({
 
 const emit = defineEmits(["update:visible"]);
 
-const status = ref([
-  { label: "Manager", value: "Manager" },
-  { label: "Developpeur", value: "Dev" },
-]);
+const status = ref(statusUtilisateur);
 
 const nom = ref("");
 const prenom = ref("");

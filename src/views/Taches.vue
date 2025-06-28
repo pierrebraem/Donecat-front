@@ -17,6 +17,7 @@ import { getTaches } from "@/utils/requetes/tache";
 import { getProjets } from "@/utils/requetes/projet";
 import { getUtilisateurs } from "@/utils/requetes/utilisateur";
 import { getEquipes } from "@/utils/requetes/equipe";
+import { statusTache } from "@/utils/statusTache";
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
@@ -87,13 +88,7 @@ function filtrerTaches() {
   }
 }
 
-const status = ref([
-  { label: "Backlogs", value: "backlogs" },
-  { label: "To do", value: "todo" },
-  { label: "In Progress", value: "inprogress" },
-  { label: "In Review", value: "inreview" },
-  { label: "Done", value: "done" },
-]);
+const status = ref(statusTache);
 
 onMounted(async () => {
   if (Cookies.get("utilisateur") == undefined) {

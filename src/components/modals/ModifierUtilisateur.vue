@@ -1,6 +1,7 @@
 <script setup>
 import { Dialog, InputText, Select } from "primevue";
 import { putUtilisateur } from "@/utils/requetes/utilisateur";
+import { statusUtilisateur } from "@/utils/statusUtilisateur";
 import Bouton from "@/components/Bouton.vue";
 import { ref } from "vue";
 
@@ -17,10 +18,7 @@ const props = defineProps({
 
 const emit = defineEmits(["update:visible"]);
 
-const status = ref([
-  { label: "Manager", value: "Manager" },
-  { label: "Developpeur", value: "Dev" },
-]);
+const status = ref(statusUtilisateur);
 
 const nom = ref("");
 const prenom = ref("");

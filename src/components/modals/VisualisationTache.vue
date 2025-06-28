@@ -5,6 +5,7 @@ import { getUtilisateur } from "@/utils/requetes/utilisateur";
 import { getProjet } from "@/utils/requetes/projet";
 import { putTache } from "@/utils/requetes/tache";
 import Bouton from "@/components/Bouton.vue";
+import { statusTache } from "@/utils/statusTache";
 import { ref } from "vue";
 
 const props = defineProps({
@@ -32,13 +33,7 @@ const props = defineProps({
 
 const emit = defineEmits(["update:visible"]);
 
-const status = ref([
-  { label: "Backlogs", value: "backlogs" },
-  { label: "To do", value: "todo" },
-  { label: "In Progress", value: "inprogress" },
-  { label: "In Review", value: "inreview" },
-  { label: "Done", value: "done" },
-]);
+const status = ref(statusTache);
 
 const utilisateurs = ref([]);
 const role = ref({});
