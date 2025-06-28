@@ -1,4 +1,8 @@
 export function formatageDate(dateOriginal) {
+  if (!(dateOriginal instanceof Date)) {
+    return dateOriginal;
+  }
+
   return (
     dateOriginal.getDate() +
     "/" +
