@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@primeuix/themes": "1.1.1",
-    "@tailwindcss/vite": "4.1.8",
+    "@tailwindcss/vite": "4.1.11",
     "bcryptjs": "3.0.2",
     "chart.js": "4.5.0",
     "js-cookie": "3.0.5",
@@ -20,7 +20,7 @@
     "pinia": "3.0.3",
     "primeicons": "7.0.0",
     "primevue": "4.3.5",
-    "tailwindcss": "4.1.8",
+    "tailwindcss": "4.1.11",
     "vue": "3.5.17",
     "vue-chartjs": "5.3.2",
     "vue-router": "4.5.1"
