@@ -59,4 +59,5 @@ La version 0.2.0 est en cours de développement. Elle inclura les fonctionnalit�
 - La gestion des sprints.
 - La mise en place d’un système multilingue (français et anglais)
 - Et bien plus encore...
+
 En attendant, la version 0.1.X restera maintenue en cas de bugs ou de mises à jour de dépendances. La branche de développement de cette version sera : `0.1.X`.
