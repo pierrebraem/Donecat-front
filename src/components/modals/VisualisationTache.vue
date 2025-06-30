@@ -1,6 +1,6 @@
 <script setup>
 import { Dialog, Select, InputText, DatePicker, ConfirmDialog } from "primevue";
-import { useConfirm } from "primevue/useConfirm";
+import { useConfirm } from "primevue/useconfirm";
 import { formatageDate } from "@/utils/formatageDate";
 import { getUtilisateur } from "@/utils/requetes/utilisateur";
 import { getProjet } from "@/utils/requetes/projet";
