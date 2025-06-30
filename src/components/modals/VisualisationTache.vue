@@ -1,12 +1,15 @@
 <script setup>
-import { Dialog, Select, InputText, DatePicker } from "primevue";
+import { Dialog, Select, InputText, DatePicker, ConfirmDialog } from "primevue";
+import { useConfirm } from "primevue/useConfirm";
 import { formatageDate } from "@/utils/formatageDate";
 import { getUtilisateur } from "@/utils/requetes/utilisateur";
 import { getProjet } from "@/utils/requetes/projet";
-import { putTache } from "@/utils/requetes/tache";
+import { putTache, deleteTache } from "@/utils/requetes/tache";
 import Bouton from "@/components/Bouton.vue";
 import { statusTache, traduireValeurParLabel } from "@/utils/statusTache";
 import { ref } from "vue";
+
+const confirm = useConfirm();
 
 const props = defineProps({
   visible: {
@@ -84,6 +87,25 @@ async function changerTache() {
   changeDatefin.value = false;
   changeProjet.value = false;
   changeDeveloppeur.value = false;
+}
+
+function supprimerTache(id, nom) {
+  confirm.require({
+    message:
+      "Vous êtes sur le point de supprimer la tâche " + nom + ". Etes-vous sur de vouloir le supprier définitivement?",
+    header : "Suppression de la tâche " + nom,
+    rejectProps: {
+      label: "Annuler",
+      severity: "secondary"
+    },
+    acceptProps: {
+      label: "Supprimer",
+      severity: "danger"
+    },
+    accept: async () => {
+      await deleteTache(id);
+    }
+  })
 }
 
 function reset() {
@@ -224,13 +246,21 @@ function reset() {
           <p>Date de fin estimé : {{ tache.datefin }}</p>
         </template>
       </div>
-      <div class="flex justify-end gap-1">
+      <div class="flex justify-end gap-2">
         <Bouton
           label="Fermer"
           severity="secondary"
           @callback="$emit('update:visible', false)"
         />
+        <template v-if="role == 'Manager'">
+          <Bouton 
+            label="Supprimer"
+            severity="danger"
+            @callback="supprimerTache(tache.id, tache.nom)"
+          />
+        </template>
       </div>
     </div>
   </Dialog>
+  <ConfirmDialog />
 </template>

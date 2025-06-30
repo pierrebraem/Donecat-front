@@ -71,3 +71,9 @@ Ouvrez la fenêtre de consultation d’une tâche (voir « Visualiser une tâche
 En tant que développeur, vous ne pouvez modifier que le statut des tâches qui vous sont attribuées.
 
 Ouvrez la fenêtre de consultation d’une tâche (voir « Visualiser une tâche »). Pointez votre curseur sur le statut : le texte changera de couleur. Cliquez dessus, modifiez le statut, puis cliquez sur « Valider ». Les informations seront mises à jour dans le tableau du projet.
+
+## Supprimer une tâche
+Cette action est uniquement réservée au manager.
+
+Ouvrez la fenêtre de consultation d'une tâche (voir « Visualiser une tâche »). Pointez votre curseur sur le statut : le texte changera de couleur.
+Cliquez dessus, un bouton « Supprimer » devrait apparaitre. Cliquez dessus pour supprimer la tâche et vous verrez le tableau mise à jour.

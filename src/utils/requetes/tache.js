@@ -25,3 +25,9 @@ export async function putTache(id, body) {
     body: JSON.stringify(body),
   });
 }
+
+export async function deleteTache(id) {
+  await fetch("http://localhost:3000/taches/" + id, {
+    method: "DELETE"
+  })
+}
