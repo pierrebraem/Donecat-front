@@ -2,6 +2,7 @@
 import { Card } from "primevue";
 import ModifierProfil from "@/components/modals/ModifierProfil.vue";
 import ModifierMotdepasse from "@/components/modals/ModifierMotdepasse.vue";
+import VisualisationAPropos from "@/components/modals/VisualisationAPropos.vue";
 import Bouton from "@/components/Bouton.vue";
 import { getUtilisateur } from "@/utils/requetes/utilisateur";
 import { ref, onMounted } from "vue";
@@ -12,6 +13,7 @@ const router = useRouter();
 
 const visibleModifierProfil = ref(false);
 const visibleModifierMotdepasse = ref(false);
+const visibleModifierAPropos = ref(false);
 
 const cookie = ref({});
 
@@ -65,6 +67,11 @@ onMounted(async () => {
             severity="warn"
             @callback="visibleModifierMotdepasse = true"
           />
+          <Bouton 
+            label="A propos de l'outil"
+            severity="success"
+            @callback="visibleModifierAPropos = true"
+          />
         </div>
       </template>
     </Card>
@@ -77,5 +84,8 @@ onMounted(async () => {
   <ModifierMotdepasse
     v-model:visible="visibleModifierMotdepasse"
     :utilisateur="utilisateur"
+  />
+  <VisualisationAPropos 
+    v-model:visible="visibleModifierAPropos"
   />
 </template>
