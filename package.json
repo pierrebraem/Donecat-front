@@ -3,6 +3,8 @@
   "version": "0.1.1",
   "private": true,
   "type": "module",
+  "author": "Pierre Braem",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -29,7 +31,8 @@
     "@vitejs/plugin-vue": "5.2.3",
     "prettier": "3.6.2",
     "vite": "6.3.5",
-    "vite-plugin-vue-devtools": "7.7.2"
+    "vite-plugin-vue-devtools": "7.7.2",
+    "husky": "9.1.7"
   },
   "lint-staged": {
     "*.{js,css,vue}": "prettier --write"
