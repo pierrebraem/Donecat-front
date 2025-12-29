@@ -113,86 +113,109 @@ onMounted(async () => {
     <Chargement />
   </template>
   <template v-else>
-    <div class="pt-4 flex flex-col space-y-6">
-      <div class="flex justify-end pr-4" v-if="cookie.status == 'Manager'">
-        <Bouton label="Créer une tâche" @callback="visibleAjoutTache = true" />
-      </div>
-      <div class="flex justify-center">
-        <Card class="w-11/12">
-          <template #content>
-            <div class="flex items-center gap-2">
-              <Checkbox
-                v-model="voirCesPropresTaches"
-                binary
-                @change="filtrerTaches"
-              />
-              <label>Afficher uniquement mes tâches</label>
-            </div>
-            <Tabs :value="projets[0].id">
-              <TabList>
-                <Tab
-                  v-for="projet in projets"
-                  :key="projet.nom"
-                  :value="projet.id"
-                  >{{ projet.nom }}</Tab
-                >
-              </TabList>
-              <TabPanels>
-                <TabPanel
-                  v-for="projet in projets"
-                  :key="projet.nom"
-                  :value="projet.id"
-                >
-                  <div class="flex justify-between">
-                    <template v-for="item in status">
-                      <div class="flex-1 px-4">
-                        <h1 class="3xl font-bold text-center">
-                          {{ item.label }}
-                        </h1>
-                        <template v-for="tache in tachesFiltree">
-                          <template
-                            v-if="
-                              tache.projet_id == projet.id &&
-                              tache.categorie == item.value
-                            "
-                          >
-                            <div
-                              class="flex flex-col space-y-2 pt-4"
-                              @click="
-                                tacheActuelPourVisionnage = tache;
-                                visibleVisualisationTache = true;
+    <template v-if="projets.length != 0">
+      <div class="pt-4 flex flex-col space-y-6">
+        <div class="flex justify-end pr-4" v-if="cookie.status == 'Manager'">
+          <Bouton
+            label="Créer une tâche"
+            @callback="visibleAjoutTache = true"
+          />
+        </div>
+        <div class="flex justify-center">
+          <Card class="w-11/12">
+            <template #content>
+              <div class="flex items-center gap-2">
+                <Checkbox
+                  v-model="voirCesPropresTaches"
+                  binary
+                  @change="filtrerTaches"
+                />
+                <label>Afficher uniquement mes tâches</label>
+              </div>
+              <Tabs :value="projets[0].id">
+                <TabList>
+                  <Tab
+                    v-for="projet in projets"
+                    :key="projet.nom"
+                    :value="projet.id"
+                    >{{ projet.nom }}</Tab
+                  >
+                </TabList>
+                <TabPanels>
+                  <TabPanel
+                    v-for="projet in projets"
+                    :key="projet.nom"
+                    :value="projet.id"
+                  >
+                    <div class="flex justify-between">
+                      <template v-for="item in status">
+                        <div class="flex-1 px-4">
+                          <h1 class="3xl font-bold text-center">
+                            {{ item.label }}
+                          </h1>
+                          <template v-for="tache in tachesFiltree">
+                            <template
+                              v-if="
+                                tache.projet_id == projet.id &&
+                                tache.categorie == item.value
                               "
                             >
-                              <Tache
-                                :tache="tache"
-                                :utilisateurs="utilisateurs"
-                              />
-                            </div>
+                              <div
+                                class="flex flex-col space-y-2 pt-4"
+                                @click="
+                                  tacheActuelPourVisionnage = tache;
+                                  visibleVisualisationTache = true;
+                                "
+                              >
+                                <Tache
+                                  :tache="tache"
+                                  :utilisateurs="utilisateurs"
+                                />
+                              </div>
+                            </template>
                           </template>
-                        </template>
-                      </div>
-                      <div class="w-px h-100 bg-gray-300"></div>
-                    </template>
-                  </div>
-                </TabPanel>
-              </TabPanels>
-            </Tabs>
-          </template>
-        </Card>
+                        </div>
+                        <div class="w-px h-100 bg-gray-300"></div>
+                      </template>
+                    </div>
+                  </TabPanel>
+                </TabPanels>
+              </Tabs>
+            </template>
+          </Card>
+        </div>
       </div>
-    </div>
 
-    <AjoutTache
-      v-model:visible="visibleAjoutTache"
-      :utilisateurs="utilisateurs"
-      :projets="projets"
-    />
-    <VisualisationTache
-      v-model:visible="visibleVisualisationTache"
-      :tache="tacheActuelPourVisionnage"
-      :projets="projets"
-      :utilisateurs="utilisateurs"
-      :cookie="cookie"
-    />
+      <AjoutTache
+        v-model:visible="visibleAjoutTache"
+        :utilisateurs="utilisateurs"
+        :projets="projets"
+      />
+      <VisualisationTache
+        v-model:visible="visibleVisualisationTache"
+        :tache="tacheActuelPourVisionnage"
+        :projets="projets"
+        :utilisateurs="utilisateurs"
+        :cookie="cookie"
+      />
+    </template>
+    <template v-else>
+      <p class="text-center">
+        Impossible d'afficher la page "Liste des tâches", car vous n'êtes
+        affectés à aucun projet.
+      </p>
+      <p class="text-center">
+        Attendez que l'administrateur vous affectes dans une équipe
+        <template v-if="cookie.status == 'Manager'"
+          >. Si vous êtes déjà affectés dans une équipe en tant que manageur,
+          veuillez créer un projet dans la page "Tableau de bord", puis cliquez
+          sur le bouton "Créer un projet"</template
+        >
+        <template v-else
+          >ou qu'un manageur créer un projet dans l'une des équipes auxquelles
+          vous êtes affectés</template
+        >.
+      </p>
+    </template>
   </template>
 </template>
