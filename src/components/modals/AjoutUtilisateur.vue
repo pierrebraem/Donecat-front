@@ -59,6 +59,8 @@ function resetInputs() {
   motdepasse.value = "";
   confirmerMotdepasse.value = "";
   selectedStatus.value = {};
+
+  confirmationMotdepassIncorrect.value = false;
 }
 </script>
 
@@ -126,13 +128,7 @@ function resetInputs() {
             $emit('update:visible', false);
           "
         />
-        <Bouton
-          label="Ajouter"
-          @callback="
-            ajouterUtilisateur();
-            resetInputs();
-          "
-        />
+        <Bouton label="Ajouter" @callback="ajouterUtilisateur()" />
       </div>
       <template v-if="confirmationMotdepassIncorrect">
         <p class="text-red-500">
