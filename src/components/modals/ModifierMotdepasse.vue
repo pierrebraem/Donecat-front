@@ -1,6 +1,7 @@
 <script setup>
 import { Dialog, Password } from "primevue";
 import Bouton from "@/components/Bouton.vue";
+import AfficherErreurs from "../AfficherErreurs.vue";
 import { putUtilisateur } from "@/utils/requetes/utilisateur";
 import { mdpIdentiques, compareMdp } from "@/utils/gestionErreurs";
 import bcrypt from "bcryptjs";
@@ -124,13 +125,7 @@ function resetInputs() {
           "
         />
       </div>
-      <template v-if="messagesErreur.length != 0">
-        <div class="text-red-500">
-          <ul>
-            <li v-for="messageErreur in messagesErreur">{{ messageErreur }}</li>
-          </ul>
-        </div>
-      </template>
+      <AfficherErreurs :messages-erreur="messagesErreur" />
     </div>
   </Dialog>
 </template>

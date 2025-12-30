@@ -1,6 +1,7 @@
 <script setup>
 import { Dialog, InputText, Select } from "primevue";
 import Bouton from "@/components/Bouton.vue";
+import AfficherErreurs from "../AfficherErreurs.vue";
 import { putEquipe } from "@/utils/requetes/equipe";
 import { inferieurXCarac, verifieChampVide } from "@/utils/gestionErreurs";
 import { ref } from "vue";
@@ -178,13 +179,7 @@ function affecterValeurs() {
         />
         <Bouton label="Modifier" @callback="modifierEquipe()" />
       </div>
-      <template v-if="messagesErreur.length != 0">
-        <div class="text-red-500">
-          <ul>
-            <li v-for="messageErreur in messagesErreur">{{ messageErreur }}</li>
-          </ul>
-        </div>
-      </template>
+      <AfficherErreurs :messages-erreur="messagesErreur" />
     </div>
   </Dialog>
 </template>

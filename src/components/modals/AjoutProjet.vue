@@ -1,6 +1,7 @@
 <script setup>
 import { Dialog, InputText, Select } from "primevue";
 import Bouton from "@/components/Bouton.vue";
+import AfficherErreurs from "../AfficherErreurs.vue";
 import { postProjet } from "@/utils/requetes/projet";
 import { verifieChampVide, inferieurXCarac } from "@/utils/gestionErreurs";
 import { ref } from "vue";
@@ -97,13 +98,7 @@ function resetInputs() {
         />
         <Bouton label="Ajouter" @callback="ajouterProjet()" />
       </div>
-      <template v-if="messagesErreur.length != 0">
-        <div class="text-red-500">
-          <ul>
-            <li v-for="messageErreur in messagesErreur">{{ messageErreur }}</li>
-          </ul>
-        </div>
-      </template>
+      <AfficherErreurs :messages-erreur="messagesErreur" />
     </div>
   </Dialog>
 </template>

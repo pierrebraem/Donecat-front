@@ -1,6 +1,7 @@
 <script setup>
 import { Dialog, InputText, Select, Password } from "primevue";
 import Bouton from "@/components/Bouton.vue";
+import AfficherErreurs from "../AfficherErreurs.vue";
 import { postUtilisateur } from "@/utils/requetes/utilisateur";
 import { statusUtilisateur } from "@/utils/statusUtilisateur";
 import {
@@ -176,13 +177,7 @@ function resetInputs() {
         />
         <Bouton label="Ajouter" @callback="ajouterUtilisateur()" />
       </div>
-      <template v-if="messagesErreur.length != 0">
-        <div class="text-red-500">
-          <ul>
-            <li v-for="messageErreur in messagesErreur">{{ messageErreur }}</li>
-          </ul>
-        </div>
-      </template>
+      <AfficherErreurs :messages-erreur="messagesErreur" />
     </div>
   </Dialog>
 </template>
