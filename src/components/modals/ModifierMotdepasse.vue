@@ -2,6 +2,7 @@
 import { Dialog, Password } from "primevue";
 import Bouton from "@/components/Bouton.vue";
 import { putUtilisateur } from "@/utils/requetes/utilisateur";
+import { mdpIdentiques, compareMdp } from "@/utils/gestionErreurs";
 import bcrypt from "bcryptjs";
 import { ref } from "vue";
 
@@ -18,30 +19,30 @@ const props = defineProps({
 
 const emit = defineEmits(["update:visible"]);
 
-const ancienMotdepasseIncorrect = ref(false);
-const confirmationMotdepasseIncorrect = ref(false);
+const messagesErreur = ref([]);
 
-const ancienMotdepasse = ref("");
-const nouveauMotdepasse = ref("");
-const confirmerMotdepasse = ref("");
+const ancienMDP = ref("");
+const nouveauMDP = ref("");
+const confirmerMDP = ref("");
 
 async function changerMotdepasse() {
-  ancienMotdepasseIncorrect.value = false;
-  confirmationMotdepasseIncorrect.value = false;
+  messagesErreur.value = [];
 
-  if (
-    !bcrypt.compareSync(ancienMotdepasse.value, props.utilisateur.motdepasse)
-  ) {
-    ancienMotdepasseIncorrect.value = true;
-    return;
-  }
+  const erreurAncienMDP = compareMdp(
+    ancienMDP.value,
+    props.utilisateur.motdepasse,
+  );
+  if (erreurAncienMDP) messagesErreur.value.push(erreurAncienMDP);
 
-  if (nouveauMotdepasse.value != confirmerMotdepasse.value) {
-    confirmationMotdepasseIncorrect.value = true;
-    return;
-  }
+  const erreurConfirmerMDP = mdpIdentiques(
+    nouveauMDP.value,
+    confirmerMDP.value,
+  );
+  if (erreurConfirmerMDP) messagesErreur.value.push(erreurConfirmerMDP);
 
-  const hash = bcrypt.hashSync(nouveauMotdepasse.value);
+  if (messagesErreur.value.length != 0) return;
+
+  const hash = bcrypt.hashSync(nouveauMDP.value);
 
   const body = {
     id: props.utilisateur.id,
@@ -59,9 +60,9 @@ async function changerMotdepasse() {
 }
 
 function resetInputs() {
-  ancienMotdepasse.value = "";
-  nouveauMotdepasse.value = "";
-  confirmerMotdepasse.value = "";
+  ancienMDP.value = "";
+  nouveauMDP.value = "";
+  confirmerMDP.value = "";
 }
 </script>
 
@@ -78,7 +79,7 @@ function resetInputs() {
       <div class="flex flex-col">
         <label>Ancien mot de passe :</label>
         <Password
-          v-model="ancienMotdepasse"
+          v-model="ancienMDP"
           :feedback="false"
           toggle-mask
           :style="{ width: '100%' }"
@@ -88,7 +89,7 @@ function resetInputs() {
       <div class="flex flex-col">
         <label>Nouveau mot de passe :</label>
         <Password
-          v-model="nouveauMotdepasse"
+          v-model="nouveauMDP"
           :feedback="false"
           toggle-mask
           :style="{ width: '100%' }"
@@ -98,7 +99,7 @@ function resetInputs() {
       <div class="flex flex-col">
         <label>Confirmer nouveau mot de passe :</label>
         <Password
-          v-model="confirmerMotdepasse"
+          v-model="confirmerMDP"
           :feedback="false"
           toggle-mask
           :style="{ width: '100%' }"
@@ -111,6 +112,7 @@ function resetInputs() {
           severity="secondary"
           @callback="
             resetInputs();
+            messagesErreur = [];
             $emit('update:visible', false);
           "
         />
@@ -122,17 +124,12 @@ function resetInputs() {
           "
         />
       </div>
-      <template v-if="ancienMotdepasseIncorrect">
-        <p class="text-red-500">
-          Votre saisie de votre ancien mot de passe ne correspond pas à votre
-          mot de passe actuelle
-        </p>
-      </template>
-      <template v-if="confirmationMotdepasseIncorrect">
-        <p class="text-red-500">
-          Le champ "nouveau de passe" et "confirmer nouveau de passe" ne sont
-          pas les mêmes
-        </p>
+      <template v-if="messagesErreur.length != 0">
+        <div class="text-red-500">
+          <ul>
+            <li v-for="messageErreur in messagesErreur">{{ messageErreur }}</li>
+          </ul>
+        </div>
       </template>
     </div>
   </Dialog>

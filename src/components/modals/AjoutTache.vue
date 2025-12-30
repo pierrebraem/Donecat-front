@@ -4,6 +4,7 @@ import { formatageDate } from "@/utils/formatageDate";
 import Bouton from "@/components/Bouton.vue";
 import { postTache } from "@/utils/requetes/tache";
 import { statusTache } from "@/utils/statusTache";
+import { inferieurXCarac, verifieChampVide } from "@/utils/gestionErreurs";
 import { ref } from "vue";
 
 const props = defineProps({
@@ -21,7 +22,7 @@ const props = defineProps({
   },
 });
 
-defineEmits(["update:visible"]);
+const emit = defineEmits(["update:visible"]);
 
 const status = ref(statusTache);
 
@@ -29,12 +30,50 @@ const utilisateurs = ref([]);
 const projets = ref([]);
 
 const nomTache = ref("");
-const selectedDev = ref({});
-const selectedStatus = ref({});
-const selectedProjet = ref({});
-const dateFin = ref({});
+const selectedDev = ref("");
+const selectedStatus = ref("");
+const selectedProjet = ref("");
+const dateFin = ref("");
+
+const messagesErreur = ref([]);
+
+function verifieErrChampsVides() {
+  const erreurNomVide = verifieChampVide(nomTache.value, "Nom de la tâche");
+  if (erreurNomVide) messagesErreur.value.push(erreurNomVide);
+
+  const erreurDevVide = verifieChampVide(
+    selectedDev.value,
+    "Nom du développeur",
+  );
+  if (erreurDevVide) messagesErreur.value.push(erreurDevVide);
+
+  const erreurProjetVide = verifieChampVide(
+    selectedProjet.value,
+    "Projet affecté",
+  );
+  if (erreurProjetVide) messagesErreur.value.push(erreurProjetVide);
+
+  const erreurStatusVide = verifieChampVide(selectedStatus.value, "Status");
+  if (erreurStatusVide) messagesErreur.value.push(erreurStatusVide);
+
+  const erreurDateVide = verifieChampVide(dateFin.value, "Date de fin");
+  if (erreurDateVide) messagesErreur.value.push(erreurDateVide);
+}
 
 async function ajouterTache() {
+  messagesErreur.value = [];
+
+  verifieErrChampsVides();
+
+  const erreurNomTaille = inferieurXCarac(
+    nomTache.value,
+    100,
+    "Nom de la tâche",
+  );
+  if (erreurNomTaille) messagesErreur.value.push(erreurNomTaille);
+
+  if (messagesErreur.value.length != 0) return;
+
   const body = {
     nom: nomTache.value,
     description: nomTache.value,
@@ -45,14 +84,18 @@ async function ajouterTache() {
   };
 
   await postTache(body);
+
+  emit("update:visible", false);
 }
 
 function resetInputs() {
   nomTache.value = "";
-  selectedDev.value = {};
-  selectedStatus.value = {};
-  selectedProjet.value = {};
-  dateFin.value = {};
+  selectedDev.value = "";
+  selectedStatus.value = "";
+  selectedProjet.value = "";
+  dateFin.value = "";
+
+  messagesErreur.value = [];
 }
 
 function affecterValeurs() {
@@ -109,7 +152,7 @@ function affecterValeurs() {
       </div>
       <div class="flex flex-col">
         <label>Date de fin :</label>
-        <DatePicker v-model="dateFin" date-format="dd/mm/yy" />
+        <DatePicker v-model="dateFin" date-format="dd/mm/yy" fluid />
       </div>
       <div class="flex justify-end gap-2">
         <Bouton
@@ -120,15 +163,15 @@ function affecterValeurs() {
             $emit('update:visible', false);
           "
         />
-        <Bouton
-          label="Ajouter"
-          @callback="
-            ajouterTache();
-            resetInputs();
-            $emit('update:visible', false);
-          "
-        />
+        <Bouton label="Ajouter" @callback="ajouterTache()" />
       </div>
+      <template v-if="messagesErreur.length != 0">
+        <div class="text-red-500">
+          <ul>
+            <li v-for="messageErreur in messagesErreur">{{ messageErreur }}</li>
+          </ul>
+        </div>
+      </template>
     </div>
   </Dialog>
 </template>

@@ -2,6 +2,7 @@
 import { Dialog, InputText, Select } from "primevue";
 import Bouton from "@/components/Bouton.vue";
 import { putProjet } from "@/utils/requetes/projet";
+import { verifieChampVide, inferieurXCarac } from "@/utils/gestionErreurs";
 import { ref } from "vue";
 
 const props = defineProps({
@@ -19,17 +20,39 @@ const props = defineProps({
   },
 });
 
-defineEmits(["update:visible"]);
+const emit = defineEmits(["update:visible"]);
 
 const nom = ref("");
-const selectedEquipe = ref({});
+const selectedEquipe = ref("");
+
+const messagesErreur = ref([]);
 
 function chargerDonnees() {
-  (nom.value = props.projet.nom),
-    (selectedEquipe.value = props.projet.equipe_id);
+  ((nom.value = props.projet.nom),
+    (selectedEquipe.value = props.projet.equipe_id));
+}
+
+function verifieErrChampsVides() {
+  const erreurNomVide = verifieChampVide(nom.value, "Nom du projet");
+  if (erreurNomVide) messagesErreur.value.push(erreurNomVide);
+
+  const erreurSelectEquipeVide = verifieChampVide(
+    selectedEquipe.value,
+    "Equipe à affecter au projet",
+  );
+  if (erreurSelectEquipeVide) messagesErreur.value.push(erreurSelectEquipeVide);
 }
 
 async function modifierProjet() {
+  messagesErreur.value = [];
+
+  verifieErrChampsVides();
+
+  const erreurNomTaille = inferieurXCarac(nom.value, 100, "Nom du projet");
+  if (erreurNomTaille) messagesErreur.value.push(erreurNomTaille);
+
+  if (messagesErreur.value.length != 0) return;
+
   const body = {
     id: props.projet.id,
     nom: nom.value,
@@ -43,7 +66,9 @@ async function modifierProjet() {
 
 function resetInputs() {
   nom.value = "";
-  selectedEquipe.value = {};
+  selectedEquipe.value = "";
+
+  messagesErreur.value = [];
 }
 </script>
 
@@ -81,15 +106,15 @@ function resetInputs() {
             $emit('update:visible', false);
           "
         />
-        <Bouton
-          label="Modifier"
-          @callback="
-            modifierProjet();
-            resetInputs();
-            $emit('update:visible', false);
-          "
-        />
+        <Bouton label="Modifier" @callback="modifierProjet()" />
       </div>
+      <template v-if="messagesErreur.length != 0">
+        <div class="text-red-500">
+          <ul>
+            <li v-for="messageErreur in messagesErreur">{{ messageErreur }}</li>
+          </ul>
+        </div>
+      </template>
     </div>
   </Dialog>
 </template>

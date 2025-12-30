@@ -3,6 +3,12 @@ import { Dialog, InputText, Select, Password } from "primevue";
 import Bouton from "@/components/Bouton.vue";
 import { postUtilisateur } from "@/utils/requetes/utilisateur";
 import { statusUtilisateur } from "@/utils/statusUtilisateur";
+import {
+  mdpIdentiques,
+  inferieurXCarac,
+  verifieChampVide,
+  verifieValiditeEmail,
+} from "@/utils/gestionErreurs";
 import bcrypt from "bcryptjs";
 import { ref } from "vue";
 
@@ -22,18 +28,58 @@ const prenom = ref("");
 const email = ref("");
 const pseudo = ref("");
 const motdepasse = ref("");
-const confirmerMotdepasse = ref("");
-const selectedStatus = ref({});
+const confirmerMDP = ref("");
+const selectedStatus = ref("");
 
-const confirmationMotdepassIncorrect = ref(false);
+const messagesErreur = ref([]);
+
+function verifieErrChampsVides() {
+  const erreurNomVide = verifieChampVide(nom.value, "Nom");
+  if (erreurNomVide) messagesErreur.value.push(erreurNomVide);
+
+  const erreurPrenomVide = verifieChampVide(prenom.value, "Prenom");
+  if (erreurPrenomVide) messagesErreur.value.push(erreurPrenomVide);
+
+  const erreurEmailVide = verifieChampVide(email.value, "Adresse mail");
+  if (erreurEmailVide) messagesErreur.value.push(erreurEmailVide);
+
+  const erreurPseudoVide = verifieChampVide(pseudo.value, "Pseudo");
+  if (erreurPseudoVide) messagesErreur.value.push(erreurPseudoVide);
+
+  const erreurStatusVide = verifieChampVide(selectedStatus.value, "Status");
+  if (erreurStatusVide) messagesErreur.value.push(erreurStatusVide);
+}
+
+function verifieErrTailleChamps() {
+  const erreurNomTaille = inferieurXCarac(nom.value, 100, "Nom");
+  if (erreurNomTaille) messagesErreur.value.push(erreurNomTaille);
+
+  const erreurPrenomTaille = inferieurXCarac(prenom.value, 100, "Prénom");
+  if (erreurPrenomTaille) messagesErreur.value.push(erreurPrenomTaille);
+
+  const erreurEmailTaille = inferieurXCarac(email.value, 255, "Adresse mail");
+  if (erreurEmailTaille) messagesErreur.value.push(erreurEmailTaille);
+
+  const erreurPseudoTaille = inferieurXCarac(pseudo.value, 100, "Pseudo");
+  if (erreurPseudoTaille) messagesErreur.value.push(erreurPseudoTaille);
+}
 
 async function ajouterUtilisateur() {
-  confirmationMotdepassIncorrect.value = false;
+  messagesErreur.value = [];
 
-  if (motdepasse.value != confirmerMotdepasse.value) {
-    confirmationMotdepassIncorrect.value = true;
-    return;
-  }
+  verifieErrChampsVides();
+  verifieErrTailleChamps();
+
+  const erreurFormatEmail = verifieValiditeEmail(email.value);
+  if (erreurFormatEmail) messagesErreur.value.push(erreurFormatEmail);
+
+  const erreurConfirmerMDP = mdpIdentiques(
+    motdepasse.value,
+    confirmerMDP.value,
+  );
+  if (erreurConfirmerMDP) messagesErreur.value.push(erreurConfirmerMDP);
+
+  if (messagesErreur.value.length != 0) return;
 
   const hash = bcrypt.hashSync(motdepasse.value, 10);
 
@@ -57,10 +103,10 @@ function resetInputs() {
   email.value = "";
   pseudo.value = "";
   motdepasse.value = "";
-  confirmerMotdepasse.value = "";
-  selectedStatus.value = {};
+  confirmerMDP.value = "";
+  selectedStatus.value = "";
 
-  confirmationMotdepassIncorrect.value = false;
+  messagesErreur.value = [];
 }
 </script>
 
@@ -103,7 +149,7 @@ function resetInputs() {
       <div class="flex flex-col">
         <label>Confirmer mot de passe :</label>
         <Password
-          v-model="confirmerMotdepasse"
+          v-model="confirmerMDP"
           :feedback="false"
           toggle-mask
           :style="{ width: '100%' }"
@@ -130,11 +176,12 @@ function resetInputs() {
         />
         <Bouton label="Ajouter" @callback="ajouterUtilisateur()" />
       </div>
-      <template v-if="confirmationMotdepassIncorrect">
-        <p class="text-red-500">
-          Le champ "Mot de passe" et "Confirmer mot de passe" ne sont pas les
-          mêmes
-        </p>
+      <template v-if="messagesErreur.length != 0">
+        <div class="text-red-500">
+          <ul>
+            <li v-for="messageErreur in messagesErreur">{{ messageErreur }}</li>
+          </ul>
+        </div>
       </template>
     </div>
   </Dialog>

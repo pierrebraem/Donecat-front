@@ -2,6 +2,7 @@
 import { Dialog, InputText, Select } from "primevue";
 import Bouton from "@/components/Bouton.vue";
 import { putEquipe } from "@/utils/requetes/equipe";
+import { inferieurXCarac, verifieChampVide } from "@/utils/gestionErreurs";
 import { ref } from "vue";
 
 const props = defineProps({
@@ -22,19 +23,46 @@ const props = defineProps({
 const emit = defineEmits(["update:visible"]);
 
 const nom = ref("");
-const selectedManager = ref({});
-const selectedDevs = ref([{}]);
+const selectedManager = ref("");
+const selectedDevs = ref([""]);
 
 const dataManagers = ref([]);
 const dataDevs = ref([]);
 
+const messagesErreur = ref([]);
+
 function chargerDonnees() {
-  (nom.value = props.equipe.nom),
-    (selectedManager.value = props.equipe.manager);
+  ((nom.value = props.equipe.nom),
+    (selectedManager.value = props.equipe.manager));
   selectedDevs.value = props.equipe.membres;
 }
 
+function verifieErrChampsVides() {
+  const erreurNomVide = verifieChampVide(nom.value, "Nom de l'équipe");
+  if (erreurNomVide) messagesErreur.value.push(erreurNomVide);
+
+  const erreurManagerVide = verifieChampVide(
+    selectedManager.value,
+    "Manager de l'équipe",
+  );
+  if (erreurManagerVide) messagesErreur.value.push(erreurManagerVide);
+
+  for (const [index, dev] of selectedDevs.value.entries()) {
+    const erreurDevVide = verifieChampVide(dev, "Développeur n°" + (index + 1));
+    if (erreurDevVide) messagesErreur.value.push(erreurDevVide);
+  }
+}
+
 async function modifierEquipe() {
+  messagesErreur.value = [];
+
+  verifieErrChampsVides();
+
+  const erreurNomTaille = inferieurXCarac(nom.value, 100, "Nom de l'équipe");
+  if (erreurNomTaille) messagesErreur.value.push(erreurNomTaille);
+
+  if (messagesErreur.value.length != 0) return;
+
   const body = {
     id: props.equipe.id,
     nom: nom.value,
@@ -49,12 +77,14 @@ async function modifierEquipe() {
 
 function resetInputs() {
   nom.value = "";
-  selectedManager.value = {};
-  selectedDevs.value = [{}];
+  selectedManager.value = "";
+  selectedDevs.value = [""];
+
+  messagesErreur.value = [];
 }
 
 function ajouterDevDansLeSelect() {
-  selectedDevs.value.push({});
+  selectedDevs.value.push("");
 }
 
 function supprimerDevDansLeSelect(index) {
@@ -146,15 +176,15 @@ function affecterValeurs() {
             $emit('update:visible', false);
           "
         />
-        <Bouton
-          label="Modifier"
-          @callback="
-            modifierEquipe();
-            resetInputs();
-            $emit('update:visible', false);
-          "
-        />
+        <Bouton label="Modifier" @callback="modifierEquipe()" />
       </div>
+      <template v-if="messagesErreur.length != 0">
+        <div class="text-red-500">
+          <ul>
+            <li v-for="messageErreur in messagesErreur">{{ messageErreur }}</li>
+          </ul>
+        </div>
+      </template>
     </div>
   </Dialog>
 </template>

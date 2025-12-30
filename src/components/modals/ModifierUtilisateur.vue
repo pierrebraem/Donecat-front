@@ -2,6 +2,11 @@
 import { Dialog, InputText, Select } from "primevue";
 import { putUtilisateur } from "@/utils/requetes/utilisateur";
 import { statusUtilisateur } from "@/utils/statusUtilisateur";
+import {
+  inferieurXCarac,
+  verifieChampVide,
+  verifieValiditeEmail,
+} from "@/utils/gestionErreurs";
 import Bouton from "@/components/Bouton.vue";
 import { ref } from "vue";
 
@@ -24,7 +29,9 @@ const nom = ref("");
 const prenom = ref("");
 const email = ref("");
 const pseudo = ref("");
-const selectedStatus = ref({});
+const selectedStatus = ref("");
+
+const messagesErreur = ref([]);
 
 function chargerDonnees() {
   nom.value = props.utilisateur.nom;
@@ -34,7 +41,48 @@ function chargerDonnees() {
   selectedStatus.value = props.utilisateur.status;
 }
 
+function verifieErrChampsVides() {
+  const erreurNomVide = verifieChampVide(nom.value, "Nom");
+  if (erreurNomVide) messagesErreur.value.push(erreurNomVide);
+
+  const erreurPrenomVide = verifieChampVide(prenom.value, "Prenom");
+  if (erreurPrenomVide) messagesErreur.value.push(erreurPrenomVide);
+
+  const erreurEmailVide = verifieChampVide(email.value, "Adresse mail");
+  if (erreurEmailVide) messagesErreur.value.push(erreurEmailVide);
+
+  const erreurPseudoVide = verifieChampVide(pseudo.value, "Pseudo");
+  if (erreurPseudoVide) messagesErreur.value.push(erreurPseudoVide);
+
+  const erreurStatusVide = verifieChampVide(selectedStatus.value, "Status");
+  if (erreurStatusVide) messagesErreur.value.push(erreurStatusVide);
+}
+
+function verifieErrTailleChamps() {
+  const erreurNomTaille = inferieurXCarac(nom.value, 100, "Nom");
+  if (erreurNomTaille) messagesErreur.value.push(erreurNomTaille);
+
+  const erreurPrenomTaille = inferieurXCarac(prenom.value, 100, "Prénom");
+  if (erreurPrenomTaille) messagesErreur.value.push(erreurPrenomTaille);
+
+  const erreurEmailTaille = inferieurXCarac(email.value, 255, "Adresse mail");
+  if (erreurEmailTaille) messagesErreur.value.push(erreurEmailTaille);
+
+  const erreurPseudoTaille = inferieurXCarac(pseudo.value, 100, "Pseudo");
+  if (erreurPseudoTaille) messagesErreur.value.push(erreurPseudoTaille);
+}
+
 async function modifierUtilisateur() {
+  messagesErreur.value = [];
+
+  verifieErrChampsVides();
+  verifieErrTailleChamps();
+
+  const erreurFormatEmail = verifieValiditeEmail(email.value);
+  if (erreurFormatEmail) messagesErreur.value.push(erreurFormatEmail);
+
+  if (messagesErreur.value.length != 0) return;
+
   const body = {
     id: props.utilisateur.id,
     nom: nom.value,
@@ -55,7 +103,9 @@ function resetInputs() {
   prenom.value = "";
   email.value = "";
   pseudo.value = "";
-  selectedStatus.value = {};
+  selectedStatus.value = "";
+
+  messagesErreur.value = [];
 }
 </script>
 
@@ -109,15 +159,15 @@ function resetInputs() {
             $emit('update:visible', false);
           "
         />
-        <Bouton
-          label="Modifier"
-          @callback="
-            modifierUtilisateur();
-            resetInputs();
-            $emit('update:visible', false);
-          "
-        />
+        <Bouton label="Modifier" @callback="modifierUtilisateur()" />
       </div>
+      <template v-if="messagesErreur.length != 0">
+        <div class="text-red-500">
+          <ul>
+            <li v-for="messageErreur in messagesErreur">{{ messageErreur }}</li>
+          </ul>
+        </div>
+      </template>
     </div>
   </Dialog>
 </template>
