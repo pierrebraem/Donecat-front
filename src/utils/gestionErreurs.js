@@ -22,6 +22,15 @@ export function verifieValiditeEmail(email) {
   return;
 }
 
+export function verifieValiditeMdp(mdp) {
+  const regex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@!#^<>?$])[A-Za-z\d@!#^<>?$]{8,}$/;
+  if (!regex.test(mdp)) {
+    return "Votre mot de passe doit contenir au minimun 8 caractères, une majuscule, une minuscule, un nombre et un caractère spécial (@, !, #, ^, <, >, ?, $)";
+  }
+  return;
+}
+
 export function compareMdp(saisiMdp, mdpActuel) {
   if (!bcrypt.compareSync(saisiMdp, mdpActuel)) {
     return "Votre saisi de votre ancien mot de passe ne correspond pas à votre mot de passe actuel";

@@ -1,5 +1,5 @@
 <script setup>
-import { Dialog, InputText, Select, Password } from "primevue";
+import { Dialog, InputText, Select, Password, Message } from "primevue";
 import Bouton from "@/components/Bouton.vue";
 import AfficherErreurs from "../AfficherErreurs.vue";
 import { postUtilisateur } from "@/utils/requetes/utilisateur";
@@ -9,6 +9,7 @@ import {
   inferieurXCarac,
   verifieChampVide,
   verifieValiditeEmail,
+  verifieValiditeMdp,
 } from "@/utils/gestionErreurs";
 import bcrypt from "bcryptjs";
 import { ref } from "vue";
@@ -73,6 +74,9 @@ async function ajouterUtilisateur() {
 
   const erreurFormatEmail = verifieValiditeEmail(email.value);
   if (erreurFormatEmail) messagesErreur.value.push(erreurFormatEmail);
+
+  const erreurMDPCritere = verifieValiditeMdp(motdepasse.value);
+  if (erreurMDPCritere) messagesErreur.value.push(erreurMDPCritere);
 
   const erreurConfirmerMDP = mdpIdentiques(
     motdepasse.value,
@@ -146,6 +150,11 @@ function resetInputs() {
           :style="{ width: '100%' }"
           :input-style="{ width: '100%' }"
         />
+        <Message size="small" severity="secondary" variant="simple"
+          >Le mot de passe doit contenir au minimun 8 caractères, une majuscule,
+          une minuscule, un nombre et un caractère spécial (@, !, #, ^, <, >, ?,
+          $)</Message
+        >
       </div>
       <div class="flex flex-col">
         <label>Confirmer mot de passe :</label>
