@@ -8,6 +8,7 @@ import {
   mdpIdentiques,
   inferieurXCarac,
   verifieChampVide,
+  verifieExistanceEmail,
   verifieValiditeEmail,
   verifieValiditeMdp,
 } from "@/utils/gestionErreurs";
@@ -71,6 +72,9 @@ async function ajouterUtilisateur() {
 
   verifieErrChampsVides();
   verifieErrTailleChamps();
+
+  const erreurExistEmail = await verifieExistanceEmail(email.value);
+  if (erreurExistEmail) messagesErreur.value.push(erreurExistEmail);
 
   const erreurFormatEmail = verifieValiditeEmail(email.value);
   if (erreurFormatEmail) messagesErreur.value.push(erreurFormatEmail);

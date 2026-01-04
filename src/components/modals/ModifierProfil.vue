@@ -6,6 +6,7 @@ import { putUtilisateur } from "@/utils/requetes/utilisateur";
 import {
   inferieurXCarac,
   verifieChampVide,
+  verifieExistanceEmail,
   verifieValiditeEmail,
 } from "@/utils/gestionErreurs";
 import { ref } from "vue";
@@ -26,6 +27,7 @@ const emit = defineEmits(["update:visible"]);
 const nom = ref("");
 const prenom = ref("");
 const email = ref("");
+const emailOrigine = ref("");
 const pseudo = ref("");
 
 const messagesErreur = ref([]);
@@ -34,6 +36,7 @@ function chargerDonnees() {
   nom.value = props.utilisateur.nom;
   prenom.value = props.utilisateur.prenom;
   email.value = props.utilisateur.email;
+  emailOrigine.value = props.utilisateur.email;
   pseudo.value = props.utilisateur.pseudo;
 }
 
@@ -70,6 +73,11 @@ async function modifierProfil() {
 
   verifieErrChampsVides();
   verifieErrTailleChamps();
+
+  if (email.value != emailOrigine.value) {
+    const erreurExistEmail = await verifieExistanceEmail(email.value);
+    if (erreurExistEmail) messagesErreur.value.push(erreurExistEmail);
+  }
 
   const erreurFormatEmail = verifieValiditeEmail(email.value);
   if (erreurFormatEmail) messagesErreur.value.push(erreurFormatEmail);

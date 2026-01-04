@@ -6,6 +6,7 @@ import { statusUtilisateur } from "@/utils/statusUtilisateur";
 import {
   inferieurXCarac,
   verifieChampVide,
+  verifieExistanceEmail,
   verifieValiditeEmail,
 } from "@/utils/gestionErreurs";
 import Bouton from "@/components/Bouton.vue";
@@ -29,6 +30,7 @@ const status = ref(statusUtilisateur);
 const nom = ref("");
 const prenom = ref("");
 const email = ref("");
+const emailOrigine = ref("");
 const pseudo = ref("");
 const selectedStatus = ref("");
 
@@ -38,6 +40,7 @@ function chargerDonnees() {
   nom.value = props.utilisateur.nom;
   prenom.value = props.utilisateur.prenom;
   email.value = props.utilisateur.email;
+  emailOrigine.value = props.utilisateur.email;
   pseudo.value = props.utilisateur.pseudo;
   selectedStatus.value = props.utilisateur.status;
 }
@@ -78,6 +81,11 @@ async function modifierUtilisateur() {
 
   verifieErrChampsVides();
   verifieErrTailleChamps();
+
+  if (email.value != emailOrigine.value) {
+    const erreurExistEmail = await verifieExistanceEmail(email.value);
+    if (erreurExistEmail) messagesErreur.value.push(erreurExistEmail);
+  }
 
   const erreurFormatEmail = verifieValiditeEmail(email.value);
   if (erreurFormatEmail) messagesErreur.value.push(erreurFormatEmail);

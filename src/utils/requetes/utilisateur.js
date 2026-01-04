@@ -10,6 +10,14 @@ export async function getUtilisateur(id) {
   return data;
 }
 
+export async function getUtilisateurByEmail(email) {
+  const response = await fetch(
+    "http://localhost:3000/utilisateurs?email=" + email,
+  );
+  const data = await response.json();
+  return data;
+}
+
 export async function postUtilisateur(body) {
   await fetch("http://localhost:3000/utilisateurs", {
     method: "POST",

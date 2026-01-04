@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import { getUtilisateurByEmail } from "@/utils/requetes/utilisateur";
 
 export function verifieChampVide(texte, nomChamp) {
   if (texte == "") {
@@ -10,6 +11,15 @@ export function verifieChampVide(texte, nomChamp) {
 export function inferieurXCarac(texte, limite, nomChamp) {
   if (texte.length >= limite) {
     return `Le champ "${nomChamp}" doit contenir moins de ${limite} caratères.`;
+  }
+  return;
+}
+
+export async function verifieExistanceEmail(email) {
+  const response = await getUtilisateurByEmail(email);
+
+  if (response.length > 0) {
+    return `L'adresse mail "${email}" existe déjà. Veuillez en prendre un autre.`;
   }
   return;
 }
