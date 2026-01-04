@@ -81,31 +81,28 @@ async function changerTache() {
 
   await putTache(props.tache.id, body);
 
-  changeNom.value = false;
-  changeDescription.value = false;
-  changeStatus.value = false;
-  changeDatefin.value = false;
-  changeProjet.value = false;
-  changeDeveloppeur.value = false;
+  reset();
 }
 
 function supprimerTache(id, nom) {
   confirm.require({
     message:
-      "Vous êtes sur le point de supprimer la tâche " + nom + ". Etes-vous sur de vouloir le supprier définitivement?",
-    header : "Suppression de la tâche " + nom,
+      "Vous êtes sur le point de supprimer la tâche " +
+      nom +
+      ". Etes-vous sur de vouloir le supprier définitivement?",
+    header: "Suppression de la tâche " + nom,
     rejectProps: {
       label: "Annuler",
-      severity: "secondary"
+      severity: "secondary",
     },
     acceptProps: {
       label: "Supprimer",
-      severity: "danger"
+      severity: "danger",
     },
     accept: async () => {
       await deleteTache(id);
-    }
-  })
+    },
+  });
 }
 
 function reset() {
@@ -253,7 +250,7 @@ function reset() {
           @callback="$emit('update:visible', false)"
         />
         <template v-if="role == 'Manager'">
-          <Bouton 
+          <Bouton
             label="Supprimer"
             severity="danger"
             @callback="supprimerTache(tache.id, tache.nom)"
