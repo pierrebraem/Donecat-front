@@ -1,17 +1,17 @@
 export async function getEquipes() {
-  const response = await fetch("http://localhost:3000/equipes");
+  const response = await fetch(import.meta.env.VITE_API_URL + "/equipes");
   const data = await response.json();
   return data;
 }
 
 export async function getEquipe(id) {
-  const response = await fetch("http://localhost:3000/equipes/" + id);
+  const response = await fetch(import.meta.env.VITE_API_URL + "/equipes/" + id);
   const data = await response.json();
   return data;
 }
 
 export async function postEquipe(body) {
-  await fetch("http://localhost:3000/equipes", {
+  await fetch(import.meta.env.VITE_API_URL + "/equipes", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
@@ -19,7 +19,7 @@ export async function postEquipe(body) {
 }
 
 export async function putEquipe(id, body) {
-  await fetch("http://localhost:3000/equipes/" + id, {
+  await fetch(import.meta.env.VITE_API_URL + "/equipes/" + id, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
@@ -27,7 +27,7 @@ export async function putEquipe(id, body) {
 }
 
 export async function deleteEquipe(id) {
-  await fetch("http://localhost:3000/equipes/" + id, {
+  await fetch(import.meta.env.VITE_API_URL + "/equipes/" + id, {
     method: "DELETE",
   });
 }

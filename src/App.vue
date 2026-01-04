@@ -3,7 +3,6 @@ import { Menubar } from "primevue";
 import { onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useUtilisateurStore } from "./stores/utilisateur";
-import Cookies from "js-cookie";
 
 const router = useRouter();
 const utilisateurStore = useUtilisateurStore();
