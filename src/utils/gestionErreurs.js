@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { getUtilisateurByEmail } from "@/utils/requetes/utilisateur";
+import { getUtilisateursByEmail } from "@/utils/requetes/utilisateur";
 
 export function verifieChampVide(texte, nomChamp) {
   if (texte == "") {
@@ -16,7 +16,7 @@ export function inferieurXCarac(texte, limite, nomChamp) {
 }
 
 export async function verifieExistanceEmail(email) {
-  const response = await getUtilisateurByEmail(email);
+  const response = await getUtilisateursByEmail(email);
 
   if (response.length > 0) {
     return `L'adresse mail "${email}" existe déjà. Veuillez en prendre un autre.`;

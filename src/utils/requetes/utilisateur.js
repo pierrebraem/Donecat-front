@@ -4,13 +4,21 @@ export async function getUtilisateurs() {
   return data;
 }
 
+export async function getUtilisateursSansAdmin() {
+  const response = await fetch(
+    "http://localhost:3000/utilisateurs?status_ne=Administrateur",
+  );
+  const data = await response.json();
+  return data;
+}
+
 export async function getUtilisateur(id) {
   const response = await fetch("http://localhost:3000/utilisateurs/" + id);
   const data = await response.json();
   return data;
 }
 
-export async function getUtilisateurByEmail(email) {
+export async function getUtilisateursByEmail(email) {
   const response = await fetch(
     "http://localhost:3000/utilisateurs?email=" + email,
   );

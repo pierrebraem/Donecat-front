@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { getUtilisateurs } from "@/utils/requetes/utilisateur";
+import { getUtilisateursByEmail } from "@/utils/requetes/utilisateur";
 import bcrypt from "bcryptjs";
 import Cookies from "js-cookie";
 
@@ -8,16 +8,16 @@ export const useUtilisateurStore = defineStore("utilisateur", () => {
   const utilisateur = ref(null);
 
   async function login(email, password) {
-    const utilisateurs = await getUtilisateurs();
-    const res = utilisateurs.find((item) => item.email == email);
+    let utilisateurs = [];
 
-    if (res == undefined) {
-      return false;
+    if (email != "") {
+      utilisateurs = await getUtilisateursByEmail(email);
     }
 
-    if (!bcrypt.compareSync(password, res.motdepasse)) {
+    const res = utilisateurs[0];
+
+    if (res == undefined || !bcrypt.compareSync(password, res.motdepasse))
       return false;
-    }
 
     utilisateur.value = {
       id: res.id,

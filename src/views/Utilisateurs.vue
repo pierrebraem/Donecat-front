@@ -7,7 +7,7 @@ import Bouton from "@/components/Bouton.vue";
 import Utilisateur from "@/components/cartes/Utilisateur.vue";
 import Chargement from "@/components/Chargement.vue";
 import {
-  getUtilisateurs,
+  getUtilisateursSansAdmin,
   deleteUtilisateur,
 } from "@/utils/requetes/utilisateur";
 import { ref, onMounted } from "vue";
@@ -63,7 +63,7 @@ onMounted(async () => {
     return;
   }
 
-  utilisateurs.value = await getUtilisateurs();
+  utilisateurs.value = await getUtilisateursSansAdmin();
   chargement.value = false;
 });
 </script>

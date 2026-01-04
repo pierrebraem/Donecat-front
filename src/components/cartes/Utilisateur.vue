@@ -11,7 +11,7 @@ defineProps({
 </script>
 
 <template>
-  <Card class="carte" v-if="utilisateur.status != 'Administrateur'">
+  <Card class="carte">
     <template #content>
       <div class="flex flex-col space-y-2">
         <p class="font-bold">
