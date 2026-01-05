@@ -20,7 +20,12 @@ async function login() {
   if (!success) {
     is_email_or_password_invalid.value = true;
   } else {
-    router.push("/gestion");
+    const mdpChange = utilisateurStore.checkIfPasswordChanged();
+    if (!mdpChange) {
+      router.push("/changementMDP");
+    } else {
+      router.push("/gestion");
+    }
   }
 }
 

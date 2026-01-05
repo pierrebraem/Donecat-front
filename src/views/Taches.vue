@@ -8,6 +8,7 @@ import {
   Checkbox,
   TabPanel,
 } from "primevue";
+import { useUtilisateurStore } from "@/stores/utilisateur";
 import AjoutTache from "@/components/modals/AjoutTache.vue";
 import VisualisationTache from "@/components/modals/VisualisationTache.vue";
 import Bouton from "@/components/Bouton.vue";
@@ -23,6 +24,8 @@ import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
 
 const router = useRouter();
+
+const utilisateurStore = useUtilisateurStore();
 
 const visibleAjoutTache = ref(false);
 const visibleVisualisationTache = ref(false);
@@ -95,6 +98,9 @@ onMounted(async () => {
     router.push("/connexion");
     return;
   }
+
+  const mdpChange = utilisateurStore.checkIfPasswordChanged();
+  if (!mdpChange) router.push("/changementMDP");
 
   cookie.value = JSON.parse(Cookies.get("utilisateur"));
   equipes.value = await getEquipes();

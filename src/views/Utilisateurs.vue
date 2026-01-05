@@ -1,6 +1,7 @@
 <script setup>
 import { Card, ConfirmDialog } from "primevue";
 import { useConfirm } from "primevue/useconfirm";
+import { useUtilisateurStore } from "@/stores/utilisateur";
 import AjoutUtilisateur from "@/components/modals/AjoutUtilisateur.vue";
 import modifierUtilisateur from "@/components/modals/ModifierUtilisateur.vue";
 import Bouton from "@/components/Bouton.vue";
@@ -17,6 +18,8 @@ import Cookies from "js-cookie";
 const router = useRouter();
 
 const confirm = useConfirm();
+
+const utilisateurStore = useUtilisateurStore();
 
 const visibleAjoutUtilisateur = ref(false);
 const visibleModifierUtilisateur = ref(false);
@@ -62,6 +65,9 @@ onMounted(async () => {
     router.push("/gestion");
     return;
   }
+
+  const mdpChange = utilisateurStore.checkIfPasswordChanged();
+  if (!mdpChange) router.push("/changementMDP");
 
   utilisateurs.value = await getUtilisateursSansAdmin();
   chargement.value = false;

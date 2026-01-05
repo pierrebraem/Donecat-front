@@ -26,7 +26,10 @@ function navbar() {
       },
     });
   } else {
-    if (utilisateurStore.utilisateur.status == "Administrateur") {
+    if (
+      utilisateurStore.utilisateur.status == "Administrateur" &&
+      utilisateurStore.utilisateur.lastLoginTime
+    ) {
       items.value.push({
         label: "Gestion des utilisateurs",
         command: () => {
@@ -34,33 +37,35 @@ function navbar() {
         },
       });
     }
-    items.value.push(
-      {
-        label: "Tableau de bord",
-        command: () => {
-          router.push("/gestion");
+    if (utilisateurStore.utilisateur.lastLoginTime) {
+      items.value.push(
+        {
+          label: "Tableau de bord",
+          command: () => {
+            router.push("/gestion");
+          },
         },
-      },
-      {
-        label: "Liste des tâches",
-        command: () => {
-          router.push("/taches");
+        {
+          label: "Liste des tâches",
+          command: () => {
+            router.push("/taches");
+          },
         },
-      },
-      {
-        label: "Profil",
-        command: () => {
-          router.push("/profil");
+        {
+          label: "Profil",
+          command: () => {
+            router.push("/profil");
+          },
         },
+      );
+    }
+    items.value.push({
+      label: "Deconnexion",
+      command: () => {
+        utilisateurStore.logout();
+        router.push("/connexion");
       },
-      {
-        label: "Deconnexion",
-        command: () => {
-          utilisateurStore.logout();
-          router.push("/connexion");
-        },
-      },
-    );
+    });
   }
 }
 

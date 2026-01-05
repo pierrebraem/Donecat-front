@@ -1,5 +1,6 @@
 <script setup>
 import { Card } from "primevue";
+import { useUtilisateurStore } from "@/stores/utilisateur";
 import ModifierProfil from "@/components/modals/ModifierProfil.vue";
 import ModifierMotdepasse from "@/components/modals/ModifierMotdepasse.vue";
 import VisualisationAPropos from "@/components/modals/VisualisationAPropos.vue";
@@ -10,6 +11,8 @@ import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
 
 const router = useRouter();
+
+const utilisateurStore = useUtilisateurStore();
 
 const visibleModifierProfil = ref(false);
 const visibleModifierMotdepasse = ref(false);
@@ -24,6 +27,9 @@ onMounted(async () => {
     router.push("/connexion");
     return;
   }
+
+  const mdpChange = utilisateurStore.checkIfPasswordChanged();
+  if (!mdpChange) router.push("/changementMDP");
 
   cookie.value = JSON.parse(Cookies.get("utilisateur"));
   utilisateur.value = await getUtilisateur(cookie.value.id);
@@ -67,7 +73,7 @@ onMounted(async () => {
             severity="warn"
             @callback="visibleModifierMotdepasse = true"
           />
-          <Bouton 
+          <Bouton
             label="A propos de l'outil"
             severity="success"
             @callback="visibleModifierAPropos = true"
@@ -85,7 +91,5 @@ onMounted(async () => {
     v-model:visible="visibleModifierMotdepasse"
     :utilisateur="utilisateur"
   />
-  <VisualisationAPropos 
-    v-model:visible="visibleModifierAPropos"
-  />
+  <VisualisationAPropos v-model:visible="visibleModifierAPropos" />
 </template>

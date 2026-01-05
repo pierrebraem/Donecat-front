@@ -1,6 +1,7 @@
 <script setup>
 import { Card, ConfirmDialog } from "primevue";
 import { useConfirm } from "primevue/useconfirm";
+import { useUtilisateurStore } from "@/stores/utilisateur";
 import AjoutEquipe from "@/components/modals/AjoutEquipe.vue";
 import AjoutProjet from "@/components/modals/AjoutProjet.vue";
 import ModifierEquipe from "@/components/modals/ModifierEquipe.vue";
@@ -18,6 +19,8 @@ import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
 
 const router = useRouter();
+
+const utilisateurStore = useUtilisateurStore();
 
 const confirm = useConfirm();
 
@@ -113,6 +116,9 @@ onMounted(async () => {
     router.push("/connexion");
     return;
   }
+
+  const mdpChange = utilisateurStore.checkIfPasswordChanged();
+  if (!mdpChange) router.push("/changementMDP");
 
   cookie.value = JSON.parse(Cookies.get("utilisateur"));
   equipes.value = await getEquipes();

@@ -1,6 +1,9 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { getUtilisateursByEmail } from "@/utils/requetes/utilisateur";
+import {
+  getUtilisateursByEmail,
+  getUtilisateur,
+} from "@/utils/requetes/utilisateur";
 import bcrypt from "bcryptjs";
 import Cookies from "js-cookie";
 
@@ -23,11 +26,19 @@ export const useUtilisateurStore = defineStore("utilisateur", () => {
       id: res.id,
       status: res.status,
       nom: res.prenom + " " + res.nom,
+      lastLoginTime: res.lastLoginTime,
     };
 
     Cookies.set("utilisateur", JSON.stringify(utilisateur.value), {
       expires: 1,
     });
+    return true;
+  }
+
+  function checkIfPasswordChanged() {
+    if (!utilisateur.value.lastLoginTime) {
+      return false;
+    }
     return true;
   }
 
@@ -42,5 +53,11 @@ export const useUtilisateurStore = defineStore("utilisateur", () => {
     }
   }
 
-  return { utilisateur, login, logout, checkIfCookiesIsSet };
+  return {
+    utilisateur,
+    login,
+    logout,
+    checkIfCookiesIsSet,
+    checkIfPasswordChanged,
+  };
 });
