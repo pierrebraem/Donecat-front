@@ -56,7 +56,7 @@ async function getData() {
   projet.value = await getProjet(props.tache.projet_id);
   utilisateur.value = await getUtilisateur(props.tache.developpeur_id);
 
-  tache.value = props.tache;
+  tache.value = JSON.parse(JSON.stringify(props.tache));
 
   role.value = props.cookie.status;
 
