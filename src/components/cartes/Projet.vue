@@ -1,17 +1,18 @@
 <script setup>
 import { Card } from "primevue";
+import DoughnutChart from "@/components/charts/DoughnutChart.vue";
 
-defineProps({
+const props = defineProps({
   projet: {
     type: Object,
     required: true,
   },
-  equipe: {
-    type: Object,
+  equipes: {
+    type: Array,
     required: true,
   },
-  compterTaches: {
-    type: Function,
+  taches: {
+    type: Array,
     required: true,
   },
   cookie: {
@@ -19,23 +20,30 @@ defineProps({
     required: true,
   },
 });
+
+function trouverNomEquipe(id) {
+  return props.equipes.find((item) => item.id == id).nom;
+}
+
+function compterTaches(id, type) {
+  return props.taches.filter(
+    (item) => item.categorie == type && item.projet_id == id,
+  ).length;
+}
+
+function totalTaches(id) {
+  return props.taches.filter((item) => item.projet_id == id).length;
+}
 </script>
 
 <template>
-  <Card class="carte h-70">
-    <template #title>{{ projet.nom }}</template>
-    <template #content>
-      <ul>
-        <li>
-          Tâches non commencées : {{ compterTaches(projet.id, "backlogs") }}
-        </li>
-        <li>Tâches en cours : {{ compterTaches(projet.id, "todo") }}</li>
-        <li>Tâches terminées : {{ compterTaches(projet.id, "done") }}</li>
-      </ul>
-    </template>
-    <template #footer>
-      <div class="mt-auto flex justify-center gap-3">
-        <template v-if="cookie.id == equipe.manager">
+  <Card class="w-full h-full">
+    <template #title>
+      <div class="flex justify-between">
+        <div>
+          <p class="text-xl font-bold">{{ projet.nom }}</p>
+        </div>
+        <div class="flex space-x-4" v-if="cookie.status == 'Manager'">
           <span
             class="pi pi-pencil"
             style="font-size: 1.3rem"
@@ -46,6 +54,29 @@ defineProps({
             style="font-size: 1.3rem"
             @click="$emit('supprimer')"
           />
+        </div>
+      </div>
+    </template>
+    <template #content>
+      <p>
+        Equipe auquelle le projet est associé :
+        {{ trouverNomEquipe(projet.equipe_id) }}
+      </p>
+      <div class="w-3/4">
+        <template v-if="totalTaches(projet.id) != 0">
+          <DoughnutChart
+            :nom-graphe="projet.nom"
+            :backlogs="compterTaches(projet.id, 'backlogs')"
+            :todo="compterTaches(projet.id, 'todo')"
+            :inprogress="compterTaches(projet.id, 'inprogress')"
+            :inreview="compterTaches(projet.id, 'inreview')"
+            :done="compterTaches(projet.id, 'done')"
+          />
+        </template>
+        <template v-else>
+          <p class="text-center p-4">
+            Il n'existe aucune tâche pour ce projet.
+          </p>
         </template>
       </div>
     </template>

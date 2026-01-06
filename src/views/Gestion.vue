@@ -4,8 +4,8 @@ import { useConfirm } from "primevue/useconfirm";
 import { useUtilisateurStore } from "@/stores/utilisateur";
 import AjoutModifEquipe from "@/components/modals/AjoutModifEquipe.vue";
 import AjoutModifProjet from "@/components/modals/AjoutModifProjet.vue";
-import DoughnutChart from "@/components/charts/DoughnutChart.vue";
 import Equipe from "@/components/cartes/Equipe.vue";
+import Projet from "@/components/cartes/Projet.vue";
 import Bouton from "@/components/Bouton.vue";
 import Chargement from "@/components/Chargement.vue";
 import { getTaches } from "@/utils/requetes/tache";
@@ -37,16 +37,6 @@ const taches = ref([]);
 const equipeActuelPourModification = ref(undefined);
 const projetActuelPourModification = ref(undefined);
 
-function compterTaches(id, type) {
-  return taches.value.filter(
-    (item) => item.categorie == type && item.projet_id == id,
-  ).length;
-}
-
-function totalTaches(id) {
-  return taches.value.filter((item) => item.projet_id == id).length;
-}
-
 function montrerEquipesEtProjetsEnFonctionDeLutilisateur() {
   if (cookie.value.status != "Administrateur") {
     equipes.value = equipes.value.filter(
@@ -63,10 +53,6 @@ function montrerEquipesEtProjetsEnFonctionDeLutilisateur() {
     }
     projets.value = newProjets.flat();
   }
-}
-
-function trouverNomEquipe(id) {
-  return equipes.value.find((item) => item.id == id).nom;
 }
 
 function supprimerEquipe(id, nom) {
@@ -183,53 +169,17 @@ onMounted(async () => {
 
       <div class="grid grid-cols-2 gap-2">
         <div v-for="projet in projets">
-          <Card class="w-full h-full">
-            <template #title>
-              <div class="flex justify-between">
-                <div>
-                  <p class="text-xl font-bold">{{ projet.nom }}</p>
-                </div>
-                <div class="flex space-x-4" v-if="cookie.status == 'Manager'">
-                  <span
-                    class="pi pi-pencil"
-                    style="font-size: 1.3rem"
-                    @click="
-                      projetActuelPourModification = projet;
-                      visibleProjet = true;
-                    "
-                  />
-                  <span
-                    class="pi pi-trash"
-                    style="font-size: 1.3rem"
-                    @click="supprimerProjet(projet.id, projet.nom)"
-                  />
-                </div>
-              </div>
-            </template>
-            <template #content>
-              <p>
-                Equipe auquelle le projet est associé :
-                {{ trouverNomEquipe(projet.equipe_id) }}
-              </p>
-              <div class="w-3/4">
-                <template v-if="totalTaches(projet.id) != 0">
-                  <DoughnutChart
-                    :nom-graphe="projet.nom"
-                    :backlogs="compterTaches(projet.id, 'backlogs')"
-                    :todo="compterTaches(projet.id, 'todo')"
-                    :inprogress="compterTaches(projet.id, 'inprogress')"
-                    :inreview="compterTaches(projet.id, 'inreview')"
-                    :done="compterTaches(projet.id, 'done')"
-                  />
-                </template>
-                <template v-else>
-                  <p class="text-center p-4">
-                    Il n'existe aucune tâche pour ce projet.
-                  </p>
-                </template>
-              </div>
-            </template>
-          </Card>
+          <Projet
+            :projet="projet"
+            :equipes="equipes"
+            :taches="taches"
+            :cookie="cookie"
+            @modifier="
+              projetActuelPourModification = projet;
+              visibleProjet = true;
+            "
+            @supprimer="supprimerProjet(projet.id, projet.nom)"
+          />
         </div>
       </div>
     </div>
