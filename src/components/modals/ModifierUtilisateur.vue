@@ -37,6 +37,7 @@ const email = ref("");
 const emailOrigine = ref("");
 const pseudo = ref("");
 const selectedStatus = ref("");
+const lastLoginTime = ref(undefined);
 
 const messagesErreur = ref([]);
 
@@ -47,6 +48,7 @@ function chargerDonnees() {
   emailOrigine.value = props.utilisateur.email;
   pseudo.value = props.utilisateur.pseudo;
   selectedStatus.value = props.utilisateur.status;
+  lastLoginTime.value = props.utilisateur.lastLoginTime;
 }
 
 function verifieErrChampsVides() {
@@ -107,6 +109,8 @@ async function modifierUtilisateur() {
     motdepasse: props.utilisateur.motdepasse,
     status: selectedStatus.value,
   };
+
+  if (lastLoginTime.value) body.lastLoginTime = lastLoginTime.value;
 
   await putUtilisateur(props.utilisateur.id, body);
 
