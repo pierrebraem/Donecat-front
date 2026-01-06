@@ -21,6 +21,10 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  type: {
+    type: String,
+    required: true,
+  },
 });
 
 const emit = defineEmits(["update:visible"]);
@@ -58,8 +62,10 @@ function verifieErrChampsVides() {
   const erreurPseudoVide = verifieChampVide(pseudo.value, "Pseudo");
   if (erreurPseudoVide) messagesErreur.value.push(erreurPseudoVide);
 
-  const erreurStatusVide = verifieChampVide(selectedStatus.value, "Status");
-  if (erreurStatusVide) messagesErreur.value.push(erreurStatusVide);
+  if (props.type == "Administrateur") {
+    const erreurStatusVide = verifieChampVide(selectedStatus.value, "Status");
+    if (erreurStatusVide) messagesErreur.value.push(erreurStatusVide);
+  }
 }
 
 function verifieErrTailleChamps() {
@@ -126,10 +132,12 @@ function resetInputs() {
     @after-hide="resetInputs"
     modal
     :header="
-      'Modification de l\'utilisateur : ' +
-      utilisateur.nom +
-      ' ' +
-      utilisateur.prenom
+      type == 'Administrateur'
+        ? 'Modification de l\'utilisateur : ' +
+          utilisateur.nom +
+          ' ' +
+          utilisateur.prenom
+        : 'Modification du profil'
     "
     class="w-1/2"
   >
@@ -150,7 +158,7 @@ function resetInputs() {
         <label>Pseudo :</label>
         <InputText v-model="pseudo" />
       </div>
-      <div class="flex flex-col">
+      <div class="flex flex-col" v-if="type == 'Administrateur'">
         <label>Status:</label>
         <Select
           v-model="selectedStatus"

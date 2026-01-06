@@ -2,10 +2,8 @@
 import { Card, ConfirmDialog } from "primevue";
 import { useConfirm } from "primevue/useconfirm";
 import { useUtilisateurStore } from "@/stores/utilisateur";
-import AjoutEquipe from "@/components/modals/AjoutEquipe.vue";
-import AjoutProjet from "@/components/modals/AjoutProjet.vue";
-import ModifierEquipe from "@/components/modals/ModifierEquipe.vue";
-import ModifierProjet from "@/components/modals/ModifierProjet.vue";
+import AjoutModifEquipe from "@/components/modals/AjoutModifEquipe.vue";
+import AjoutModifProjet from "@/components/modals/AjoutModifProjet.vue";
 import DoughnutChart from "@/components/charts/DoughnutChart.vue";
 import Equipe from "@/components/cartes/Equipe.vue";
 import Bouton from "@/components/Bouton.vue";
@@ -26,10 +24,8 @@ const confirm = useConfirm();
 
 const cookie = ref({});
 
-const visibleAjoutEquipe = ref(false);
-const visibleAjoutProjet = ref(false);
-const visibleModifierEquipe = ref(false);
-const visibleModifierProjet = ref(false);
+const visibleEquipe = ref(false);
+const visibleProjet = ref(false);
 
 const chargement = ref(true);
 
@@ -38,8 +34,8 @@ const utilisateurs = ref([]);
 const projets = ref([]);
 const taches = ref([]);
 
-const equipeActuelPourModification = ref({});
-const projetActuelPourModification = ref({});
+const equipeActuelPourModification = ref(undefined);
+const projetActuelPourModification = ref(undefined);
 
 function compterTaches(id, type) {
   return taches.value.filter(
@@ -143,16 +139,13 @@ onMounted(async () => {
         </div>
         <div class="flex pr-4">
           <template v-if="cookie.status == 'Manager'">
-            <Bouton
-              label="Créer un projet"
-              @callback="visibleAjoutProjet = true"
-            />
+            <Bouton label="Créer un projet" @callback="visibleProjet = true" />
           </template>
           <template v-if="cookie.status == 'Administrateur'">
             <Bouton
               label="Créer une équipe"
               severity="info"
-              @callback="visibleAjoutEquipe = true"
+              @callback="visibleEquipe = true"
             />
           </template>
         </div>
@@ -173,7 +166,7 @@ onMounted(async () => {
                     :cookie="cookie"
                     @modifier="
                       equipeActuelPourModification = equipe;
-                      visibleModifierEquipe = true;
+                      visibleEquipe = true;
                     "
                     @supprimer="supprimerEquipe(equipe.id, equipe.nom)"
                   />
@@ -198,7 +191,7 @@ onMounted(async () => {
                     style="font-size: 1.3rem"
                     @click="
                       projetActuelPourModification = projet;
-                      visibleModifierProjet = true;
+                      visibleProjet = true;
                     "
                   />
                   <span
@@ -230,21 +223,20 @@ onMounted(async () => {
       </div>
     </div>
 
-    <AjoutEquipe
-      v-model:visible="visibleAjoutEquipe"
-      :utilisateurs="utilisateurs"
-    />
-    <AjoutProjet v-model:visible="visibleAjoutProjet" :equipes="equipes" />
-    <ModifierEquipe
-      v-model:visible="visibleModifierEquipe"
+    <AjoutModifEquipe
+      v-model:visible="visibleEquipe"
       :utilisateurs="utilisateurs"
       :equipe="equipeActuelPourModification"
+      @reset-modif-equipe="equipeActuelPourModification = undefined"
     />
-    <ModifierProjet
-      v-model:visible="visibleModifierProjet"
+
+    <AjoutModifProjet
+      v-model:visible="visibleProjet"
       :equipes="equipes"
       :projet="projetActuelPourModification"
+      @reset-modif-projet="projetActuelPourModification = undefined"
     />
+
     <ConfirmDialog />
   </template>
 </template>

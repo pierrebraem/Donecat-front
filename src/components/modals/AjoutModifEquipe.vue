@@ -2,7 +2,7 @@
 import { Dialog, InputText, Select } from "primevue";
 import Bouton from "@/components/Bouton.vue";
 import AfficherErreurs from "../AfficherErreurs.vue";
-import { putEquipe } from "@/utils/requetes/equipe";
+import { putEquipe, postEquipe } from "@/utils/requetes/equipe";
 import { inferieurXCarac, verifieChampVide } from "@/utils/gestionErreurs";
 import { ref } from "vue";
 
@@ -17,11 +17,11 @@ const props = defineProps({
   },
   equipe: {
     type: Object,
-    required: true,
+    required: false,
   },
 });
 
-const emit = defineEmits(["update:visible"]);
+const emit = defineEmits(["update:visible", "resetModifEquipe"]);
 
 const nom = ref("");
 const selectedManager = ref("");
@@ -33,6 +33,7 @@ const dataDevs = ref([]);
 const messagesErreur = ref([]);
 
 function chargerDonnees() {
+  if (!props.equipe) return;
   ((nom.value = props.equipe.nom),
     (selectedManager.value = props.equipe.manager));
   selectedDevs.value = props.equipe.membres;
@@ -54,7 +55,7 @@ function verifieErrChampsVides() {
   }
 }
 
-async function modifierEquipe() {
+async function saveEquipe() {
   messagesErreur.value = [];
 
   verifieErrChampsVides();
@@ -65,13 +66,17 @@ async function modifierEquipe() {
   if (messagesErreur.value.length != 0) return;
 
   const body = {
-    id: props.equipe.id,
     nom: nom.value,
     membres: selectedDevs.value,
     manager: selectedManager.value,
   };
 
-  await putEquipe(props.equipe.id, body);
+  if (!props.equipe) {
+    await postEquipe(body);
+  } else {
+    body.id = props.equipe.id;
+    await putEquipe(props.equipe.id, body);
+  }
 
   emit("update:visible", false);
 }
@@ -121,10 +126,17 @@ function affecterValeurs() {
       chargerDonnees();
       affecterValeurs();
     "
-    @update:visible="$emit('update:visible', false)"
+    @update:visible="
+      $emit('update:visible', false);
+      $emit('resetModifEquipe');
+    "
     @after-hide="resetInputs"
     modal
-    :header="'Modification de l\'équipe : ' + equipe.nom"
+    :header="
+      !equipe
+        ? 'Création d\'une équipe'
+        : 'Modification de l\'équipe : ' + equipe.nom
+    "
     class="w-1/2"
   >
     <div class="flex flex-col space-y-6">
@@ -175,9 +187,13 @@ function affecterValeurs() {
           @callback="
             resetInputs();
             $emit('update:visible', false);
+            $emit('resetModifEquipe');
           "
         />
-        <Bouton label="Modifier" @callback="modifierEquipe()" />
+        <Bouton
+          :label="!equipe ? 'Ajouter' : 'Modifier'"
+          @callback="saveEquipe()"
+        />
       </div>
       <AfficherErreurs :messages-erreur="messagesErreur" />
     </div>

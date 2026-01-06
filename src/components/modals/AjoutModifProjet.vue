@@ -2,7 +2,7 @@
 import { Dialog, InputText, Select } from "primevue";
 import Bouton from "@/components/Bouton.vue";
 import AfficherErreurs from "../AfficherErreurs.vue";
-import { putProjet } from "@/utils/requetes/projet";
+import { putProjet, postProjet } from "@/utils/requetes/projet";
 import { verifieChampVide, inferieurXCarac } from "@/utils/gestionErreurs";
 import { ref } from "vue";
 
@@ -17,11 +17,11 @@ const props = defineProps({
   },
   projet: {
     type: Object,
-    required: true,
+    required: false,
   },
 });
 
-const emit = defineEmits(["update:visible"]);
+const emit = defineEmits(["update:visible", "resetModifProjet"]);
 
 const nom = ref("");
 const selectedEquipe = ref("");
@@ -29,6 +29,7 @@ const selectedEquipe = ref("");
 const messagesErreur = ref([]);
 
 function chargerDonnees() {
+  if (!props.projet) return;
   ((nom.value = props.projet.nom),
     (selectedEquipe.value = props.projet.equipe_id));
 }
@@ -44,7 +45,7 @@ function verifieErrChampsVides() {
   if (erreurSelectEquipeVide) messagesErreur.value.push(erreurSelectEquipeVide);
 }
 
-async function modifierProjet() {
+async function saveProjet() {
   messagesErreur.value = [];
 
   verifieErrChampsVides();
@@ -55,12 +56,16 @@ async function modifierProjet() {
   if (messagesErreur.value.length != 0) return;
 
   const body = {
-    id: props.projet.id,
     nom: nom.value,
     equipe_id: selectedEquipe.value,
   };
 
-  await putProjet(props.projet.id, body);
+  if (!props.projet) {
+    await postProjet(body);
+  } else {
+    body.id = props.projet.id;
+    await putProjet(props.projet.id, body);
+  }
 
   emit("update:visible", false);
 }
@@ -77,10 +82,17 @@ function resetInputs() {
   <Dialog
     :visible="visible"
     @show="chargerDonnees"
-    @update:visible="$emit('update:visible', false)"
+    @update:visible="
+      $emit('update:visible', false);
+      $emit('resetModifProjet');
+    "
     @after-hide="resetInputs"
     modal
-    :header="'Modification du projet : ' + projet.nom"
+    :header="
+      !projet
+        ? 'Création d\'un projet'
+        : 'Modification du projet : ' + projet.nom
+    "
     class="w-1/2"
   >
     <div class="flex flex-col space-y-6">
@@ -105,9 +117,13 @@ function resetInputs() {
           @callback="
             resetInputs();
             $emit('update:visible', false);
+            $emit('resetModifProjet');
           "
         />
-        <Bouton label="Modifier" @callback="modifierProjet()" />
+        <Bouton
+          :label="!projet ? 'Ajouter' : 'Modifier'"
+          @callback="saveProjet()"
+        />
       </div>
       <AfficherErreurs :messages-erreur="messagesErreur" />
     </div>

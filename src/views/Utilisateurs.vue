@@ -122,6 +122,7 @@ onMounted(async () => {
     <modifierUtilisateur
       v-model:visible="visibleModifierUtilisateur"
       :utilisateur="utilisateurActuelPourModification"
+      type="Administrateur"
     />
     <ConfirmDialog />
   </template>

@@ -1,7 +1,7 @@
 <script setup>
 import { Card } from "primevue";
 import { useUtilisateurStore } from "@/stores/utilisateur";
-import ModifierProfil from "@/components/modals/ModifierProfil.vue";
+import ModifierUtilisateur from "@/components/modals/ModifierUtilisateur.vue";
 import ModifierMotdepasse from "@/components/modals/ModifierMotdepasse.vue";
 import VisualisationAPropos from "@/components/modals/VisualisationAPropos.vue";
 import Bouton from "@/components/Bouton.vue";
@@ -83,9 +83,10 @@ onMounted(async () => {
     </Card>
   </div>
 
-  <ModifierProfil
+  <ModifierUtilisateur
     v-model:visible="visibleModifierProfil"
     :utilisateur="utilisateur"
+    type="Utilisateur"
   />
   <ModifierMotdepasse
     v-model:visible="visibleModifierMotdepasse"
