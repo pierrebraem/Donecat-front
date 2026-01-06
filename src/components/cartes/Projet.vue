@@ -84,11 +84,6 @@ function totalTaches(id) {
 </template>
 
 <style scoped>
-.carte {
-  color: white;
-  background-color: #1a202c;
-}
-
 li {
   list-style-type: circle;
 }
