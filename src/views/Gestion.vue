@@ -43,6 +43,10 @@ function compterTaches(id, type) {
   ).length;
 }
 
+function totalTaches(id) {
+  return taches.value.filter((item) => item.projet_id == id).length;
+}
+
 function montrerEquipesEtProjetsEnFonctionDeLutilisateur() {
   if (cookie.value.status != "Administrateur") {
     equipes.value = equipes.value.filter(
@@ -179,7 +183,7 @@ onMounted(async () => {
 
       <div class="grid grid-cols-2 gap-2">
         <div v-for="projet in projets">
-          <Card class="w-full">
+          <Card class="w-full h-full">
             <template #title>
               <div class="flex justify-between">
                 <div>
@@ -207,15 +211,22 @@ onMounted(async () => {
                 Equipe auquelle le projet est associé :
                 {{ trouverNomEquipe(projet.equipe_id) }}
               </p>
-              <div class="w-8/12">
-                <DoughnutChart
-                  :nom-graphe="projet.nom"
-                  :backlogs="compterTaches(projet.id, 'backlogs')"
-                  :todo="compterTaches(projet.id, 'todo')"
-                  :inprogress="compterTaches(projet.id, 'inprogress')"
-                  :inreview="compterTaches(projet.id, 'inreview')"
-                  :done="compterTaches(projet.id, 'done')"
-                />
+              <div class="w-3/4">
+                <template v-if="totalTaches(projet.id) != 0">
+                  <DoughnutChart
+                    :nom-graphe="projet.nom"
+                    :backlogs="compterTaches(projet.id, 'backlogs')"
+                    :todo="compterTaches(projet.id, 'todo')"
+                    :inprogress="compterTaches(projet.id, 'inprogress')"
+                    :inreview="compterTaches(projet.id, 'inreview')"
+                    :done="compterTaches(projet.id, 'done')"
+                  />
+                </template>
+                <template v-else>
+                  <p class="text-center p-4">
+                    Il n'existe aucune tâche pour ce projet.
+                  </p>
+                </template>
               </div>
             </template>
           </Card>
