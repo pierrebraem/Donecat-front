@@ -60,6 +60,7 @@ async function changerMotdepasse() {
     pseudo: props.utilisateur.pseudo,
     motdepasse: hash,
     status: props.utilisateur.status,
+    lastLoginTime: props.utilisateur.lastLoginTime,
   };
 
   await putUtilisateur(props.utilisateur.id, body);
