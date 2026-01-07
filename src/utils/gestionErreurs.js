@@ -54,3 +54,20 @@ export function mdpIdentiques(mdp, confirmeMdp) {
   }
   return;
 }
+
+export function utilisateurAssocieeAuProjet(
+  projet_id,
+  developpeur_id,
+  equipes,
+  projets,
+) {
+  const projet = projets.find((p) => p.id == projet_id);
+  const equipe = equipes.find((e) => e.id == projet.equipe_id);
+  const trouverUtilisateur = equipe.membres.find((m) => m == developpeur_id);
+  const trouverManager = equipe.manager == developpeur_id;
+
+  if (!trouverUtilisateur && !trouverManager) {
+    return "Le développeur que vous avez choisi ne fais pas partie du projet.";
+  }
+  return;
+}

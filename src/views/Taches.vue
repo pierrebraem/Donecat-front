@@ -196,6 +196,7 @@ onMounted(async () => {
         v-model:visible="visibleAjoutTache"
         :utilisateurs="utilisateurs"
         :projets="projets"
+        :equipes="equipes"
       />
       <VisualisationTache
         v-model:visible="visibleVisualisationTache"

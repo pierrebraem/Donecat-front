@@ -5,7 +5,11 @@ import Bouton from "@/components/Bouton.vue";
 import AfficherErreurs from "../AfficherErreurs.vue";
 import { postTache } from "@/utils/requetes/tache";
 import { statusTache } from "@/utils/statusTache";
-import { inferieurXCarac, verifieChampVide } from "@/utils/gestionErreurs";
+import {
+  inferieurXCarac,
+  verifieChampVide,
+  utilisateurAssocieeAuProjet,
+} from "@/utils/gestionErreurs";
 import { ref } from "vue";
 
 const props = defineProps({
@@ -18,6 +22,10 @@ const props = defineProps({
     required: true,
   },
   projets: {
+    type: Array,
+    required: true,
+  },
+  equipes: {
     type: Array,
     required: true,
   },
@@ -72,6 +80,15 @@ async function ajouterTache() {
     "Nom de la tâche",
   );
   if (erreurNomTaille) messagesErreur.value.push(erreurNomTaille);
+
+  const erreurAssocieeUtilProjet = utilisateurAssocieeAuProjet(
+    selectedProjet.value,
+    selectedDev.value,
+    props.equipes,
+    props.projets,
+  );
+  if (erreurAssocieeUtilProjet)
+    messagesErreur.value.push(erreurAssocieeUtilProjet);
 
   if (messagesErreur.value.length != 0) return;
 
