@@ -9,10 +9,10 @@ import Projet from "@/components/cartes/Projet.vue";
 import Bouton from "@/components/Bouton.vue";
 import Chargement from "@/components/Chargement.vue";
 import { getTaches } from "@/utils/requetes/tache";
-import { getProjets, deleteProjet } from "@/utils/requetes/projet";
-import { getEquipes, deleteEquipe } from "@/utils/requetes/equipe";
+import { deleteProjet, getProjets } from "@/utils/requetes/projet";
+import { deleteEquipe, getEquipes } from "@/utils/requetes/equipe";
 import { getUtilisateurs } from "@/utils/requetes/utilisateur";
-import { ref, onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
 

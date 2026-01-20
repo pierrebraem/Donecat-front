@@ -1,7 +1,7 @@
 <script setup>
-import { Card, Password, Message } from "primevue";
+import { Card, Message, Password } from "primevue";
 import { useUtilisateurStore } from "@/stores/utilisateur";
-import { ref, onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import Bouton from "@/components/Bouton.vue";
 import AfficherErreurs from "@/components/AfficherErreurs.vue";
@@ -102,11 +102,11 @@ onMounted(async () => {
               :style="{ width: '100%' }"
               :input-style="{ width: '100%' }"
             />
-            <Message size="small" severity="secondary" variant="simple"
-              >Le mot de passe doit contenir au minimun 8 caractères, une
+            <Message size="small" severity="secondary" variant="simple">
+              Le mot de passe doit contenir au minimun 8 caractères, une
               majuscule, une minuscule, un nombre et un caractère spécial (@, !,
-              #, ^, <, >, ?, $)</Message
-            >
+              #, ^, <, >, ?, $)
+            </Message>
           </div>
           <div class="flex flex-col w-3/4">
             <label>Confirmer nouveau mot de passe :</label>

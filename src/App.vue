@@ -90,5 +90,5 @@ watch(
       </a>
     </template>
   </Menubar>
-  <router-view></router-view>
+  <router-view />
 </template>

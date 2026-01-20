@@ -1,12 +1,12 @@
 <script setup>
-import { Dialog, InputText, Select, Password, Message } from "primevue";
+import { Dialog, InputText, Message, Password, Select } from "primevue";
 import Bouton from "@/components/Bouton.vue";
 import AfficherErreurs from "../AfficherErreurs.vue";
 import { postUtilisateur } from "@/utils/requetes/utilisateur";
 import { statusUtilisateur } from "@/utils/statusUtilisateur";
 import {
-  mdpIdentiques,
   inferieurXCarac,
+  mdpIdentiques,
   verifieChampVide,
   verifieExistanceEmail,
   verifieValiditeEmail,
@@ -122,11 +122,11 @@ function resetInputs() {
 <template>
   <Dialog
     :visible="visible"
-    @update:visible="$emit('update:visible', false)"
-    @after-hide="resetInputs"
     modal
     header="Ajouter un utilisateur"
     class="w-1/2"
+    @update:visible="$emit('update:visible', false)"
+    @after-hide="resetInputs"
   >
     <div class="flex flex-col space-y-6">
       <div class="flex flex-col">
@@ -154,11 +154,11 @@ function resetInputs() {
           :style="{ width: '100%' }"
           :input-style="{ width: '100%' }"
         />
-        <Message size="small" severity="secondary" variant="simple"
-          >Le mot de passe doit contenir au minimun 8 caractères, une majuscule,
+        <Message size="small" severity="secondary" variant="simple">
+          Le mot de passe doit contenir au minimun 8 caractères, une majuscule,
           une minuscule, un nombre et un caractère spécial (@, !, #, ^, <, >, ?,
-          $)</Message
-        >
+          $)
+        </Message>
       </div>
       <div class="flex flex-col">
         <label>Confirmer mot de passe :</label>

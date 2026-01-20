@@ -29,7 +29,9 @@ function trouverUtilisateur(id, manager) {
 
 <template>
   <Card class="carte h-70">
-    <template #title>{{ equipe.nom }}</template>
+    <template #title>
+      {{ equipe.nom }}
+    </template>
     <template #content>
       <ul>
         <li>{{ trouverUtilisateur(equipe.manager, true) }}</li>

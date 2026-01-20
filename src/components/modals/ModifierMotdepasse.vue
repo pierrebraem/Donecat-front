@@ -1,11 +1,11 @@
 <script setup>
-import { Dialog, Password, Message } from "primevue";
+import { Dialog, Message, Password } from "primevue";
 import Bouton from "@/components/Bouton.vue";
 import AfficherErreurs from "../AfficherErreurs.vue";
 import { putUtilisateur } from "@/utils/requetes/utilisateur";
 import {
-  mdpIdentiques,
   compareMdp,
+  mdpIdentiques,
   verifieValiditeMdp,
 } from "@/utils/gestionErreurs";
 import bcrypt from "bcryptjs";
@@ -78,11 +78,11 @@ function resetInputs() {
 <template>
   <Dialog
     :visible="visible"
-    @update:visible="$emit('update:visible', false)"
-    @after-hide="resetInputs"
     modal
     header="Modification mot de passe"
     class="w-1/2"
+    @update:visible="$emit('update:visible', false)"
+    @after-hide="resetInputs"
   >
     <div class="flex flex-col space-y-6">
       <div class="flex flex-col">
@@ -104,11 +104,11 @@ function resetInputs() {
           :style="{ width: '100%' }"
           :input-style="{ width: '100%' }"
         />
-        <Message size="small" severity="secondary" variant="simple"
-          >Le mot de passe doit contenir au minimun 8 caractères, une majuscule,
+        <Message size="small" severity="secondary" variant="simple">
+          Le mot de passe doit contenir au minimun 8 caractères, une majuscule,
           une minuscule, un nombre et un caractère spécial (@, !, #, ^, <, >, ?,
-          $)</Message
-        >
+          $)
+        </Message>
       </div>
       <div class="flex flex-col">
         <label>Confirmer nouveau mot de passe :</label>

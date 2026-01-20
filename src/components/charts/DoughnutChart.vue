@@ -1,5 +1,5 @@
 <script setup>
-import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from "chart.js";
+import { ArcElement, Chart as ChartJS, Legend, Title, Tooltip } from "chart.js";
 import { Doughnut } from "vue-chartjs";
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement);

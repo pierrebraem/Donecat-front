@@ -24,7 +24,9 @@ function formatageUtilisateur(developpeur_id) {
   <Card class="carte">
     <template #content>
       <div class="flex flex-col space-y-2">
-        <p class="font-bold">{{ tache.nom }}</p>
+        <p class="font-bold">
+          {{ tache.nom }}
+        </p>
         <p>{{ formatageUtilisateur(tache.developpeur_id) }}</p>
         <p>Date de fin : {{ tache.datefin }}</p>
       </div>

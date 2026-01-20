@@ -1,5 +1,5 @@
 <script setup>
-import { Dialog, InputText, Select, DatePicker } from "primevue";
+import { DatePicker, Dialog, InputText, Select } from "primevue";
 import { formatageDate } from "@/utils/formatageDate";
 import Bouton from "@/components/Bouton.vue";
 import AfficherErreurs from "../AfficherErreurs.vue";
@@ -7,8 +7,8 @@ import { postTache } from "@/utils/requetes/tache";
 import { statusTache } from "@/utils/statusTache";
 import {
   inferieurXCarac,
-  verifieChampVide,
   utilisateurAssocieeAuProjet,
+  verifieChampVide,
 } from "@/utils/gestionErreurs";
 import { ref } from "vue";
 
@@ -129,12 +129,12 @@ function affecterValeurs() {
 <template>
   <Dialog
     :visible="visible"
-    @show="affecterValeurs"
-    @update:visible="$emit('update:visible', false)"
-    @after-hide="resetInputs"
     modal
     header="Création d'une tâche"
     class="w-1/2"
+    @show="affecterValeurs"
+    @update:visible="$emit('update:visible', false)"
+    @after-hide="resetInputs"
   >
     <div class="flex flex-col space-y-6">
       <div class="flex flex-col">

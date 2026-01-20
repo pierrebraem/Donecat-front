@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import {
-  getUtilisateursByEmail,
   getUtilisateur,
+  getUtilisateursByEmail,
 } from "@/utils/requetes/utilisateur";
 import bcrypt from "bcryptjs";
 import Cookies from "js-cookie";

@@ -12,9 +12,9 @@ const props = defineProps({
   <Dialog
     :visible="visible"
     modal
-    @update:visible="$emit('update:visible', false)"
     header="A propos de l'outil"
     class="w-1/2"
+    @update:visible="$emit('update:visible', false)"
   >
     <div class="flex flex-col space-y-4">
       <p>Nom : Donecat</p>

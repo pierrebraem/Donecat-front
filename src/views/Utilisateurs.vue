@@ -8,10 +8,10 @@ import Bouton from "@/components/Bouton.vue";
 import Utilisateur from "@/components/cartes/Utilisateur.vue";
 import Chargement from "@/components/Chargement.vue";
 import {
-  getUtilisateursSansAdmin,
   deleteUtilisateur,
+  getUtilisateursSansAdmin,
 } from "@/utils/requetes/utilisateur";
-import { ref, onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
 

@@ -1,12 +1,12 @@
 <script setup>
 import {
   Card,
-  Tabs,
-  TabList,
-  Tab,
-  TabPanels,
   Checkbox,
+  Tab,
+  TabList,
   TabPanel,
+  TabPanels,
+  Tabs,
 } from "primevue";
 import { useUtilisateurStore } from "@/stores/utilisateur";
 import AjoutTache from "@/components/modals/AjoutTache.vue";
@@ -19,7 +19,7 @@ import { getProjets } from "@/utils/requetes/projet";
 import { getUtilisateurs } from "@/utils/requetes/utilisateur";
 import { getEquipes } from "@/utils/requetes/equipe";
 import { statusTache } from "@/utils/statusTache";
-import { ref, onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
 
@@ -121,7 +121,7 @@ onMounted(async () => {
   <template v-else>
     <template v-if="projets.length != 0">
       <div class="pt-4 flex flex-col space-y-6">
-        <div class="flex justify-end pr-4" v-if="cookie.status == 'Manager'">
+        <div v-if="cookie.status == 'Manager'" class="flex justify-end pr-4">
           <Bouton
             label="Créer une tâche"
             @callback="visibleAjoutTache = true"
@@ -144,8 +144,9 @@ onMounted(async () => {
                     v-for="projet in projets"
                     :key="projet.nom"
                     :value="projet.id"
-                    >{{ projet.nom }}</Tab
                   >
+                    {{ projet.nom }}
+                  </Tab>
                 </TabList>
                 <TabPanels>
                   <TabPanel
@@ -181,7 +182,7 @@ onMounted(async () => {
                             </template>
                           </template>
                         </div>
-                        <div class="w-px h-100 bg-gray-300"></div>
+                        <div class="w-px h-100 bg-gray-300" />
                       </template>
                     </div>
                   </TabPanel>
@@ -213,14 +214,14 @@ onMounted(async () => {
       </p>
       <p class="text-center">
         Attendez que l'administrateur vous affectes dans une équipe
-        <template v-if="cookie.status == 'Manager'"
-          >. Si vous êtes déjà affectés dans une équipe en tant que manageur,
+        <template v-if="cookie.status == 'Manager'">
+          . Si vous êtes déjà affectés dans une équipe en tant que manageur,
           veuillez créer un projet dans la page "Tableau de bord", puis cliquez
-          sur le bouton "Créer un projet"</template
-        >
-        <template v-else
-          >ou qu'un manageur créer un projet dans l'une des équipes auxquelles
-          vous êtes affectés</template
+          sur le bouton "Créer un projet"
+        </template>
+        <template v-else>
+          ou qu'un manageur créer un projet dans l'une des équipes auxquelles
+          vous êtes affectés </template
         >.
       </p>
     </template>

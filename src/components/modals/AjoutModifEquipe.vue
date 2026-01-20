@@ -2,7 +2,7 @@
 import { Dialog, InputText, Select } from "primevue";
 import Bouton from "@/components/Bouton.vue";
 import AfficherErreurs from "../AfficherErreurs.vue";
-import { putEquipe, postEquipe } from "@/utils/requetes/equipe";
+import { postEquipe, putEquipe } from "@/utils/requetes/equipe";
 import { inferieurXCarac, verifieChampVide } from "@/utils/gestionErreurs";
 import { ref } from "vue";
 
@@ -122,6 +122,13 @@ function affecterValeurs() {
 <template>
   <Dialog
     :visible="visible"
+    modal
+    :header="
+      !equipe
+        ? 'Création d\'une équipe'
+        : 'Modification de l\'équipe : ' + equipe.nom
+    "
+    class="w-1/2"
     @show="
       chargerDonnees();
       affecterValeurs();
@@ -131,13 +138,6 @@ function affecterValeurs() {
       $emit('resetModifEquipe');
     "
     @after-hide="resetInputs"
-    modal
-    :header="
-      !equipe
-        ? 'Création d\'une équipe'
-        : 'Modification de l\'équipe : ' + equipe.nom
-    "
-    class="w-1/2"
   >
     <div class="flex flex-col space-y-6">
       <div class="flex flex-col">
@@ -155,7 +155,7 @@ function affecterValeurs() {
         />
       </div>
       <div class="flex-col space-y-6">
-        <div class="flex flex-col" v-for="(item, index) in selectedDevs">
+        <div v-for="(item, index) in selectedDevs" class="flex flex-col">
           <label>Développeur n°{{ index + 1 }} :</label>
           <div class="flex justify-between items-center space-x-2">
             <Select

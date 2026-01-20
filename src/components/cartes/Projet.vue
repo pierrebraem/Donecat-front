@@ -41,9 +41,11 @@ function totalTaches(id) {
     <template #title>
       <div class="flex justify-between">
         <div>
-          <p class="text-xl font-bold">{{ projet.nom }}</p>
+          <p class="text-xl font-bold">
+            {{ projet.nom }}
+          </p>
         </div>
-        <div class="flex space-x-4" v-if="cookie.status == 'Manager'">
+        <div v-if="cookie.status == 'Manager'" class="flex space-x-4">
           <span
             class="pi pi-pencil"
             style="font-size: 1.3rem"

@@ -131,9 +131,6 @@ function resetInputs() {
 <template>
   <Dialog
     :visible="visible"
-    @show="chargerDonnees"
-    @update:visible="$emit('update:visible', false)"
-    @after-hide="resetInputs"
     modal
     :header="
       type == 'Administrateur'
@@ -144,6 +141,9 @@ function resetInputs() {
         : 'Modification du profil'
     "
     class="w-1/2"
+    @show="chargerDonnees"
+    @update:visible="$emit('update:visible', false)"
+    @after-hide="resetInputs"
   >
     <div class="flex flex-col space-y-6">
       <div class="flex flex-col">
@@ -162,7 +162,7 @@ function resetInputs() {
         <label>Pseudo :</label>
         <InputText v-model="pseudo" />
       </div>
-      <div class="flex flex-col" v-if="type == 'Administrateur'">
+      <div v-if="type == 'Administrateur'" class="flex flex-col">
         <label>Status:</label>
         <Select
           v-model="selectedStatus"

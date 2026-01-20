@@ -2,8 +2,8 @@
 import { Dialog, InputText, Select } from "primevue";
 import Bouton from "@/components/Bouton.vue";
 import AfficherErreurs from "../AfficherErreurs.vue";
-import { putProjet, postProjet } from "@/utils/requetes/projet";
-import { verifieChampVide, inferieurXCarac } from "@/utils/gestionErreurs";
+import { postProjet, putProjet } from "@/utils/requetes/projet";
+import { inferieurXCarac, verifieChampVide } from "@/utils/gestionErreurs";
 import { ref } from "vue";
 
 const props = defineProps({
@@ -81,12 +81,6 @@ function resetInputs() {
 <template>
   <Dialog
     :visible="visible"
-    @show="chargerDonnees"
-    @update:visible="
-      $emit('update:visible', false);
-      $emit('resetModifProjet');
-    "
-    @after-hide="resetInputs"
     modal
     :header="
       !projet
@@ -94,6 +88,12 @@ function resetInputs() {
         : 'Modification du projet : ' + projet.nom
     "
     class="w-1/2"
+    @show="chargerDonnees"
+    @update:visible="
+      $emit('update:visible', false);
+      $emit('resetModifProjet');
+    "
+    @after-hide="resetInputs"
   >
     <div class="flex flex-col space-y-6">
       <div class="flex flex-col">

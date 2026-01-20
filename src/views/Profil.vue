@@ -6,7 +6,7 @@ import ModifierMotdepasse from "@/components/modals/ModifierMotdepasse.vue";
 import VisualisationAPropos from "@/components/modals/VisualisationAPropos.vue";
 import Bouton from "@/components/Bouton.vue";
 import { getUtilisateur } from "@/utils/requetes/utilisateur";
-import { ref, onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
 

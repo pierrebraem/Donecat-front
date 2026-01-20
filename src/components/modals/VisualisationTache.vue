@@ -1,10 +1,10 @@
 <script setup>
-import { Dialog, Select, InputText, DatePicker, ConfirmDialog } from "primevue";
+import { ConfirmDialog, DatePicker, Dialog, InputText, Select } from "primevue";
 import { useConfirm } from "primevue/useconfirm";
 import { formatageDate } from "@/utils/formatageDate";
 import { getUtilisateur } from "@/utils/requetes/utilisateur";
 import { getProjet } from "@/utils/requetes/projet";
-import { putTache, deleteTache } from "@/utils/requetes/tache";
+import { deleteTache, putTache } from "@/utils/requetes/tache";
 import Bouton from "@/components/Bouton.vue";
 import { statusTache, traduireValeurParLabel } from "@/utils/statusTache";
 import { ref } from "vue";
@@ -118,20 +118,20 @@ function reset() {
 <template>
   <Dialog
     :visible="visible"
-    @show="getData"
-    @update:visible="$emit('update:visible', false)"
-    @after-hide="reset"
     modal
     :header="'Visualisation de la tâche : ' + tache.nom"
     class="w-1/2"
+    @show="getData"
+    @update:visible="$emit('update:visible', false)"
+    @after-hide="reset"
   >
     <div class="flex flex-col space-y-4">
       <div
-        @click="role == 'Manager' ? (changeNom = true) : ''"
         :class="{
           'flex items-center space-x-2': changeNom,
           'hover:text-stone-500': role == 'Manager' && !changeNom,
         }"
+        @click="role == 'Manager' ? (changeNom = true) : ''"
       >
         <template v-if="changeNom">
           <p>Nom :</p>
@@ -143,11 +143,11 @@ function reset() {
         </template>
       </div>
       <div
-        @click="role == 'Manager' ? (changeDescription = true) : ''"
         :class="{
           'flex items-center space-x-2': changeDescription,
           'hover:text-stone-500': role == 'Manager' && !changeDescription,
         }"
+        @click="role == 'Manager' ? (changeDescription = true) : ''"
       >
         <template v-if="changeDescription">
           <p>Description :</p>
@@ -159,11 +159,11 @@ function reset() {
         </template>
       </div>
       <div
-        @click="role == 'Manager' ? (changeProjet = true) : ''"
         :class="{
           'flex items-center space-x-2': changeProjet,
           'hover:text-stone-500': role == 'Manager' && !changeProjet,
         }"
+        @click="role == 'Manager' ? (changeProjet = true) : ''"
       >
         <template v-if="changeProjet">
           <p>Projet :</p>
@@ -180,17 +180,17 @@ function reset() {
         </template>
       </div>
       <div
-        @click="
-          role == 'Manager' || cookie.id == tache.developpeur_id
-            ? (changeStatus = true)
-            : ''
-        "
         :class="{
           'flex items-center space-x-2': changeStatus,
           'hover:text-stone-500':
             (role == 'Manager' || cookie.id == tache.developpeur_id) &&
             !changeStatus,
         }"
+        @click="
+          role == 'Manager' || cookie.id == tache.developpeur_id
+            ? (changeStatus = true)
+            : ''
+        "
       >
         <template v-if="changeStatus">
           <p>Status :</p>
@@ -207,11 +207,11 @@ function reset() {
         </template>
       </div>
       <div
-        @click="role == 'Manager' ? (changeDeveloppeur = true) : ''"
         :class="{
           'flex items-center space-x-2': changeDeveloppeur,
           'hover:text-stone-500': role == 'Manager' && !changeDeveloppeur,
         }"
+        @click="role == 'Manager' ? (changeDeveloppeur = true) : ''"
       >
         <template v-if="changeDeveloppeur">
           <p>Développeur :</p>
@@ -228,11 +228,11 @@ function reset() {
         </template>
       </div>
       <div
-        @click="role == 'Manager' ? (changeDatefin = true) : ''"
         :class="{
           'flex items-center space-x-2': changeDatefin,
           'hover:text-stone-500': role == 'Manager' && !changeDatefin,
         }"
+        @click="role == 'Manager' ? (changeDatefin = true) : ''"
       >
         <template v-if="changeDatefin">
           <p>Date de fin estimé :</p>

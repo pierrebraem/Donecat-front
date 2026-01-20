@@ -1,9 +1,9 @@
 <script setup>
 import {
   Accordion,
-  AccordionPanel,
-  AccordionHeader,
   AccordionContent,
+  AccordionHeader,
+  AccordionPanel,
   Card,
   Image,
 } from "primevue";
