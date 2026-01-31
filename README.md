@@ -74,11 +74,17 @@ mot de passe : qwerty
 rôle : Développeur
 ```
 # Roadmap pour la version 0.2.0
-La version 0.2.0 est en cours de développement. Elle inclura les fonctionnalités suivantes :
-- Un back-end séparé du front-end.
-- La dockerisation du front.
-- La gestion des sprints.
+La version 0.2.0 intégrera les fonctionnalités suivantes :
+- Le `json-server` sera séparé du projet et mis dans un autre répo GitHub
+- Les projets `json-server` et `Donecat-front` seront conteneurisés avec Docker
 - La mise en place d’un système multilingue (français et anglais)
-- Et bien plus encore...
+- L'implémentation des tests end-to-end via GitHub Actions
+- Passage du projet à Node.js 24
 
-En attendant, la version 0.1.X aura encore quelques implémentations de nouvelles fonctionalités, correction de bugs si il y a et maintenue.
+# Roadmap pour la version 0.3.0
+La version 0.3.0 intégrera les fonctionnalités suivantes :
+- Remplacement du `json-server` par `Django`
+- Implémentation des sprints
+- Implémentation d'une MFA (authentification multifacteur)
+- Implémentation d'un système d'envoi de mail (par exemple pour la réinitialisation du mot de passe)
+- Passage du projet à Node.js 26
