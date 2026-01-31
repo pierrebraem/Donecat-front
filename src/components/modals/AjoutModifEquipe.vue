@@ -151,7 +151,8 @@ function affecterValeurs() {
           empty-message="Aucun manager n'existe dans la base de données"
         />
       </div>
-      <div class="flex-col space-y-6">
+      <div class="flex flex-col">
+        <label>Développeurs de l'équipe :</label>
         <PickList
           v-model="dataDevs"
           data-key="id"
