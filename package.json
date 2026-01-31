@@ -39,6 +39,6 @@
     "vite-plugin-vue-devtools": "7.7.2"
   },
   "lint-staged": {
-    "*.{js,css,vue}": "prettier --write"
+    "*.{js,css,vue}": ["prettier --write", "eslint --fix"]
   }
 }
