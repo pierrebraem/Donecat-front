@@ -1,5 +1,5 @@
 <script setup>
-import { Dialog, InputText, Select } from "primevue";
+import { Dialog, InputText, Select, PickList } from "primevue";
 import { inferieurXCarac, verifieChampVide } from "@/utils/gestionErreurs";
 import { postEquipe, putEquipe } from "@/utils/requetes/equipe";
 import AfficherErreurs from "../AfficherErreurs.vue";
@@ -28,7 +28,7 @@ const emit = defineEmits(["update:visible", "resetModifEquipe"]);
 
 const nom = ref("");
 const selectedManager = ref("");
-const selectedDevs = ref([""]);
+const selectedDevs = ref([]);
 
 const dataManagers = ref([]);
 const dataDevs = ref([]);
@@ -51,14 +51,10 @@ function verifieErrChampsVides() {
     "Manager de l'équipe",
   );
   if (erreurManagerVide) messagesErreur.value.push(erreurManagerVide);
-
-  for (const [index, dev] of selectedDevs.value.entries()) {
-    const erreurDevVide = verifieChampVide(dev, "Développeur n°" + (index + 1));
-    if (erreurDevVide) messagesErreur.value.push(erreurDevVide);
-  }
 }
 
 async function saveEquipe() {
+  const membres = dataDevs.value[1].map((dev) => dev.id);
   messagesErreur.value = [];
 
   verifieErrChampsVides();
@@ -70,7 +66,7 @@ async function saveEquipe() {
 
   const body = {
     nom: nom.value,
-    membres: selectedDevs.value,
+    membres: membres,
     manager: selectedManager.value,
   };
 
@@ -87,20 +83,13 @@ async function saveEquipe() {
 function resetInputs() {
   nom.value = "";
   selectedManager.value = "";
-  selectedDevs.value = [""];
+  selectedDevs.value = [];
 
   messagesErreur.value = [];
 }
 
-function ajouterDevDansLeSelect() {
-  selectedDevs.value.push("");
-}
-
-function supprimerDevDansLeSelect(index) {
-  selectedDevs.value.splice(index, 1);
-}
-
 function affecterValeurs() {
+  const devsDejaEnregistres = [];
   dataManagers.value = [];
   dataDevs.value = [];
 
@@ -116,9 +105,14 @@ function affecterValeurs() {
     }
 
     if (utilisateur.status == "Dev") {
-      dataDevs.value.push(objet);
+      const selectedDev = selectedDevs.value.find((id) => utilisateur.id == id);
+
+      if (selectedDev) devsDejaEnregistres.push(objet);
+      else dataDevs.value.push(objet);
     }
   }
+
+  dataDevs.value = [dataDevs.value, devsDejaEnregistres];
 }
 </script>
 
@@ -158,34 +152,16 @@ function affecterValeurs() {
         />
       </div>
       <div class="flex-col space-y-6">
-        <div
-          v-for="(item, index) in selectedDevs"
-          :key="index"
-          class="flex flex-col"
+        <PickList
+          v-model="dataDevs"
+          data-key="id"
+          :show-source-controls="false"
+          :show-target-controls="false"
         >
-          <label>Développeur n°{{ index + 1 }} :</label>
-          <div class="flex justify-between items-center space-x-2">
-            <Select
-              v-model="selectedDevs[index]"
-              :options="dataDevs"
-              option-label="label"
-              option-value="id"
-              class="w-full"
-            />
-            <span
-              class="pi pi-trash"
-              style="font-size: 1.3rem"
-              @click="supprimerDevDansLeSelect(index)"
-            />
-          </div>
-        </div>
-      </div>
-      <div class="flex justify-end">
-        <Bouton
-          label="Ajouter un développeur"
-          severity="warn"
-          @callback="ajouterDevDansLeSelect"
-        />
+          <template #option="{ option }">
+            {{ option.label }}
+          </template>
+        </PickList>
       </div>
       <div class="flex justify-end gap-2">
         <Bouton
