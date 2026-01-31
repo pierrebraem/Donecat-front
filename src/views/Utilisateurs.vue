@@ -1,19 +1,19 @@
 <script setup>
 import { Card, ConfirmDialog } from "primevue";
-import { useConfirm } from "primevue/useconfirm";
-import { useUtilisateurStore } from "@/stores/utilisateur";
-import AjoutUtilisateur from "@/components/modals/AjoutUtilisateur.vue";
-import modifierUtilisateur from "@/components/modals/ModifierUtilisateur.vue";
-import Bouton from "@/components/Bouton.vue";
-import Utilisateur from "@/components/cartes/Utilisateur.vue";
-import Chargement from "@/components/Chargement.vue";
 import {
   deleteUtilisateur,
   getUtilisateursSansAdmin,
 } from "@/utils/requetes/utilisateur";
 import { onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
+import AjoutUtilisateur from "@/components/modals/AjoutUtilisateur.vue";
+import Bouton from "@/components/Bouton.vue";
+import Chargement from "@/components/Chargement.vue";
 import Cookies from "js-cookie";
+import modifierUtilisateur from "@/components/modals/ModifierUtilisateur.vue";
+import { useConfirm } from "primevue/useconfirm";
+import { useRouter } from "vue-router";
+import { useUtilisateurStore } from "@/stores/utilisateur";
+import Utilisateur from "@/components/cartes/Utilisateur.vue";
 
 const router = useRouter();
 
@@ -95,7 +95,10 @@ onMounted(async () => {
             </template>
             <template v-else>
               <div class="flex flex-col space-y-2">
-                <template v-for="utilisateur in utilisateurs">
+                <template
+                  v-for="utilisateur in utilisateurs"
+                  :key="utilisateur"
+                >
                   <Utilisateur
                     :utilisateur="utilisateur"
                     @modifier="

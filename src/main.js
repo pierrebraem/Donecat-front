@@ -1,13 +1,12 @@
 import "./assets/main.css";
 import "primeicons/primeicons.css";
 
-import PrimeVue from "primevue/config";
+import App from "./App.vue";
 import Aura from "@primeuix/themes/aura";
-import ConfirmationService from "primevue/confirmationservice";
-
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-import App from "./App.vue";
+import ConfirmationService from "primevue/confirmationservice";
+import PrimeVue from "primevue/config";
 
 import router from "./router";
 

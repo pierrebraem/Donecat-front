@@ -1,11 +1,8 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
-import {
-  getUtilisateur,
-  getUtilisateursByEmail,
-} from "@/utils/requetes/utilisateur";
 import bcrypt from "bcryptjs";
 import Cookies from "js-cookie";
+import { defineStore } from "pinia";
+import { getUtilisateursByEmail } from "@/utils/requetes/utilisateur";
+import { ref } from "vue";
 
 export const useUtilisateurStore = defineStore("utilisateur", () => {
   const utilisateur = ref(null);

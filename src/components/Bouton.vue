@@ -1,13 +1,16 @@
 <script setup>
 import { Button } from "primevue";
 
-const props = defineProps({
+defineEmits("callback");
+
+defineProps({
   label: {
     type: String,
     required: true,
   },
   severity: {
     type: String,
+    default: undefined,
   },
 });
 </script>

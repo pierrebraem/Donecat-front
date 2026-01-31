@@ -1,14 +1,14 @@
 <script setup>
-import { Dialog, Message, Password } from "primevue";
-import Bouton from "@/components/Bouton.vue";
-import AfficherErreurs from "../AfficherErreurs.vue";
-import { putUtilisateur } from "@/utils/requetes/utilisateur";
 import {
   compareMdp,
   mdpIdentiques,
   verifieValiditeMdp,
 } from "@/utils/gestionErreurs";
+import { Dialog, Message, Password } from "primevue";
+import AfficherErreurs from "../AfficherErreurs.vue";
 import bcrypt from "bcryptjs";
+import Bouton from "@/components/Bouton.vue";
+import { putUtilisateur } from "@/utils/requetes/utilisateur";
 import { ref } from "vue";
 
 const props = defineProps({

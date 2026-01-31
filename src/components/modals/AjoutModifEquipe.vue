@@ -1,9 +1,9 @@
 <script setup>
 import { Dialog, InputText, Select } from "primevue";
-import Bouton from "@/components/Bouton.vue";
-import AfficherErreurs from "../AfficherErreurs.vue";
-import { postEquipe, putEquipe } from "@/utils/requetes/equipe";
 import { inferieurXCarac, verifieChampVide } from "@/utils/gestionErreurs";
+import { postEquipe, putEquipe } from "@/utils/requetes/equipe";
+import AfficherErreurs from "../AfficherErreurs.vue";
+import Bouton from "@/components/Bouton.vue";
 import { ref } from "vue";
 
 const props = defineProps({
@@ -18,6 +18,9 @@ const props = defineProps({
   equipe: {
     type: Object,
     required: false,
+    default() {
+      return undefined;
+    },
   },
 });
 
@@ -155,7 +158,11 @@ function affecterValeurs() {
         />
       </div>
       <div class="flex-col space-y-6">
-        <div v-for="(item, index) in selectedDevs" class="flex flex-col">
+        <div
+          v-for="(item, index) in selectedDevs"
+          :key="index"
+          class="flex flex-col"
+        >
           <label>Développeur n°{{ index + 1 }} :</label>
           <div class="flex justify-between items-center space-x-2">
             <Select

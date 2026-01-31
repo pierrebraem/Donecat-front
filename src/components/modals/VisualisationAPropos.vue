@@ -1,7 +1,9 @@
 <script setup>
 import { Dialog } from "primevue";
 
-const props = defineProps({
+defineEmits(["update:visible"]);
+
+defineProps({
   visible: {
     type: Boolean,
     required: true,

@@ -1,16 +1,16 @@
 <script setup>
 import { DatePicker, Dialog, InputText, Select } from "primevue";
-import { formatageDate } from "@/utils/formatageDate";
-import Bouton from "@/components/Bouton.vue";
-import AfficherErreurs from "../AfficherErreurs.vue";
-import { postTache } from "@/utils/requetes/tache";
-import { statusTache } from "@/utils/statusTache";
 import {
   inferieurXCarac,
   utilisateurAssocieeAuProjet,
   verifieChampVide,
 } from "@/utils/gestionErreurs";
+import AfficherErreurs from "../AfficherErreurs.vue";
+import Bouton from "@/components/Bouton.vue";
+import { formatageDate } from "@/utils/formatageDate";
+import { postTache } from "@/utils/requetes/tache";
 import { ref } from "vue";
+import { statusTache } from "@/utils/statusTache";
 
 const props = defineProps({
   visible: {
@@ -31,13 +31,9 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:visible"]);
+const emit = defineEmits(["update:visible", "callback"]);
 
 const status = ref(statusTache);
-
-const utilisateurs = ref([]);
-const projets = ref([]);
-
 const nomTache = ref("");
 const selectedDev = ref("");
 const selectedStatus = ref("");
@@ -95,9 +91,9 @@ async function ajouterTache() {
   const body = {
     nom: nomTache.value,
     description: nomTache.value,
-    projet_id: selectedProjet.value,
+    projet_id: selectedProjet.value /* eslint-disable-line camelcase */,
     categorie: selectedStatus.value,
-    developpeur_id: selectedDev.value,
+    developpeur_id: selectedDev.value /* eslint-disable-line camelcase */,
     datefin: formatageDate(dateFin.value),
   };
 
@@ -117,10 +113,7 @@ function resetInputs() {
 }
 
 function affecterValeurs() {
-  utilisateurs.value = props.utilisateurs;
-  projets.value = props.projets;
-
-  for (const utilisateur of utilisateurs.value) {
+  for (const utilisateur of props.utilisateurs) {
     utilisateur.label = utilisateur.nom + " " + utilisateur.prenom;
   }
 }

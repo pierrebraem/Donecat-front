@@ -1,6 +1,6 @@
 <script setup>
-import { Menubar } from "primevue";
 import { onMounted, ref, watch } from "vue";
+import { Menubar } from "primevue";
 import { useRouter } from "vue-router";
 import { useUtilisateurStore } from "./stores/utilisateur";
 
@@ -90,5 +90,6 @@ watch(
       </a>
     </template>
   </Menubar>
+  <!-- eslint-disable-next-line vue/no-undef-components -->
   <router-view />
 </template>

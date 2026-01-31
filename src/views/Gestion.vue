@@ -1,20 +1,20 @@
 <script setup>
 import { Card, ConfirmDialog } from "primevue";
-import { useConfirm } from "primevue/useconfirm";
-import { useUtilisateurStore } from "@/stores/utilisateur";
-import AjoutModifEquipe from "@/components/modals/AjoutModifEquipe.vue";
-import AjoutModifProjet from "@/components/modals/AjoutModifProjet.vue";
-import Equipe from "@/components/cartes/Equipe.vue";
-import Projet from "@/components/cartes/Projet.vue";
-import Bouton from "@/components/Bouton.vue";
-import Chargement from "@/components/Chargement.vue";
-import { getTaches } from "@/utils/requetes/tache";
 import { deleteProjet, getProjets } from "@/utils/requetes/projet";
 import { deleteEquipe, getEquipes } from "@/utils/requetes/equipe";
-import { getUtilisateurs } from "@/utils/requetes/utilisateur";
 import { onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
+import AjoutModifEquipe from "@/components/modals/AjoutModifEquipe.vue";
+import AjoutModifProjet from "@/components/modals/AjoutModifProjet.vue";
+import Bouton from "@/components/Bouton.vue";
+import Chargement from "@/components/Chargement.vue";
 import Cookies from "js-cookie";
+import Equipe from "@/components/cartes/Equipe.vue";
+import { getTaches } from "@/utils/requetes/tache";
+import { getUtilisateurs } from "@/utils/requetes/utilisateur";
+import Projet from "@/components/cartes/Projet.vue";
+import { useConfirm } from "primevue/useconfirm";
+import { useRouter } from "vue-router";
+import { useUtilisateurStore } from "@/stores/utilisateur";
 
 const router = useRouter();
 
@@ -149,7 +149,7 @@ onMounted(async () => {
                 <p>Aucune équipe enregistrée</p>
               </template>
               <template v-else>
-                <template v-for="equipe in equipes">
+                <template v-for="equipe in equipes" :key="equipe">
                   <Equipe
                     :equipe="equipe"
                     :utilisateurs="utilisateurs"
@@ -168,7 +168,7 @@ onMounted(async () => {
       </div>
 
       <div class="grid grid-cols-2 gap-2">
-        <div v-for="projet in projets">
+        <div v-for="projet in projets" :key="projet">
           <Projet
             :projet="projet"
             :equipes="equipes"

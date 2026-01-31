@@ -1,6 +1,8 @@
 <script setup>
-import { Card } from "primevue";
 import Bouton from "@/components/Bouton.vue";
+import { Card } from "primevue";
+
+defineEmits("modifier", "supprimer");
 
 defineProps({
   utilisateur: {

@@ -1,10 +1,10 @@
 <script setup>
 import { Card, InputText, Password } from "primevue";
-import { useUtilisateurStore } from "@/stores/utilisateur";
 import { onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
 import Bouton from "@/components/Bouton.vue";
 import Cookies from "js-cookie";
+import { useRouter } from "vue-router";
+import { useUtilisateurStore } from "@/stores/utilisateur";
 
 const router = useRouter();
 
@@ -12,13 +12,13 @@ const utilisateurStore = useUtilisateurStore();
 
 const email = ref("");
 const password = ref("");
-const is_email_or_password_invalid = ref(false);
+const isEmailPasswordInvalid = ref(false);
 
 async function login() {
   const success = await utilisateurStore.login(email.value, password.value);
 
   if (!success) {
-    is_email_or_password_invalid.value = true;
+    isEmailPasswordInvalid.value = true;
   } else {
     const mdpChange = utilisateurStore.checkIfPasswordChanged();
     if (!mdpChange) {
@@ -65,7 +65,7 @@ onMounted(() => {
             <Bouton label="Connexion" @callback="login" />
           </div>
 
-          <div v-if="is_email_or_password_invalid" class="pt-6">
+          <div v-if="isEmailPasswordInvalid" class="pt-6">
             <p class="text-red-500">Adresse mail ou mot de passe incorrect</p>
           </div>
         </div>

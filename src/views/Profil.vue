@@ -1,14 +1,14 @@
 <script setup>
-import { Card } from "primevue";
-import { useUtilisateurStore } from "@/stores/utilisateur";
+import { onMounted, ref } from "vue";
+import Bouton from "@/components/Bouton.vue";
 import ModifierUtilisateur from "@/components/modals/ModifierUtilisateur.vue";
 import ModifierMotdepasse from "@/components/modals/ModifierMotdepasse.vue";
 import VisualisationAPropos from "@/components/modals/VisualisationAPropos.vue";
-import Bouton from "@/components/Bouton.vue";
 import { getUtilisateur } from "@/utils/requetes/utilisateur";
-import { onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
+import { useUtilisateurStore } from "@/stores/utilisateur";
 import Cookies from "js-cookie";
+import { Card } from "primevue";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 

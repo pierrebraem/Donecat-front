@@ -1,16 +1,16 @@
 <script setup>
 import { Dialog, InputText, Select } from "primevue";
-import AfficherErreurs from "../AfficherErreurs.vue";
-import { putUtilisateur } from "@/utils/requetes/utilisateur";
-import { statusUtilisateur } from "@/utils/statusUtilisateur";
 import {
   inferieurXCarac,
   verifieChampVide,
   verifieExistanceEmail,
   verifieValiditeEmail,
 } from "@/utils/gestionErreurs";
+import AfficherErreurs from "../AfficherErreurs.vue";
 import Bouton from "@/components/Bouton.vue";
+import { putUtilisateur } from "@/utils/requetes/utilisateur";
 import { ref } from "vue";
+import { statusUtilisateur } from "@/utils/statusUtilisateur";
 
 const props = defineProps({
   visible: {

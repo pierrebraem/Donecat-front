@@ -56,15 +56,15 @@ export function mdpIdentiques(mdp, confirmeMdp) {
 }
 
 export function utilisateurAssocieeAuProjet(
-  projet_id,
-  developpeur_id,
+  projetId,
+  developpeurId,
   equipes,
   projets,
 ) {
-  const projet = projets.find((p) => p.id == projet_id);
+  const projet = projets.find((p) => p.id == projetId);
   const equipe = equipes.find((e) => e.id == projet.equipe_id);
-  const trouverUtilisateur = equipe.membres.find((m) => m == developpeur_id);
-  const trouverManager = equipe.manager == developpeur_id;
+  const trouverUtilisateur = equipe.membres.find((m) => m == developpeurId);
+  const trouverManager = equipe.manager == developpeurId;
 
   if (!trouverUtilisateur && !trouverManager) {
     return "Le développeur que vous avez choisi ne fais pas partie du projet.";

@@ -1,15 +1,17 @@
 <script setup>
 import { ConfirmDialog, DatePicker, Dialog, InputText, Select } from "primevue";
-import { useConfirm } from "primevue/useconfirm";
+import { deleteTache, putTache } from "@/utils/requetes/tache";
+import { statusTache, traduireValeurParLabel } from "@/utils/statusTache";
+import Bouton from "@/components/Bouton.vue";
 import { formatageDate } from "@/utils/formatageDate";
 import { getUtilisateur } from "@/utils/requetes/utilisateur";
 import { getProjet } from "@/utils/requetes/projet";
-import { deleteTache, putTache } from "@/utils/requetes/tache";
-import Bouton from "@/components/Bouton.vue";
-import { statusTache, traduireValeurParLabel } from "@/utils/statusTache";
 import { ref } from "vue";
+import { useConfirm } from "primevue/useconfirm";
 
 const confirm = useConfirm();
+
+defineEmits(["update:visible"]);
 
 const props = defineProps({
   visible: {
@@ -34,16 +36,14 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:visible"]);
-
 const status = ref(statusTache);
 
-const utilisateurs = ref([]);
+const listeUtilisateurs = ref([]);
 const role = ref({});
 
 const projet = ref({});
 const utilisateur = ref({});
-const tache = ref({});
+const infoTache = ref({});
 
 const changeStatus = ref(false);
 const changeNom = ref(false);
@@ -56,12 +56,12 @@ async function getData() {
   projet.value = await getProjet(props.tache.projet_id);
   utilisateur.value = await getUtilisateur(props.tache.developpeur_id);
 
-  tache.value = JSON.parse(JSON.stringify(props.tache));
+  infoTache.value = JSON.parse(JSON.stringify(props.tache));
 
   role.value = props.cookie.status;
 
   for (const utilisateur of props.utilisateurs) {
-    utilisateurs.value.push({
+    listeUtilisateurs.value.push({
       id: utilisateur.id,
       label: utilisateur.nom + " " + utilisateur.prenom,
     });
@@ -70,13 +70,14 @@ async function getData() {
 
 async function changerTache() {
   const body = {
-    id: tache.value.id,
-    nom: tache.value.nom,
-    description: tache.value.description,
-    projet_id: tache.value.projet_id,
-    categorie: tache.value.categorie,
-    developpeur_id: tache.value.developpeur_id,
-    datefin: formatageDate(tache.value.datefin),
+    id: infoTache.value.id,
+    nom: infoTache.value.nom,
+    description: infoTache.value.description,
+    projet_id: infoTache.value.projet_id /* eslint-disable-line camelcase */,
+    categorie: infoTache.value.categorie,
+    developpeur_id:
+      infoTache.value.developpeur_id /* eslint-disable-line camelcase */,
+    datefin: formatageDate(infoTache.value.datefin),
   };
 
   await putTache(props.tache.id, body);
@@ -119,7 +120,7 @@ function reset() {
   <Dialog
     :visible="visible"
     modal
-    :header="'Visualisation de la tâche : ' + tache.nom"
+    :header="'Visualisation de la tâche : ' + infoTache.nom"
     class="w-1/2"
     @show="getData"
     @update:visible="$emit('update:visible', false)"
@@ -135,11 +136,11 @@ function reset() {
       >
         <template v-if="changeNom">
           <p>Nom :</p>
-          <InputText v-model="tache.nom" />
+          <InputText v-model="infoTache.nom" />
           <Bouton label="Valider" @callback="changerTache" />
         </template>
         <template v-else>
-          <p>Nom : {{ tache.nom }}</p>
+          <p>Nom : {{ infoTache.nom }}</p>
         </template>
       </div>
       <div
@@ -151,11 +152,11 @@ function reset() {
       >
         <template v-if="changeDescription">
           <p>Description :</p>
-          <InputText v-model="tache.description" />
+          <InputText v-model="infoTache.description" />
           <Bouton label="Valider" @callback="changerTache" />
         </template>
         <template v-else>
-          <p>Description : {{ tache.description }}</p>
+          <p>Description : {{ infoTache.description }}</p>
         </template>
       </div>
       <div
@@ -168,7 +169,7 @@ function reset() {
         <template v-if="changeProjet">
           <p>Projet :</p>
           <Select
-            v-model="tache.projet_id"
+            v-model="infoTache.projet_id"
             :options="projets"
             option-label="nom"
             option-value="id"
@@ -183,11 +184,11 @@ function reset() {
         :class="{
           'flex items-center space-x-2': changeStatus,
           'hover:text-stone-500':
-            (role == 'Manager' || cookie.id == tache.developpeur_id) &&
+            (role == 'Manager' || cookie.id == infoTache.developpeur_id) &&
             !changeStatus,
         }"
         @click="
-          role == 'Manager' || cookie.id == tache.developpeur_id
+          role == 'Manager' || cookie.id == infoTache.developpeur_id
             ? (changeStatus = true)
             : ''
         "
@@ -195,7 +196,7 @@ function reset() {
         <template v-if="changeStatus">
           <p>Status :</p>
           <Select
-            v-model="tache.categorie"
+            v-model="infoTache.categorie"
             :options="status"
             option-label="label"
             option-value="value"
@@ -203,7 +204,7 @@ function reset() {
           <Bouton label="Valider" @callback="changerTache" />
         </template>
         <template v-else>
-          <p>Status : {{ traduireValeurParLabel(tache.categorie) }}</p>
+          <p>Status : {{ traduireValeurParLabel(infoTache.categorie) }}</p>
         </template>
       </div>
       <div
@@ -216,8 +217,8 @@ function reset() {
         <template v-if="changeDeveloppeur">
           <p>Développeur :</p>
           <Select
-            v-model="tache.developpeur_id"
-            :options="utilisateurs"
+            v-model="infoTache.developpeur_id"
+            :options="listeUtilisateurs"
             option-label="label"
             option-value="id"
           />
@@ -236,11 +237,11 @@ function reset() {
       >
         <template v-if="changeDatefin">
           <p>Date de fin estimé :</p>
-          <DatePicker v-model="tache.datefin" date-format="dd/mm/yy" />
+          <DatePicker v-model="infoTache.datefin" date-format="dd/mm/yy" />
           <Bouton label="Valider" @callback="changerTache" />
         </template>
         <template v-else>
-          <p>Date de fin estimé : {{ tache.datefin }}</p>
+          <p>Date de fin estimé : {{ infoTache.datefin }}</p>
         </template>
       </div>
       <div class="flex justify-end gap-2">
@@ -253,7 +254,7 @@ function reset() {
           <Bouton
             label="Supprimer"
             severity="danger"
-            @callback="supprimerTache(tache.id, tache.nom)"
+            @callback="supprimerTache(infoTache.id, infoTache.nom)"
           />
         </template>
       </div>

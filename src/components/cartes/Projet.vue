@@ -2,6 +2,8 @@
 import { Card } from "primevue";
 import DoughnutChart from "@/components/charts/DoughnutChart.vue";
 
+defineEmits("modifier", "supprimer");
+
 const props = defineProps({
   projet: {
     type: Object,
@@ -67,7 +69,6 @@ function totalTaches(id) {
       <div class="w-3/4">
         <template v-if="totalTaches(projet.id) != 0">
           <DoughnutChart
-            :nom-graphe="projet.nom"
             :backlogs="compterTaches(projet.id, 'backlogs')"
             :todo="compterTaches(projet.id, 'todo')"
             :inprogress="compterTaches(projet.id, 'inprogress')"

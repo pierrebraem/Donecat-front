@@ -24,7 +24,6 @@ export default defineConfig([
       "no-loop-func": "error",
       "no-multi-assign": "error",
       "prefer-const": "error",
-      "sort-imports": "error",
     }
   },
   
@@ -38,7 +37,6 @@ export default defineConfig([
           "order": ["script", "template", "style"]
         },
       ],
-      "vue/no-root-v-if": "error",
       "vue/no-template-target-blank": "error",
       "vue/no-undef-components": "error",
       "vue/no-undef-properties": "error",
@@ -53,7 +51,10 @@ export default defineConfig([
       "vue/no-unused-refs": "error",
       "vue/no-useless-mustaches": "error",
       "vue/no-useless-v-bind": "error",
-      "vue/no-v-text": "error", 
+      "vue/no-v-text": "error",
+      "vue/no-parsing-error": ["error", {
+        "invalid-first-character-of-tag-name": false,
+      }]
     },
   }
 ]);

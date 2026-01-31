@@ -5,10 +5,6 @@ import { Doughnut } from "vue-chartjs";
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 
 const props = defineProps({
-  nomGraphe: {
-    type: String,
-    required: true,
-  },
   backlogs: {
     type: Number,
     required: true,

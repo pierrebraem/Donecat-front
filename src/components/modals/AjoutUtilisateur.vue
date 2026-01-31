@@ -1,9 +1,5 @@
 <script setup>
 import { Dialog, InputText, Message, Password, Select } from "primevue";
-import Bouton from "@/components/Bouton.vue";
-import AfficherErreurs from "../AfficherErreurs.vue";
-import { postUtilisateur } from "@/utils/requetes/utilisateur";
-import { statusUtilisateur } from "@/utils/statusUtilisateur";
 import {
   inferieurXCarac,
   mdpIdentiques,
@@ -12,8 +8,12 @@ import {
   verifieValiditeEmail,
   verifieValiditeMdp,
 } from "@/utils/gestionErreurs";
+import AfficherErreurs from "../AfficherErreurs.vue";
+import Bouton from "@/components/Bouton.vue";
 import bcrypt from "bcryptjs";
+import { postUtilisateur } from "@/utils/requetes/utilisateur";
 import { ref } from "vue";
+import { statusUtilisateur } from "@/utils/statusUtilisateur";
 
 defineProps({
   visible: {

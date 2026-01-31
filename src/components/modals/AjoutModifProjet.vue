@@ -1,9 +1,9 @@
 <script setup>
 import { Dialog, InputText, Select } from "primevue";
-import Bouton from "@/components/Bouton.vue";
-import AfficherErreurs from "../AfficherErreurs.vue";
-import { postProjet, putProjet } from "@/utils/requetes/projet";
 import { inferieurXCarac, verifieChampVide } from "@/utils/gestionErreurs";
+import { postProjet, putProjet } from "@/utils/requetes/projet";
+import AfficherErreurs from "../AfficherErreurs.vue";
+import Bouton from "@/components/Bouton.vue";
 import { ref } from "vue";
 
 const props = defineProps({
@@ -18,6 +18,9 @@ const props = defineProps({
   projet: {
     type: Object,
     required: false,
+    default() {
+      return undefined;
+    },
   },
 });
 
@@ -57,7 +60,7 @@ async function saveProjet() {
 
   const body = {
     nom: nom.value,
-    equipe_id: selectedEquipe.value,
+    equipe_id: selectedEquipe.value /* eslint-disable-line camelcase */,
   };
 
   if (!props.projet) {

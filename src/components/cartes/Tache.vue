@@ -12,9 +12,9 @@ const props = defineProps({
   },
 });
 
-function formatageUtilisateur(developpeur_id) {
+function formatageUtilisateur(developpeurId) {
   const utilisateur = props.utilisateurs.find(
-    (item) => item.id == developpeur_id,
+    (item) => item.id == developpeurId,
   );
   return utilisateur.nom + " " + utilisateur.prenom;
 }

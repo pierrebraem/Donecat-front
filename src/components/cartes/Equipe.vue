@@ -1,6 +1,8 @@
 <script setup>
 import { Card } from "primevue";
 
+defineEmits("modifier", "supprimer");
+
 const props = defineProps({
   equipe: {
     type: Object,
@@ -35,7 +37,7 @@ function trouverUtilisateur(id, manager) {
     <template #content>
       <ul>
         <li>{{ trouverUtilisateur(equipe.manager, true) }}</li>
-        <template v-for="membre in equipe.membres">
+        <template v-for="membre in equipe.membres" :key="membre">
           <li>{{ trouverUtilisateur(membre, false) }}</li>
         </template>
       </ul>

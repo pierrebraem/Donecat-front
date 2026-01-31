@@ -8,20 +8,20 @@ import {
   TabPanels,
   Tabs,
 } from "primevue";
-import { useUtilisateurStore } from "@/stores/utilisateur";
+import { onMounted, ref } from "vue";
 import AjoutTache from "@/components/modals/AjoutTache.vue";
-import VisualisationTache from "@/components/modals/VisualisationTache.vue";
 import Bouton from "@/components/Bouton.vue";
 import Chargement from "@/components/Chargement.vue";
-import Tache from "@/components/cartes/Tache.vue";
-import { getTaches } from "@/utils/requetes/tache";
-import { getProjets } from "@/utils/requetes/projet";
-import { getUtilisateurs } from "@/utils/requetes/utilisateur";
-import { getEquipes } from "@/utils/requetes/equipe";
-import { statusTache } from "@/utils/statusTache";
-import { onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
+import { getEquipes } from "@/utils/requetes/equipe";
+import { getProjets } from "@/utils/requetes/projet";
+import { getTaches } from "@/utils/requetes/tache";
+import { getUtilisateurs } from "@/utils/requetes/utilisateur";
+import { statusTache } from "@/utils/statusTache";
+import Tache from "@/components/cartes/Tache.vue";
+import { useRouter } from "vue-router";
+import { useUtilisateurStore } from "@/stores/utilisateur";
+import VisualisationTache from "@/components/modals/VisualisationTache.vue";
 
 const router = useRouter();
 
@@ -155,12 +155,12 @@ onMounted(async () => {
                     :value="projet.id"
                   >
                     <div class="flex justify-between">
-                      <template v-for="item in status">
+                      <template v-for="item in status" :key="item">
                         <div class="flex-1 px-4">
                           <h1 class="3xl font-bold text-center">
                             {{ item.label }}
                           </h1>
-                          <template v-for="tache in tachesFiltree">
+                          <template v-for="tache in tachesFiltree" :key="tache">
                             <template
                               v-if="
                                 tache.projet_id == projet.id &&
