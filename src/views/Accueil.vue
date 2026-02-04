@@ -8,7 +8,7 @@ import {
   Image,
 } from "primevue";
 
-const coucou = "coucou";
+const salut = "salut";
 </script>
 
 <template>
@@ -24,7 +24,7 @@ const coucou = "coucou";
                 ou GitHub Projects, développé avec Vue 3. En plus de la gestion
                 des tâches, il permet aussi de gérer les équipes et les projets.
               </p>
-              {{ coucou }}
+              {{ salut }}
             </AccordionContent>
           </AccordionPanel>
           <AccordionPanel value="1">
