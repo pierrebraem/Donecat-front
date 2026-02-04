@@ -7,6 +7,8 @@ import {
   Card,
   Image,
 } from "primevue";
+
+const coucou = "coucou";
 </script>
 
 <template>
@@ -22,6 +24,7 @@ import {
                 ou GitHub Projects, développé avec Vue 3. En plus de la gestion
                 des tâches, il permet aussi de gérer les équipes et les projets.
               </p>
+              {{ coucou }}
             </AccordionContent>
           </AccordionPanel>
           <AccordionPanel value="1">
@@ -60,10 +63,18 @@ import {
                 des projets et de les affecter à son équipe.
               </p>
               <div class="flex justify-center pt-4">
-                <Image src="accueil/creation_equipe.png" width="500" preview />
+                <Image
+                  src="accueil/creation_equipe.png"
+                  width="500"
+                  preview
+                />
               </div>
               <div class="flex justify-center pt-4">
-                <Image src="accueil/liste_equipes.png" width="500" preview />
+                <Image
+                  src="accueil/liste_equipes.png"
+                  width="500"
+                  preview
+                />
               </div>
             </AccordionContent>
           </AccordionPanel>
@@ -78,10 +89,18 @@ import {
                 graphiques.
               </p>
               <div class="flex justify-center pt-4">
-                <Image src="accueil/creation_projet.png" width="500" preview />
+                <Image
+                  src="accueil/creation_projet.png"
+                  width="500"
+                  preview
+                />
               </div>
               <div class="flex justify-center pt-4">
-                <Image src="accueil/liste_projets.png" width="500" preview />
+                <Image
+                  src="accueil/liste_projets.png"
+                  width="500"
+                  preview
+                />
               </div>
             </AccordionContent>
           </AccordionPanel>
@@ -98,10 +117,18 @@ import {
                 d'une tâche.
               </p>
               <div class="flex justify-center pt-4">
-                <Image src="accueil/creation_tache.png" width="500" preview />
+                <Image
+                  src="accueil/creation_tache.png"
+                  width="500"
+                  preview
+                />
               </div>
               <div class="flex justify-center pt-4">
-                <Image src="accueil/liste_taches.png" width="500" preview />
+                <Image
+                  src="accueil/liste_taches.png"
+                  width="500"
+                  preview
+                />
               </div>
               <div class="flex justify-center pt-4">
                 <Image
