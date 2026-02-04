@@ -9,6 +9,7 @@ import {
 } from "primevue";
 
 const salut = NaN;
+const nombre = NaN;
 </script>
 
 <template>
@@ -25,6 +26,7 @@ const salut = NaN;
                 des tâches, il permet aussi de gérer les équipes et les projets.
               </p>
               {{ salut.toString() }}
+              {{ nombre.toString() }}
             </AccordionContent>
           </AccordionPanel>
           <AccordionPanel value="1">
