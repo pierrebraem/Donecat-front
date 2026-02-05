@@ -18,7 +18,7 @@ jobs:
             - name: Run Cypress Tests
               uses: cypress-io/github-action@v6
               with:
-                command: npm run launchapi
+                command: npx json-server --watch data/db.json --port 3000
                 build: npm run build
                 start: npm run preview
                 record: true
