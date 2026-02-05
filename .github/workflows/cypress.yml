@@ -19,7 +19,7 @@ jobs:
               run: npm install
 
             - name: Start json-server
-              run: npx json-server --watch data/db.json --port 3000
+              run: npx json-server --watch data/db.json --port 3000 &
 
             - name: Wait for json-server
               run: npx wait-on ${{ secrets.VITE_API_URL }}
