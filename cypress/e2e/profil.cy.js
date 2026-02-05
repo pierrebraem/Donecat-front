@@ -1,4 +1,6 @@
 /* eslint-disable */
+const url = Cypress.config("baseUrl") + "/profil";
+
 const cookie = {
   id: 1,
   status: "Administrateur",
@@ -8,12 +10,12 @@ const cookie = {
 
 describe("Accès à la page", () => {
   it("Quand le cookie de connexion n'est pas présent", () => {
-    cy.visit("http://localhost:5173/profil");
-    cy.url().should("eq", "http://localhost:5173/connexion");
+    cy.visit(url);
+    cy.url().should("eq", Cypress.config("baseUrl") + "/connexion");
   });
   it("Quand le cookie de connexion est présent", () => {
     cy.setCookie("utilisateur", JSON.stringify(cookie));
-    cy.visit("http://localhost:5173/profil");
+    cy.visit(url);
   });
 });
 
@@ -22,21 +24,21 @@ describe("Vérifie que les données se charge correctement", () => {
     cy.setCookie("utilisateur", JSON.stringify(cookie));
 
     cy.intercept("GET", "/utilisateurs/1", { fixture: "profil/admin.json" });
-    cy.visit("http://localhost:5173/profil");
+    cy.visit(url);
 
-    cy.get('div[id="profil-nom"]').should("contain", "Nom :LaPierre");
-    cy.get('div[id="profil-prenom"]').should("contain", "Prénom :Françoise");
+    cy.get('div[id="profil-nom"]').should("contain", "Nom : LaPierre");
+    cy.get('div[id="profil-prenom"]').should("contain", "Prénom : Françoise");
     cy.get('div[id="profil-email"]').should(
       "contain",
-      "Email :francoise.lapierre@test.com",
+      "Email : francoise.lapierre@test.com",
     );
     cy.get('div[id="profil-pseudo"]').should(
       "contain",
-      "Pseudo :FrançoiseDu80",
+      "Pseudo : FrançoiseDu80",
     );
     cy.get('div[id="profil-status"]').should(
       "contain",
-      "Status :Administrateur",
+      "Status : Administrateur",
     );
   });
 });
@@ -46,7 +48,7 @@ describe('Tests de la modal "Modification du profil"', () => {
     cy.setCookie("utilisateur", JSON.stringify(cookie));
 
     cy.intercept("GET", "/utilisateurs/1", { fixture: "profil/admin.json" });
-    cy.visit("http://localhost:5173/profil");
+    cy.visit(url);
 
     cy.wait(1000);
 
@@ -204,16 +206,16 @@ describe('Tests de la modal "Modification du profil"', () => {
 
     cy.get("#modifier-utilisateur-valider").click();
 
-    cy.get('div[id="profil-nom"]').should("contain", "Nom :Doyon");
-    cy.get('div[id="profil-prenom"]').should("contain", "Prénom :Michèle");
+    cy.get('div[id="profil-nom"]').should("contain", "Nom : Doyon");
+    cy.get('div[id="profil-prenom"]').should("contain", "Prénom : Michèle");
     cy.get('div[id="profil-email"]').should(
       "contain",
-      "Email :francoise.lapierre@test.com",
+      "Email : francoise.lapierre@test.com",
     );
-    cy.get('div[id="profil-pseudo"]').should("contain", "Pseudo :MicheleDu59");
+    cy.get('div[id="profil-pseudo"]').should("contain", "Pseudo : MicheleDu59");
     cy.get('div[id="profil-status"]').should(
       "contain",
-      "Status :Administrateur",
+      "Status : Administrateur",
     );
   });
 
@@ -232,16 +234,19 @@ describe('Tests de la modal "Modification du profil"', () => {
 
     cy.get("#modifier-utilisateur-valider").click();
 
-    cy.get('div[id="profil-nom"]').should("contain", "Nom :Patry");
-    cy.get('div[id="profil-prenom"]').should("contain", "Prénom :Marmion");
+    cy.get('div[id="profil-nom"]').should("contain", "Nom : Patry");
+    cy.get('div[id="profil-prenom"]').should("contain", "Prénom : Marmion");
     cy.get('div[id="profil-email"]').should(
       "contain",
-      "Email :marmion.patry@test.com",
+      "Email : marmion.patry@test.com",
     );
-    cy.get('div[id="profil-pseudo"]').should("contain", "Pseudo :PatryMarmion");
+    cy.get('div[id="profil-pseudo"]').should(
+      "contain",
+      "Pseudo : PatryMarmion",
+    );
     cy.get('div[id="profil-status"]').should(
       "contain",
-      "Status :Administrateur",
+      "Status : Administrateur",
     );
   });
 });
