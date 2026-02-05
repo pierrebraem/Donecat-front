@@ -1,14 +1,8 @@
 name: Cypress Tests
 
-on:
-    push:
-        branches:
-            - main
-            - 0.1.X
-            - dev
-    
+on:    
     pull_request:
-        types: [opened, reopened]
+        types: [opened, synchronize, reopened]
 jobs:
     cypress:
         runs-on: ubuntu-24.04
