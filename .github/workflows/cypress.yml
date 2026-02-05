@@ -7,6 +7,7 @@ jobs:
     cypress:
         runs-on: ubuntu-24.04
         env:
+            VITE_API_URL: ${{ secrets.VITE_URL_API }}
             CYPRESS_BASE_URL: ${{ secrets.CYPRESS_BASE_URL }}
             CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -17,7 +18,7 @@ jobs:
             - name: Run Cypress Tests
               uses: cypress-io/github-action@v6
               with:
-                launchapi: npm run launchapi
+                command: npm run launchapi
                 build: npm run build
                 start: npm run preview
                 record: true
