@@ -15,10 +15,18 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v4
 
+            - name: Install dependencies
+              run: npm install
+
+            - name: Start json-server
+              run: npx json-server --watch data/db.json --port 3000
+
+            - name: Wait for json-server
+              run: npx wait-on ${{ secrets.VITE_API_URL }}
+
             - name: Run Cypress Tests
               uses: cypress-io/github-action@v6
               with:
-                command: npx json-server --watch data/db.json --port 3000
                 build: npm run build
                 start: npm run preview
                 record: true
