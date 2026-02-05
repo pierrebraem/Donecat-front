@@ -50,7 +50,7 @@ describe('Tests de la modal "Modification du profil"', () => {
     cy.intercept("GET", "/utilisateurs/1", { fixture: "profil/admin.json" });
     cy.visit(url);
 
-    cy.wait(20000);
+    cy.wait(1000);
 
     cy.get(".p-dialog-header").should("not.exist");
 
@@ -85,7 +85,7 @@ describe('Tests de la modal "Modification du profil"', () => {
   });
 
   it('Saisie plus de 100 caractères dans le champ "Nom" et clique sur le bouton "Modifier"', () => {
-    cy.wait(20000);
+    cy.wait(1000);
 
     cy.get('[name="nom"]').type(
       "coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou",
@@ -111,7 +111,7 @@ describe('Tests de la modal "Modification du profil"', () => {
   });
 
   it('Saisie plus de 100 caractères dans le champ "Prénom" et clique sur le bouton "Modifier"', () => {
-    cy.wait(20000);
+    cy.wait(1000);
 
     cy.get('[name="prenom"]').type(
       "coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou",
@@ -137,7 +137,7 @@ describe('Tests de la modal "Modification du profil"', () => {
   });
 
   it('La saisie dans le champ "Adresse mail" n\'est pas une adresse mail et clique sur le bouton "Modifier"', () => {
-    cy.wait(20000);
+    cy.wait(1000);
 
     cy.get('[name="email"]').clear().type("coucou");
     cy.get("#modifier-utilisateur-valider").click();
@@ -150,7 +150,7 @@ describe('Tests de la modal "Modification du profil"', () => {
   });
 
   it('Saisie une adresse mail déjà existant et clique sur le bouton "Modifier"', () => {
-    cy.wait(20000);
+    cy.wait(1000);
 
     cy.intercept("GET", "/utilisateurs?email=ancelina.beausoleil@test.com", {
       fixture: "utilisateurs.json",
@@ -178,7 +178,7 @@ describe('Tests de la modal "Modification du profil"', () => {
   });
 
   it('Saisie plus de 100 caractères dans le champ "Pseudo" et clique sur le bouton "Modifier"', () => {
-    cy.wait(20000);
+    cy.wait(1000);
 
     cy.get('[name="pseudo"]').type(
       "coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou coucou",
@@ -194,7 +194,7 @@ describe('Tests de la modal "Modification du profil"', () => {
 
   it("Mettre à jour l'utilisateur sans changer d'adresse mail", () => {
     cy.intercept("PUT", "/utilisateurs/1", "success");
-    cy.wait(20000);
+    cy.wait(1000);
 
     cy.get('[name="nom"]').clear().type("Doyon");
     cy.get('[name="prenom"]').clear().type("Michèle");
@@ -221,7 +221,7 @@ describe('Tests de la modal "Modification du profil"', () => {
 
   it("Mettre à jour l'utilisateur en changeant l'adresse mail", () => {
     cy.intercept("PUT", "/utilisateurs/1", "success");
-    cy.wait(20000);
+    cy.wait(1000);
 
     cy.get('[name="nom"]').clear().type("Patry");
     cy.get('[name="prenom"]').clear().type("Marmion");
