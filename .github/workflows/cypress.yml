@@ -17,6 +17,7 @@ jobs:
             - name: Run Cypress Tests
               uses: cypress-io/github-action@v6
               with:
+                launchapi: npm run launchapi
                 build: npm run build
                 start: npm run preview
                 record: true
