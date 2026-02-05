@@ -22,7 +22,11 @@ const cookie = ref({});
 
 const utilisateur = ref({});
 
-onMounted(async () => {
+async function getUserInfo() {
+  utilisateur.value = await getUtilisateur(cookie.value.id);
+}
+
+onMounted(() => {
   if (Cookies.get("utilisateur") == undefined) {
     router.push("/connexion");
     return;
@@ -32,34 +36,61 @@ onMounted(async () => {
   if (!mdpChange) router.push("/changementMDP");
 
   cookie.value = JSON.parse(Cookies.get("utilisateur"));
-  utilisateur.value = await getUtilisateur(cookie.value.id);
+  getUserInfo();
 });
 </script>
 
 <template>
-  <h1 class="text-5xl font-bold text-center">Profil</h1>
+  <h1 class="text-5xl font-bold text-center">
+    Profil
+  </h1>
 
   <div class="flex justify-center">
     <Card class="w-11/12 text-xl">
       <template #content>
-        <div class="flex">
-          <p class="font-bold">Nom :</p>
+        <div
+          id="profil-nom"
+          class="flex"
+        >
+          <p class="font-bold">
+            Nom :
+          </p>
           <p>{{ utilisateur.nom }}</p>
         </div>
-        <div class="flex">
-          <p class="font-bold">Prénom :</p>
+        <div
+          id="profil-prenom"
+          class="flex"
+        >
+          <p class="font-bold">
+            Prénom :
+          </p>
           <p>{{ utilisateur.prenom }}</p>
         </div>
-        <div class="flex">
-          <p class="font-bold">Email :</p>
+        <div
+          id="profil-email"
+          class="flex"
+        >
+          <p class="font-bold">
+            Email :
+          </p>
           <p>{{ utilisateur.email }}</p>
         </div>
-        <div class="flex">
-          <p class="font-bold">Pseudo :</p>
+        <div
+          id="profil-pseudo"
+          class="flex"
+        >
+          <p class="font-bold">
+            Pseudo :
+          </p>
           <p>{{ utilisateur.pseudo }}</p>
         </div>
-        <div class="flex">
-          <p class="font-bold">Status :</p>
+        <div
+          id="profil-status"
+          class="flex"
+        >
+          <p class="font-bold">
+            Status :
+          </p>
           <p>{{ utilisateur.status }}</p>
         </div>
         <div class="flex justify-center space-x-6 pt-4">
@@ -87,6 +118,7 @@ onMounted(async () => {
     v-model:visible="visibleModifierProfil"
     :utilisateur="utilisateur"
     type="Utilisateur"
+    @callback="getUserInfo"
   />
   <ModifierMotdepasse
     v-model:visible="visibleModifierMotdepasse"

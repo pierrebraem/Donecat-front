@@ -1,0 +1,26 @@
+[
+    {
+        "id": "1",
+        "nom": "LaPierre",
+        "prenom": "Françoise",
+        "email": "francoise.lapierre@test.com",
+        "pseudo": "FrançoiseDu80",
+        "status": "Administrateur"
+    },
+    {
+        "id:": "2",
+        "nom": "Laprise",
+        "prenom": "Cheney",
+        "email": "cheney.laprise@test.com",
+        "pseudo": "CheneyDu75",
+        "status": "Manager"
+    },
+    {
+        "id:": "3",
+        "nom": "Beausoleil",
+        "prenom": "Ancelina",
+        "email": "ancelina.beausoleil@test.com",
+        "pseudo": "unPseudo",
+        "status": "Dev"
+    }
+]

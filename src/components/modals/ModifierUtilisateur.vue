@@ -27,7 +27,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:visible"]);
+const emit = defineEmits(["update:visible", "callback"]);
 
 const status = ref(statusUtilisateur);
 
@@ -114,6 +114,7 @@ async function modifierUtilisateur() {
 
   await putUtilisateur(props.utilisateur.id, body);
 
+  emit("callback");
   emit("update:visible", false);
 }
 
@@ -148,21 +149,36 @@ function resetInputs() {
     <div class="flex flex-col space-y-6">
       <div class="flex flex-col">
         <label>Nom :</label>
-        <InputText v-model="nom" />
+        <InputText
+          v-model="nom"
+          name="nom"
+        />
       </div>
       <div class="flex flex-col">
         <label>Prénom :</label>
-        <InputText v-model="prenom" />
+        <InputText
+          v-model="prenom"
+          name="prenom"
+        />
       </div>
       <div class="flex flex-col">
         <label>Adresse mail :</label>
-        <InputText v-model="email" />
+        <InputText
+          v-model="email"
+          name="email"
+        />
       </div>
       <div class="flex flex-col">
         <label>Pseudo :</label>
-        <InputText v-model="pseudo" />
+        <InputText
+          v-model="pseudo"
+          name="pseudo"
+        />
       </div>
-      <div v-if="type == 'Administrateur'" class="flex flex-col">
+      <div
+        v-if="type == 'Administrateur'"
+        class="flex flex-col"
+      >
         <label>Status:</label>
         <Select
           v-model="selectedStatus"
@@ -173,6 +189,7 @@ function resetInputs() {
       </div>
       <div class="flex justify-end gap-2">
         <Bouton
+          id="modifier-utilisateur-annuler"
           label="Annuler"
           severity="secondary"
           @callback="
@@ -180,9 +197,16 @@ function resetInputs() {
             $emit('update:visible', false);
           "
         />
-        <Bouton label="Modifier" @callback="modifierUtilisateur()" />
+        <Bouton
+          id="modifier-utilisateur-valider"
+          label="Modifier"
+          @callback="modifierUtilisateur()"
+        />
       </div>
-      <AfficherErreurs :messages-erreur="messagesErreur" />
+      <AfficherErreurs
+        id="modifier-utilisateur-erreurs"
+        :messages-erreur="messagesErreur"
+      />
     </div>
   </Dialog>
 </template>
