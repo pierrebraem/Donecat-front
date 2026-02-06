@@ -143,10 +143,12 @@ describe('Tests de la modal "Modification du profil"', () => {
     cy.get("#modifier-utilisateur-valider").click();
 
     cy.get(".p-dialog-header").should("exist");
-    cy.get("#modifier-utilisateur-erreurs").should(
-      "contain",
-      'Votre saisi dans le champ "Adresse mail" ne correspond pas à une adresse mail.',
-    );
+    cy.get("#modifier-utilisateur-erreurs", { timeout: 10000 })
+      .should("be.visible")
+      .and(
+        "contain",
+        'Votre saisi dans le champ "Adresse mail" ne correspond pas à une adresse mail.',
+      );
   });
 
   it('Saisie une adresse mail déjà existant et clique sur le bouton "Modifier"', () => {
@@ -160,12 +162,10 @@ describe('Tests de la modal "Modification du profil"', () => {
     cy.get("#modifier-utilisateur-valider").click();
 
     cy.get(".p-dialog-header").should("exist");
-    cy.get("#modifier-utilisateur-erreurs", { timeout: 10000 })
-      .should("be.visible")
-      .and(
-        "contain",
-        'L\'adresse mail "ancelina.beausoleil@test.com" existe déjà. Veuillez en prendre un autre.',
-      );
+    cy.get("#modifier-utilisateur-erreurs").should(
+      "contain",
+      'L\'adresse mail "ancelina.beausoleil@test.com" existe déjà. Veuillez en prendre un autre.',
+    );
   });
 
   it('Supprime le contenu de champ "Pseudo" et clique sur le bouton "Modifier"', () => {
