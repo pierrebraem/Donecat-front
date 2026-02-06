@@ -4,7 +4,29 @@ on:
     pull_request:
         types: [opened, synchronize, reopened]
 jobs:
-    cypress:
+    install:
+      runs-on: ubuntu-24.04
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+        
+        - name: Cypress install
+          uses: cypress-io/gitgub-action@v6
+          with:
+            runTests: false
+            build: npm run build
+        
+        - name: Install dependencies
+          run: npm ci
+          
+        - name: Save build folder
+          uses: actions/upload-artifact@v4
+          with:
+            name: build
+            if-no-files-found: error
+            path: build
+
+    cypress-run:
         runs-on: ubuntu-24.04
         env:
             VITE_API_URL: ${{ secrets.VITE_URL_API }}
@@ -15,9 +37,6 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v4
 
-            - name: Install dependencies
-              run: npm ci
-
             - name: Start json-server
               run: npx json-server --watch data/db.json --port 3000 &
 
@@ -27,6 +46,6 @@ jobs:
             - name: Run Cypress Tests
               uses: cypress-io/github-action@v6
               with:
-                build: npm run build
                 start: npm run preview
+                browser: chrome
                 record: true
