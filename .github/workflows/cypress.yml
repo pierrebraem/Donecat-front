@@ -6,6 +6,9 @@ on:
 jobs:
     cypress:
         runs-on: ubuntu-24.04
+        container:
+          image: cypress/browsers:22.15.0
+          options: --user 1001
         env:
             VITE_API_URL: ${{ secrets.VITE_URL_API }}
             CYPRESS_BASE_URL: ${{ secrets.CYPRESS_BASE_URL }}
