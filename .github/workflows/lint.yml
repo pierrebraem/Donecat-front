@@ -23,5 +23,6 @@ jobs:
               uses: sibiraj-s/action-eslint@v4
               with:
                 token: ${{ secrets.GITHUB_TOKEN }}
+                extensions: 'js,css,vue'
                 working-directory: src
                 package-manager: npm
