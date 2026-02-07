@@ -69,16 +69,17 @@ async function getData() {
 }
 
 async function changerTache() {
+  /* eslint-disable camelcase */
   const body = {
     id: infoTache.value.id,
     nom: infoTache.value.nom,
     description: infoTache.value.description,
-    projet_id: infoTache.value.projet_id /* eslint-disable-line camelcase */,
+    projet_id: infoTache.value.projet_id,
     categorie: infoTache.value.categorie,
-    developpeur_id:
-      infoTache.value.developpeur_id /* eslint-disable-line camelcase */,
+    developpeur_id: infoTache.value.developpeur_id,
     datefin: formatageDate(infoTache.value.datefin),
   };
+  /* eslint-enable camelcase */
 
   await putTache(props.tache.id, body);
 
@@ -137,7 +138,10 @@ function reset() {
         <template v-if="changeNom">
           <p>Nom :</p>
           <InputText v-model="infoTache.nom" />
-          <Bouton label="Valider" @callback="changerTache" />
+          <Bouton
+            label="Valider"
+            @callback="changerTache"
+          />
         </template>
         <template v-else>
           <p>Nom : {{ infoTache.nom }}</p>
@@ -153,7 +157,10 @@ function reset() {
         <template v-if="changeDescription">
           <p>Description :</p>
           <InputText v-model="infoTache.description" />
-          <Bouton label="Valider" @callback="changerTache" />
+          <Bouton
+            label="Valider"
+            @callback="changerTache"
+          />
         </template>
         <template v-else>
           <p>Description : {{ infoTache.description }}</p>
@@ -174,7 +181,10 @@ function reset() {
             option-label="nom"
             option-value="id"
           />
-          <Bouton label="Valider" @callback="changerTache" />
+          <Bouton
+            label="Valider"
+            @callback="changerTache"
+          />
         </template>
         <template v-else>
           <p>Projet : {{ projet.nom }}</p>
@@ -201,7 +211,10 @@ function reset() {
             option-label="label"
             option-value="value"
           />
-          <Bouton label="Valider" @callback="changerTache" />
+          <Bouton
+            label="Valider"
+            @callback="changerTache"
+          />
         </template>
         <template v-else>
           <p>Status : {{ traduireValeurParLabel(infoTache.categorie) }}</p>
@@ -222,7 +235,10 @@ function reset() {
             option-label="label"
             option-value="id"
           />
-          <Bouton label="Valider" @callback="changerTache" />
+          <Bouton
+            label="Valider"
+            @callback="changerTache"
+          />
         </template>
         <template v-else>
           <p>Développeur : {{ utilisateur.nom + " " + utilisateur.prenom }}</p>
@@ -237,8 +253,14 @@ function reset() {
       >
         <template v-if="changeDatefin">
           <p>Date de fin estimé :</p>
-          <DatePicker v-model="infoTache.datefin" date-format="dd/mm/yy" />
-          <Bouton label="Valider" @callback="changerTache" />
+          <DatePicker
+            v-model="infoTache.datefin"
+            date-format="dd/mm/yy"
+          />
+          <Bouton
+            label="Valider"
+            @callback="changerTache"
+          />
         </template>
         <template v-else>
           <p>Date de fin estimé : {{ infoTache.datefin }}</p>
