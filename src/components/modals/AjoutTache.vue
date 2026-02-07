@@ -31,7 +31,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:visible", "callback"]);
+const emit = defineEmits(["update:visible"]);
 
 const status = ref(statusTache);
 const nomTache = ref("");
@@ -88,14 +88,16 @@ async function ajouterTache() {
 
   if (messagesErreur.value.length != 0) return;
 
+  /* eslint-disable camelcase */
   const body = {
     nom: nomTache.value,
     description: nomTache.value,
-    projet_id: selectedProjet.value /* eslint-disable-line camelcase */,
+    projet_id: selectedProjet.value,
     categorie: selectedStatus.value,
-    developpeur_id: selectedDev.value /* eslint-disable-line camelcase */,
+    developpeur_id: selectedDev.value,
     datefin: formatageDate(dateFin.value),
   };
+  /* eslint-enable camelcase */
 
   await postTache(body);
 
@@ -163,7 +165,11 @@ function affecterValeurs() {
       </div>
       <div class="flex flex-col">
         <label>Date de fin :</label>
-        <DatePicker v-model="dateFin" date-format="dd/mm/yy" fluid />
+        <DatePicker
+          v-model="dateFin"
+          date-format="dd/mm/yy"
+          fluid
+        />
       </div>
       <div class="flex justify-end gap-2">
         <Bouton
@@ -174,7 +180,10 @@ function affecterValeurs() {
             $emit('update:visible', false);
           "
         />
-        <Bouton label="Ajouter" @callback="ajouterTache()" />
+        <Bouton
+          label="Ajouter"
+          @callback="ajouterTache()"
+        />
       </div>
       <AfficherErreurs :messages-erreur="messagesErreur" />
     </div>
