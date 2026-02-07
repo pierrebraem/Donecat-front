@@ -81,6 +81,8 @@ async function changerTache() {
   };
   /* eslint-enable camelcase */
 
+  alert("coucou");
+  const je_suis_une_variable = "salut";
   await putTache(props.tache.id, body);
 
   reset();
