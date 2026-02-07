@@ -88,6 +88,8 @@ async function ajouterTache() {
 
   if (messagesErreur.value.length != 0) return;
 
+  console.log("coucou");
+  const salut = "salut";
   /* eslint-disable camelcase */
   const body = {
     nom: nomTache.value,
